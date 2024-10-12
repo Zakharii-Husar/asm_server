@@ -11,10 +11,10 @@
 .section .text
 
 # Create socket (AF_INET, SOCK_STREAM, 0)
-mov $SYS_create_sock, %rax        # move the immediate value into %rax
-mov $AF_INET, %rdi           # move the immediate value into %rdi
-mov $SOCK_STREAM, %rsi       # move the immediate value into %rsi
-mov $SOCK_PROTOCOL, %rdx     # move the immediate value into %rdx
-syscall                      # make the syscall
-mov %rax, %rbx               # store socket fd in %rbx
+mov $SYS_create_sock, %rax
+mov $AF_INET, %rdi
+mov $SOCK_STREAM, %rsi
+mov $SOCK_PROTOCOL, %rdx
+syscall
+mov %rax, %rbx                    # store socket fd in %rbx
 
