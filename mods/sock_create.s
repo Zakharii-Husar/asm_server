@@ -1,7 +1,7 @@
 .section .data
 
     # sys_call args
-    .equ SYS_create_sock, 41
+    .equ SYS_sock_create, 41
 
     # create socket args
     .equ AF_INET, 2 
@@ -11,7 +11,7 @@
 .section .text
 
 # Create socket (AF_INET, SOCK_STREAM, 0)
-mov $SYS_create_sock, %rax
+mov $SYS_sock_create, %rax
 mov $AF_INET, %rdi
 mov $SOCK_STREAM, %rsi
 mov $SOCK_PROTOCOL, %rdx

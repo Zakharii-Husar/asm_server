@@ -26,3 +26,9 @@ The syscall for binding the above created  TCP socket takes 2 parameters:
 2) **%rsi** : an address structure (**addr_in**), which contains the **address family**, **port**, and **IP address**.
 
 ### LISTEN FOR CONNECTIONS
+
+The listening syscall takes 2 arguments:
+
+1) **%rdi**: socket file descriptor (saved in **%rbx** while creating socket).
+
+2) **%rsi**: backlog (number of maximum connections that caan be in the que while server is busy to process their requests).

@@ -6,11 +6,14 @@ _start:
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
-    .include "./asm_server/mods/create_socket.s"
+    .include "./asm_server/mods/sock_create.s"
     # ----------------------------
     # 2. Bind Socket
     # ----------------------------
-    .include "./asm_server/mods/bind_socket.s"
+    .include "./asm_server/mods/sock_bind.s"
+    # 3. Listen for requests
+    # ----------------------------
+    .include "./asm_server/mods/sock_listen.s"
 
      # Exit the program
     mov $60, %rax        # 60 is the syscall number for exit

@@ -3,7 +3,7 @@
     # sys_call args
     .equ SYS_sock_bind, 49
 
-    # bind socket args
+    # sock bind args
     .equ AF_INET, 2    # AF_INET (IPv4)
     .equ PORT, 8080    # Port number (8080) in network byte order (use htons equivalent in assembly)
     .equ IP_ADDR, 0    # IP address (0.0.0.0 - binds to all interfaces)
