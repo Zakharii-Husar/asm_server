@@ -1,20 +1,20 @@
-.section .data
-
-    # sys_call args
-    .equ SYS_sock_create, 41
-
-    # create socket args
-    .equ AF_INET, 2 
-    .equ SOCK_STREAM, 1
-    .equ SOCK_PROTOCOL, 0
 
 .section .text
 
 # Create socket (AF_INET, SOCK_STREAM, 0)
-mov $SYS_sock_create, %rax
-mov $AF_INET, %rdi
-mov $SOCK_STREAM, %rsi
-mov $SOCK_PROTOCOL, %rdx
-syscall
-mov %rax, %rbx                    # store socket fd in %rbx
+.type sock_create, @function
+sock_create:
+pushq %rbp                    # save the caller's base pointer
+movq %rsp, %rbp               # set the new base pointer (stack frame)
+
+ mov $SYS_sock_create, %rax
+ mov $AF_INET, %rdi
+ mov $SOCK_STREAM, %rsi
+ mov $SOCK_PROTOCOL, %rdx
+ syscall
+ mov %rax, %rbx                    # store socket fd in %rbx
+
+popq %rbp                     # restore the caller's base pointer
+ret                           # return to the caller
+
 

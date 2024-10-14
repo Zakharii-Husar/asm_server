@@ -1,10 +1,6 @@
 .section .data
 
-    # sys_call args
-    .equ SYS_sock_listen, 50
 
-    # sock listen args
-    .equ connection_backlog, 10   # backlog (max number of queued connections)
 
 .section .text
 
