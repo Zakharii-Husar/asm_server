@@ -1,6 +1,3 @@
-.section .data
-
-
 
 .section .text
 

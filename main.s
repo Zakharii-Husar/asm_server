@@ -2,7 +2,8 @@
 
 .section .data
 
-    
+.include "./asm_server/constants.s"
+
 .section .text
 
     # Include function files
@@ -13,7 +14,6 @@
 
     .include "./asm_server/utils/print_info.s"
 
-    .include "./asm_server/constants.s"
     .global _start
 
 _start:
@@ -23,15 +23,15 @@ _start:
     # 1. Create Socket
     # ----------------------------
     call sock_create
+
+    lea sock_created_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_created_msg_length, %rdx        # length of the message (from constants.s)
+
     call print_info
     # ----------------------------
     # 2. Bind Socket
     # ----------------------------
-    movq    $SYS_sock_bind, %rax            # sys_bind
-    movq    %rbx, %rdi                      # socket file descriptor (saved in rbx)
-    lea     addr_in(%rip), %rsi             # pointer to the address structure
-    movq    $16, %rdx                       # size of the sockaddr_in structure
-    syscall                                 # make syscall
+    call sock_bind
     # 3. Listen for requests
     # ----------------------------
     movq    $SYS_sock_listen, %rax
