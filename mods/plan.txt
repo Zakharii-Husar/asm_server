@@ -1,0 +1,30 @@
+Steps to Implement a Static File Server
+
+1) Setup Your Assembly Environment: 
+Ensure you have a working assembly development environment set up for your project.
+
+2) Create Socket:
+Use the socket API to create a TCP socket. This is similar to what you have already done in your earlier code.
+Bind the socket to a specific IP address and port (e.g., 0.0.0.0:8080).
+
+3) Listen for Connections:
+Set the socket to listen for incoming connections using the listen system call.
+
+4) Accept Connections:
+Accept incoming connections using the accept system call. This will give you a new socket file descriptor to communicate with the client.
+
+5) Read the HTTP Request:
+Read the request from the client socket. The request will typically contain the HTTP method (e.g., GET) and the path to the requested file (e.g., /index.html).
+You may want to parse the request to extract the requested file path.
+
+6) Serve Static Files:
+Check if the requested file exists on your server's filesystem.
+If the file exists, read its contents and prepare an HTTP response with a 200 OK status code.
+If the file does not exist, return a 404 Not Found response.
+
+7) Send the HTTP Response:
+Send the HTTP response back to the client through the accepted socket.
+Close the client connection once the response is sent.
+
+8) Loop to Handle Multiple Connections:
+After serving one request, go back to accepting more connections. This way, your server can handle multiple clients in sequence.
