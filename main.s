@@ -12,6 +12,7 @@
     .include "./asm_server/mods/sock_listen.s"
     .include "./asm_server/mods/sock_accept.s"
     .include "./asm_server/mods/sock_respond.s"
+    .include "./asm_server/mods/sock_close_conn.s"
 
     .include "./asm_server/utils/print_info.s"
 
@@ -62,9 +63,8 @@ _start:
     # --------------------------------
     # 6. Close the connection
     # --------------------------------
-    movq    %rdi, %rdi           # socket file descriptor
-    movq    $3, %rax             # sys_close (system call number for closing a file descriptor: 3)
-    syscall                      # close the connection
+
+    call sock_close_conn
 
      # Exit the program
     mov $SYS_exit, %rax
