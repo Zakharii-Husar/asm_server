@@ -24,6 +24,9 @@ _start:
     # ----------------------------
     call sock_create
 
+    cmpq $0, %rbx                   # Compare the return value with 0
+    jl  exit_program1_lbl                 # Jump to error handling if %rax < 0
+
     lea sock_created_msg(%rip), %rsi           # pointer to the message (from constants.s)
     movq $sock_created_msg_length, %rdx        # length of the message (from constants.s)
     call print_info
@@ -33,6 +36,9 @@ _start:
     # ----------------------------
     call sock_bind
 
+    cmpq $0, %rax                   # Compare the return value with 0
+    jl  exit_program2_lbl                 # Jump to error handling if %rax < 0
+
     lea sock_bound_msg(%rip), %rsi           # pointer to the message (from constants.s)
     movq $sock_bound_msg_length, %rdx        # length of the message (from constants.s)
     call print_info
@@ -41,6 +47,9 @@ _start:
     # 3. Listen for requests
     # ----------------------------
     call sock_listen
+
+     cmpq $0, %rax                   # Compare the return value with 0
+    jl  exit_program3_lbl                 # Jump to error handling if %rax < 0
 
     lea sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
     movq $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
@@ -53,18 +62,64 @@ main_loop:
     # ----------------------------
     call sock_accept
 
+     cmpq $0, %rax                   # Compare the return value with 0
+    jl  exit_program4_lbl                 # Jump to error handling if %rax < 0
+
+    lea sock_accepted_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_accepted_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+
     # --------------------------------
     # 5. Send "Hello, World" response
     # --------------------------------
     call sock_respond
+
+     cmpq $0, %rax                   # Compare the return value with 0
+    jl  exit_program5_lbl                 # Jump to error handling if %rax < 0
 
     # --------------------------------
     # 6. Close the connection
     # --------------------------------
     call sock_close_conn
 
+     cmpq $0, %rax                   # Compare the return value with 0
+    jl  exit_program6_lbl                 # Jump to error handling if %rax < 0
+
     # Jump back to the start of the loop to accept new connections
     jmp main_loop
 
-    # possible to make server shut down on certain condition:
+    exit_program1_lbl:
+    lea sock_err1_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err1_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+    call exit_program
+
+    exit_program2_lbl:
+    lea sock_err2_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err2_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+    call exit_program
+
+    exit_program3_lbl:
+    lea sock_err3_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err3_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+    call exit_program
+
+    exit_program4_lbl:
+    lea sock_err4_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err4_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+    call exit_program
+
+    exit_program5_lbl:
+    lea sock_err5_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err5_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
+    call exit_program
+
+    exit_program6_lbl:
+    lea sock_err6_msg(%rip), %rsi           # pointer to the message (from constants.s)
+    movq $sock_err6_msg_length, %rdx        # length of the message (from constants.s)
+    call print_info
     call exit_program

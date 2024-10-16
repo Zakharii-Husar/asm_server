@@ -24,6 +24,30 @@
     .equ sock_bound_msg_length, 17
      sock_bound_msg:    .asciz "Socket was bound\n"
 
+    .equ sock_accepted_msg_length, 24
+     sock_accepted_msg:    .asciz "Connection was accepted\n"
+
+    .equ sock_err_msg_length, 14
+     sock_err_msg:    .asciz "Error occured\n"
+
+    .equ sock_err1_msg_length, 8
+     sock_err1_msg:    .asciz "Error_1\n"
+
+         .equ sock_err2_msg_length, 8
+     sock_err2_msg:    .asciz "Error_2\n"
+
+         .equ sock_err3_msg_length, 8
+     sock_err3_msg:    .asciz "Error_3\n"
+
+         .equ sock_err4_msg_length, 8
+     sock_err4_msg:    .asciz "Error_4\n"
+
+         .equ sock_err5_msg_length, 8
+     sock_err5_msg:    .asciz "Error_5\n"
+
+         .equ sock_err6_msg_length, 8
+     sock_err6_msg:    .asciz "Error_6\n"
+
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
 
