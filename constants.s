@@ -5,6 +5,7 @@
     .equ SYS_sock_bind, 49
     .equ SYS_sock_accept, 43
     .equ SYS_sock_listen, 50
+    .equ SYS_sock_sendto, 44
     .equ SYS_exit, 60
 
     # create socket args
