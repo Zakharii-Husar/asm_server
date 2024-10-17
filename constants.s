@@ -19,29 +19,9 @@
     .equ PADDING, 8    # Padding (8 bytes to make the structure 16 bytes in total)
 
 
-    # Errors messages :
-
-         .equ sock_err2_msg_length, 8
-     sock_err2_msg:    .asciz "Error_2\n"
-
-         .equ sock_err3_msg_length, 8
-     sock_err3_msg:    .asciz "Error_3\n"
-
-         .equ sock_err4_msg_length, 8
-     sock_err4_msg:    .asciz "Error_4\n"
-
-         .equ sock_err5_msg_length, 8
-     sock_err5_msg:    .asciz "Error_5\n"
-
-         .equ sock_err6_msg_length, 8
-     sock_err6_msg:    .asciz "Error_6\n"
-
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
 
-    # client connected message
-      .equ client_connected_msg_length, 18
-     client_connected_msg:    .asciz "Client connected!\n"
 
 
     addr_in:
@@ -50,12 +30,3 @@
     .long   IP_ADDR
     .space  PADDING
 
-    # Define HTTP response
-    response:
-        .ascii  "HTTP/1.1 200 OK\r\n"
-        .ascii  "Content-Length: 13\r\n"
-        .ascii  "Content-Type: text/plain\r\n"
-        .ascii  "\r\n"
-        .ascii  "Hello, World!\r\n"
-
-    response_len = . - response
