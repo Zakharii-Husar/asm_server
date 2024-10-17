@@ -1,6 +1,7 @@
     # sys_call args
     .equ SYS_write, 1
     .equ SYS_stdout, 1
+    .equ SYS_close_fd, 3
     .equ SYS_sock_create, 41
     .equ SYS_sock_bind, 49
     .equ SYS_sock_accept, 43
