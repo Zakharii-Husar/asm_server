@@ -13,24 +13,15 @@
     .equ SOCK_STREAM, 1
     .equ SOCK_PROTOCOL, 0
 
-    .equ sock_created_msg_length, 19
-     sock_created_msg:    .asciz "Socket was created\n"
-
     # sock bind args
     .equ PORT, 0x901F      # Port number (8080) in network byte order (use htons equivalent in assembly)
     .equ IP_ADDR, 0    # IP address (0.0.0.0 - binds to all interfaces)
     .equ PADDING, 8    # Padding (8 bytes to make the structure 16 bytes in total)
 
-    .equ sock_bound_msg_length, 17
-     sock_bound_msg:    .asciz "Socket was bound\n"
-
     .equ sock_accepted_msg_length, 24
      sock_accepted_msg:    .asciz "Connection was accepted\n"
 
     # Errors messages :
-
-    .equ sock_create_err_msg_length, 28
-     sock_create_err_msg:    .asciz "Faied to create TCP socket!\n"
 
          .equ sock_err2_msg_length, 8
      sock_err2_msg:    .asciz "Error_2\n"

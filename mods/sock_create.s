@@ -1,6 +1,12 @@
+.section .rodata
+
+.equ sock_create_err_msg_length, 28
+sock_create_err_msg:    .asciz "Faied to create TCP socket!\n"
+
+.equ sock_created_msg_length, 19
+sock_created_msg:    .asciz "Socket was created\n"
 
 .section .text
-
 # Create socket (AF_INET, SOCK_STREAM, 0)
 .type sock_create, @function
 sock_create:

@@ -1,3 +1,10 @@
+.section .rodata
+
+.equ sock_bind_err_msg_length, 26
+sock_bind_err_msg:    .asciz "Faied to bind TCP socket!\n"
+
+.equ sock_bound_msg_length, 17
+sock_bound_msg:    .asciz "Socket was bound\n"
 
 .section .text
 
@@ -12,5 +19,18 @@ sock_bind:
  movq    $16, %rdx                       # size of the sockaddr_in structure
  syscall                                 # make syscall
 
+ cmpq $0, %rax                   # Compare the return value with 0
+ jl  handle_sock_bind_err                 # Jump to error handling if %rax < 0
+    
+ lea sock_bound_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ movq $sock_bound_msg_length, %rdx        # length of the message (from constants.s)
+ call print_info
+
  popq %rbp                     # restore the caller's base pointer
  ret                           # return to the caller
+
+handle_sock_bind_err:
+ lea sock_bind_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ movq $sock_bind_err_msg_length, %rdx        # length of the message (from constants.s)
+ call print_info
+ call exit_program
