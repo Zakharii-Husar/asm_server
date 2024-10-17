@@ -31,7 +31,7 @@ _start:
     # 3. Listen for requests
     # ----------------------------
     call sock_listen
-    
+
     # Main server loop
 main_loop:
     # ----------------------------
@@ -39,7 +39,7 @@ main_loop:
     # ----------------------------
     call sock_accept
 
-     cmpq $0, %rax                   # Compare the return value with 0
+    cmpq $0, %rax                   # Compare the return value with 0
     jl  exit_program4_lbl                 # Jump to error handling if %rax < 0
 
     lea sock_accepted_msg(%rip), %rsi           # pointer to the message (from constants.s)

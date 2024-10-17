@@ -18,8 +18,6 @@
     .equ IP_ADDR, 0    # IP address (0.0.0.0 - binds to all interfaces)
     .equ PADDING, 8    # Padding (8 bytes to make the structure 16 bytes in total)
 
-    .equ sock_accepted_msg_length, 24
-     sock_accepted_msg:    .asciz "Connection was accepted\n"
 
     # Errors messages :
 
