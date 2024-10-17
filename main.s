@@ -27,19 +27,11 @@ _start:
     # 2. Bind Socket
     # ----------------------------
     call sock_bind
-
     # ----------------------------
     # 3. Listen for requests
     # ----------------------------
     call sock_listen
-
-     cmpq $0, %rax                   # Compare the return value with 0
-    jl  exit_program3_lbl                 # Jump to error handling if %rax < 0
-
-    lea sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
-    movq $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
-    call print_info
-
+    
     # Main server loop
 main_loop:
     # ----------------------------

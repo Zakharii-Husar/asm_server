@@ -41,9 +41,6 @@
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
 
-    .equ sock_listen_msg_length, 43
-     sock_listen_msg:    .asciz "Socket is listening on http://0.0.0.0:8080\n"
-
     # client connected message
       .equ client_connected_msg_length, 18
      client_connected_msg:    .asciz "Client connected!\n"
