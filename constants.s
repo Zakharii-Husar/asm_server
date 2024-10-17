@@ -27,11 +27,10 @@
     .equ sock_accepted_msg_length, 24
      sock_accepted_msg:    .asciz "Connection was accepted\n"
 
-    .equ sock_err_msg_length, 14
-     sock_err_msg:    .asciz "Error occured\n"
+    # Errors messages :
 
-    .equ sock_err1_msg_length, 8
-     sock_err1_msg:    .asciz "Error_1\n"
+    .equ sock_create_err_msg_length, 28
+     sock_create_err_msg:    .asciz "Faied to create TCP socket!\n"
 
          .equ sock_err2_msg_length, 8
      sock_err2_msg:    .asciz "Error_2\n"

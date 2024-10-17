@@ -24,20 +24,13 @@ _start:
     # ----------------------------
     call sock_create
 
-    cmpq $0, %rbx                   # Compare the return value with 0
-    jl  exit_program1_lbl                 # Jump to error handling if %rax < 0
-
-    lea sock_created_msg(%rip), %rsi           # pointer to the message (from constants.s)
-    movq $sock_created_msg_length, %rdx        # length of the message (from constants.s)
-    call print_info
-
     # ----------------------------
     # 2. Bind Socket
     # ----------------------------
     call sock_bind
 
-    cmpq $0, %rax                   # Compare the return value with 0
-    jl  exit_program2_lbl                 # Jump to error handling if %rax < 0
+    cmpq $0, %rax                            # Compare the return value with 0
+    jl  exit_program2_lbl                    # Jump to error handling if %rax < 0
 
     lea sock_bound_msg(%rip), %rsi           # pointer to the message (from constants.s)
     movq $sock_bound_msg_length, %rdx        # length of the message (from constants.s)
@@ -88,10 +81,7 @@ main_loop:
     # Jump back to the start of the loop to accept new connections
     jmp main_loop
 
-    exit_program1_lbl:
-    lea sock_err1_msg(%rip), %rsi           # pointer to the message (from constants.s)
-    movq $sock_err1_msg_length, %rdx        # length of the message (from constants.s)
-    call print_info
+    exit_program_lbl:
     call exit_program
 
     exit_program2_lbl:
