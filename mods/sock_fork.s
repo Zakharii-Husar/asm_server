@@ -14,16 +14,26 @@ sock_fork:
  movq %rsp, %rbp               # set the new base pointer (stack frame)
 
 # Parent process:
-movq $SYS_fork, %rax              # Fork the process
+movq $SYS_fork, %rax        # Fork the process
 syscall
 
 cmpq $0, %rax               # Check if we are in parent or child
 jg parent_process
 jl handle_sock_fork_err
-je child_process             # Not needed line and label added for clarity
 
- popq %rbp                     # restore the caller's base pointer
- ret                           # return to the caller
+# child_process: 
+call sock_respond            # Send response
+movq $1, %rdi                # passing 1 to indicate child process on sock_close
+call sock_close_conn         # Close the connection for the child
+call exit_program            # Exit the child process
+     
+parent_process:
+movq $0, %rdi                # passing 0 to indicate parent process on sock_close
+call sock_close_conn         # Close the connection for the parent
+jmp main_loop                # Go back to accept new connections
+
+popq %rbp                     # restore the caller's base pointer
+ret                           # return to the caller
  
 handle_sock_fork_err:
  lea sock_fork_err_msg(%rip), %rsi           # pointer to the message (from constants.s)

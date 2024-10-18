@@ -33,29 +33,17 @@ _start:
     # ----------------------------
     call sock_listen
 
-    # Main server loop
+    # Main server loop (parent process will jump here after forking)
 main_loop:
     # ----------------------------
     # 4. Accept connection (blocking call)
     # ----------------------------
     call sock_accept
     # --------------------------------
-    # 5. Fork the process for handling child request
+    # 5. Fork the process(child reads and responds to a user and parent
+    # is going back to accepting new connections)
     # --------------------------------
     call sock_fork
-    # --------------------------------
-    # 6. Handle user's request (all in child process)
-    # --------------------------------
-child_process:
-    call sock_respond            # Send response
-    call sock_close_conn         # Close the connection for the child
-    jmp exit_program_lbl         # Exit the child process (reuse exit logic)
-    # --------------------------------
-    # 7. Close the connection and repeate cycle (parent process)
-    # --------------------------------
-parent_process:
-call sock_close_conn         # Close the connection for the parent
-jmp main_loop                # Go back to accept new connections
 
     exit_program_lbl:
     call exit_program
