@@ -9,6 +9,7 @@
     .include "./asm_server/mods/sock_bind.s"
     .include "./asm_server/mods/sock_listen.s"
     .include "./asm_server/mods/sock_accept.s"
+    .include "./asm_server/mods/sock_fork.s"
     .include "./asm_server/mods/sock_respond.s"
     .include "./asm_server/mods/sock_close_conn.s"
     .include "./asm_server/mods/exit_program.s"
@@ -39,16 +40,22 @@ main_loop:
     # ----------------------------
     call sock_accept
     # --------------------------------
-    # 5. Send response
+    # 5. Fork the process for handling child request
     # --------------------------------
-    call sock_respond
+    call sock_fork
     # --------------------------------
-    # 6. Close the connection
+    # 6. Handle user's request (all in child process)
     # --------------------------------
-    call sock_close_conn
-
-    # Jump back to the start of the loop to accept new connections
-    jmp main_loop
+child_process:
+    call sock_respond            # Send response
+    call sock_close_conn         # Close the connection for the child
+    jmp exit_program_lbl         # Exit the child process (reuse exit logic)
+    # --------------------------------
+    # 7. Close the connection and repeate cycle (parent process)
+    # --------------------------------
+parent_process:
+call sock_close_conn         # Close the connection for the parent
+jmp main_loop                # Go back to accept new connections
 
     exit_program_lbl:
     call exit_program

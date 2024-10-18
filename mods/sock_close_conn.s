@@ -19,7 +19,7 @@ movq    $SYS_close_fd, %rax             # sys_close (system call number for clos
 syscall                      # close the connection
 
  cmpq $0, %rax                   # Compare the return value with 0
- je  handle_sock_close_conn_err                 # Jump to error handling if %rax < 0
+ jl  handle_sock_close_conn_err                 # Jump to error handling if %rax < 0
     
  lea sock_close_conn_msg(%rip), %rsi           # pointer to the message (from constants.s)
  movq $sock_close_conn_msg_length, %rdx        # length of the message (from constants.s)
