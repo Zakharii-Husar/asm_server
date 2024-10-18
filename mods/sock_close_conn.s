@@ -1,10 +1,10 @@
 .section .rodata
 
-.equ sock_close_conn_err_msg_length, 27
 sock_close_conn_err_msg:    .asciz "Faied to close connection!\n"
+sock_close_conn_err_msg_length = . - sock_close_conn_err_msg
 
-.equ sock_close_conn_msg_length, 22
 sock_close_conn_msg:    .asciz "Connection was closed\n"
+sock_close_conn_msg_length = . - sock_close_conn_msg
 
 .section .text
 

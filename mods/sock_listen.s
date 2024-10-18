@@ -1,10 +1,10 @@
 .section .rodata
 
-.equ sock_listen_msg_length, 43
 sock_listen_msg:    .asciz "Socket is listening on http://0.0.0.0:8080\n"
+sock_listen_msg_length = . - sock_listen_msg
 
-.equ sock_listen_err_msg_length, 41
 sock_listen_err_msg:    .asciz "Unable to listen on http://0.0.0.0:8080!\n"
+sock_listen_err_msg_length = . - sock_listen_err_msg
 
 .section .text
 

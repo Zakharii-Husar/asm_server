@@ -1,10 +1,10 @@
 .section .rodata
 
-.equ sock_bind_err_msg_length, 26
 sock_bind_err_msg:    .asciz "Faied to bind TCP socket!\n"
+sock_bind_err_msg_length = . - sock_bind_err_msg
 
-.equ sock_bound_msg_length, 17
 sock_bound_msg:    .asciz "Socket was bound\n"
+sock_bound_msg_length = . - sock_bound_msg
 
 .section .text
 

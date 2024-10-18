@@ -1,10 +1,10 @@
 .section .rodata
 
-.equ sock_fork_msg_length, 18
 sock_fork_msg:    .asciz "Socket was forked\n"
+sock_fork_msg_length = . - sock_fork_msg
 
-.equ sock_fork_err_msg_length, 15
 sock_fork_err_msg:    .asciz "Faied to fork!\n"
+sock_fork_err_msg_length = . - sock_fork_err_msg
 
 .section .text
 
