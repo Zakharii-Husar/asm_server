@@ -7,7 +7,7 @@ buffer:
 .type int_to_string, @function
 int_to_string:
     # FUNCTION ARGS
-    movq $1234567890, %rdi   # Replace this with any number you'd like to convert
+    movq $1234567890, %rdi   # Number to convert
     movq $buffer, %rsi       # Point to the buffer for storing string
     xor %rcx, %rcx            # Reset rcx to 0 to use it as a length counter for string 
 
@@ -18,8 +18,8 @@ int_to_string:
     # rax / rbx = rax (quotient), rdx (remainder)
     xor %rdx, %rdx           # Clear RDX (since it will hold the remainder)
     divq %rbx                # Divide RAX by 10; quotient in RAX, remainder in RDX
-    addb $'0', %dl           # dl is RDX Convert remainder to ASCII ('0' + digit)
-    movb %dl, (%rsi)         # dl is RDX and rsi pointing to current buffer position Store the converted ASCII digit in buffer
+    addb $'0', %dl           # dl is RDX; Convert remainder to ASCII ('0' + digit)
+    movb %dl, (%rsi)         # dl is RDX and rsi pointing to current buffer position; Store the converted ASCII digit in buffer
 
     incq %rsi                # Move to the next buffer position
     incq %rcx                # Increment the length counter

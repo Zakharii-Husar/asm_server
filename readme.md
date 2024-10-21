@@ -1,3 +1,5 @@
+## TCP SOCKET
+
 ### 1.CREATING WEB SOCKET
 
 The syscall for creating a TCP socket requires 3 parameters:
@@ -51,3 +53,28 @@ The new socket file descriptor (now in **%rdi**) is the one I'll use to send and
 It's possible to use syscalls like **read** and **write** on this new socket to interact with the client.
 
 After handling the connection, I can loop back and wait for the next connection by calling accept again.
+
+## UTILS
+
+### 1. print_info
+Placed logic for printig any information to the terminal (status updates, errors etc). **%rax** and **%rdi** registers had to be pushed on stack before executing the function's code and popped back after the syscall to prevent register clobbering (otherwise the function was interfering with the Socket functions which were using the same registers while printing status updates about socket creation, binding etc).
+
+### 2. int_to_string
+To convert an integer to string i had to do the following:
+ -Iterate through each digit in the number;
+ -Convert it from ASCII number to string encoding;
+ -Push the newly converted digit to a buffer;
+ -Add zero character to the buffer to indicate the end of the string;
+ -Reverse the character order in the buffer(due to the method used in step 1);
+
+Iterating through a number was achieved by dividing dividend (the input number) by 10, which will cause the reminder(the number after the digit) to be the last digit of dividend and quotient (the result of the division) to be all the digits of the dividend except of reminder.
+This is set up in a loop **jnz** starts it all over until quotient is zero. 
+
+The way each character is converted inside of this loop is by **addb** instruction which takes the reminder value from **%dl** (which is lower part of **%rdx**)  and adds '0' to it (because in ASCII it represents 48 in decimal, could use either '0' or 48) for each digit. Since offset between a digit as integer and digit as a character for each digit is 48 in ASCII, for example:
+digit 0 will be '0' as ASCII character and 48 as ASCII Value (Decimal), and digit 1 will be '1' as ASCII Character and 49 as ASCII Value (Decimal) and so on.
+
+Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that current buffer position gets incremented by 1 byte and the string length counter gets incremented as well.
+
+After finishing conversion and exiting the loop ``movb $0, (%rsi)`` moves 0 to the end of the buffer to terminate the string.
+
+
