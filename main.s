@@ -15,11 +15,15 @@
     .include "./asm_server/mods/exit_program.s"
 
     .include "./asm_server/utils/print_info.s"
+    .include "./asm_server/utils/int_to_string.s"
 
     .global _start
 
 _start:
 
+    call int_to_string         # Call the conversion routine
+
+    call exit_program
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
