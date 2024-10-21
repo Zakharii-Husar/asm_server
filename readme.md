@@ -61,11 +61,11 @@ Placed logic for printig any information to the terminal (status updates, errors
 
 ### 2. int_to_string
 To convert an integer to string i had to do the following:
- -Iterate through each digit in the number;
- -Convert it from ASCII number to string encoding;
- -Push the newly converted digit to a buffer;
- -Add zero character to the buffer to indicate the end of the string;
- -Reverse the character order in the buffer(due to the method used in step 1);
+ - Iterate through each digit in the number;
+ - Convert it from ASCII number to string encoding;
+ - Push the newly converted digit to a buffer;
+ - Add zero character to the buffer to indicate the end of the string;
+ - Reverse the character order in the buffer(due to the method used in step 1);
 
 Iterating through a number was achieved by dividing dividend (the input number) by 10, which will cause the reminder(the number after the digit) to be the last digit of dividend and quotient (the result of the division) to be all the digits of the dividend except of reminder.
 This is set up in a loop **jnz** starts it all over until quotient is zero. 
