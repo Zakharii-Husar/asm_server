@@ -1,38 +1,29 @@
 .section .data
-buffer:
-    .space 21            # Buffer to hold the converted number (up to 20 digits + null terminator)
+string_buffer:    .space 21            # Buffer to hold the converted number (up to 20 digits + null terminator)
 
 .section .text
-
 .type int_to_string, @function
 int_to_string:
-    # FUNCTION ARGS
-    movq $1234567890, %rdi   # Number to convert
-    movq $buffer, %rsi       # Point to the buffer for storing string
-    xor %rcx, %rcx            # Reset rcx to 0 to use it as a length counter for string 
+    lea string_buffer(%rip), %rsi     # Load the address of 'string_buffer' into %rsi
+    addq $21, %rsi             # Move %rsi to the end of the string_buffer
+    movq $10, %rbx             # Divisor (base 10)
+    xor %rcx, %rcx             # Reset rcx to 0 to use it as a length counter for string
+    movb $0, (%rsi)            # Null-terminate the string
 
-    movq %rdi, %rax          # Copy the input number into RAX
-    movq $10, %rbx           # Divisor (base 10)
-
-.loop:
     # rax / rbx = rax (quotient), rdx (remainder)
-    xor %rdx, %rdx           # Clear RDX (since it will hold the remainder)
-    divq %rbx                # Divide RAX by 10; quotient in RAX, remainder in RDX
-    addb $'0', %dl           # dl is RDX; Convert remainder to ASCII ('0' + digit)
-    movb %dl, (%rsi)         # dl is RDX and rsi pointing to current buffer position; Store the converted ASCII digit in buffer
+    movq %rdi, %rax
+.loop:
+    decq %rsi                   # Move to the next string_buffer position (backwards)
+    incq %rcx                   # Increment the length counter
+    xor %rdx, %rdx              # Clear RDX for the remainder
+    divq %rbx                   # Divide RAX by 10; quotient in RAX, remainder in RDX
+    # Convert remainder to ASCII and move it to the string_buffer
+    addb $'0', %dl             # Use RDX to hold the ASCII character
+    movb %dl, (%rsi)            # Store the converted ASCII digit in string_buffer
+    testq %rax, %rax            # Check if quotient is zero
+    jnz .loop                   # If not zero, continue dividing
 
-    incq %rsi                # Move to the next buffer position
-    incq %rcx                # Increment the length counter
-    testq %rax, %rax         # Check if quotient is zero
-    jnz .loop                # If not zero, continue dividing
-
-    # Null-terminate the string
-    movb $0, (%rsi)          # Null-terminate the string
-
-    # Prepare to print the result
-    lea buffer(%rip), %rsi     # Load the address of 'buffer' into %rsi using lea
-    movq %rcx, %rdx            # Load the length of the string into %rdx
-    call print_info            # Call the function to print
-
-
-    ret                       # Return from the function
+    # Prepare to return values
+    movq %rsi, %rax          # Adjust %rax to point to the start of the string
+    movq %rcx, %rdx             # Move length of the string to RDX
+    ret                         # Return, RAX has the pointer, RDX has the length

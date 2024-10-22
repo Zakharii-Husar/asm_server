@@ -21,7 +21,13 @@
 
 _start:
 
-    call int_to_string         # Call the conversion routine
+.type main, @function
+main:
+
+# FUNCTION ARGS
+    movq $1234567, %rdi     # Number to convert
+    call int_to_string
+    call print_info
 
     call exit_program
     # ----------------------------

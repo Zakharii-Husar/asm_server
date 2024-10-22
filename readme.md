@@ -65,16 +65,16 @@ To convert an integer to string i had to do the following:
  - Convert it from ASCII number to string encoding;
  - Push the newly converted digit to a buffer;
  - Add zero character to the buffer to indicate the end of the string;
- - Reverse the character order in the buffer(due to the method used in step 1);
 
 Iterating through a number was achieved by dividing dividend (the input number) by 10, which will cause the reminder(the number after the digit) to be the last digit of dividend and quotient (the result of the division) to be all the digits of the dividend except of reminder.
 This is set up in a loop **jnz** starts it all over until quotient is zero. 
 
+The only problem with that algorithm is that every iteration it always returns the last (least sagnificant) digit from the number. And if i push it directly to the buffer the whole number will be reversed. So Instead I'm writing from left to right in the buffer: loading buffer's effective address, then adding  buffer's length to buffer pointer to move the pointer in the end of the buffer. First character that will be written in the buffer is the string terminator(since technically it's in the end of the string): ``movb $0, (%rsi)``. After that, inside of a loop I decrement buffer pointer to move it backwards and start writing digits.
+
 The way each character is converted inside of this loop is by **addb** instruction which takes the reminder value from **%dl** (which is lower part of **%rdx**)  and adds '0' to it (because in ASCII it represents 48 in decimal, could use either '0' or 48) for each digit. Since offset between a digit as integer and digit as a character for each digit is 48 in ASCII, for example:
 digit 0 will be '0' as ASCII character and 48 as ASCII Value (Decimal), and digit 1 will be '1' as ASCII Character and 49 as ASCII Value (Decimal) and so on.
 
-Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that current buffer position gets incremented by 1 byte and the string length counter gets incremented as well.
+Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that current buffer position gets decremented by 1 byte and the string length counter gets incremented.
 
-After finishing conversion and exiting the loop ``movb $0, (%rsi)`` moves 0 to the end of the buffer to terminate the string.
 
 
