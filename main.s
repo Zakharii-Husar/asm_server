@@ -12,6 +12,8 @@
     .include "./asm_server/mods/sock_fork.s"
     .include "./asm_server/mods/sock_respond.s"
     .include "./asm_server/mods/sock_close_conn.s"
+    .include "./asm_server/mods/fork_handle_child.s"
+    .include "./asm_server/mods/fork_handle_parent.s"
     .include "./asm_server/mods/exit_program.s"
 
     .include "./asm_server/utils/print_info.s"
@@ -25,11 +27,7 @@ _start:
 main:
 
 # FUNCTION ARGS
-    movq $1234567, %rdi     # Number to convert
-    call int_to_string
-    call print_info
 
-    call exit_program
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
@@ -45,6 +43,7 @@ main:
 
     # Main server loop (parent process will jump here after forking)
 main_loop:
+push %rax                  # save connection fd
     # ----------------------------
     # 4. Accept connection (blocking call)
     # ----------------------------
@@ -53,7 +52,19 @@ main_loop:
     # 5. Fork the process(child reads and responds to a user and parent
     # is going back to accepting new connections)
     # --------------------------------
-    call sock_fork
 
-    exit_program_lbl:
-    call exit_program
+    call sock_fork
+    cmp $0, %rax               # Check if we're in the child or parent
+    jg parent_process
+
+    # for child process handle user request and close the program 
+    child_process:
+    call fork_handle_child
+
+    # for  parent process close connection and repeate the cycle
+    parent_process:
+    call fork_handle_parent
+
+    pop %rax
+
+jmp main_loop

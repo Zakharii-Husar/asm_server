@@ -1,6 +1,11 @@
-## TCP SOCKET
+## CREATING AND BINDING TCP SOCKET
 
-### 1.CREATING WEB SOCKET
+### 1. sock_create
+
+Parameters: none
+Return values: 
+- **%rax** socket file descriptor(fd).
+Side effects: creating a TCP socket.
 
 The syscall for creating a TCP socket requires 3 parameters:
 
@@ -17,7 +22,11 @@ The syscall for creating a TCP socket requires 3 parameters:
 After successfully making the syscall the TCP Socket [fd (file descriptor)](https://en.wikipedia.org/wiki/File_descriptor#:~:text=In%20Unix%20and%20Unix%2Dlike,a%20pipe%20or%20network%20socket.) is daved to **%rbx** register.
 
 
-### 2.BINDING WEB SOCKET
+### 2.sock_bind
+
+Parameters: **%rax** holding file descriptor of the created sockeyt.
+Return values: 
+Side effects: biding the created above socket to specific IP address and port.
 
 The syscall for binding the above created  TCP socket takes 2 parameters:
 
@@ -57,9 +66,23 @@ After handling the connection, I can loop back and wait for the next connection 
 ## UTILS
 
 ### 1. print_info
+
+Parameters:
+- **%rsi** holds pointer to the string.
+- **%rdx** holds length of the string.
+Return value: void.
+Side effects: making a system call to write to stdout.
+
 Placed logic for printig any information to the terminal (status updates, errors etc). **%rax** and **%rdi** registers had to be pushed on stack before executing the function's code and popped back after the syscall to prevent register clobbering (otherwise the function was interfering with the Socket functions which were using the same registers while printing status updates about socket creation, binding etc).
 
 ### 2. int_to_string
+Parameters:
+- **%rdi** accepting an integer to convert to string.
+Return values: 
+- **%rax** points to the first string character in the buffer.
+- **%rdx** contains the string length.
+Side effects: none.
+
 To convert an integer to string i had to do the following:
  - Iterate through each digit in the number;
  - Convert it from ASCII number to string encoding;
@@ -74,7 +97,7 @@ The only problem with that algorithm is that every iteration it always returns t
 The way each character is converted inside of this loop is by **addb** instruction which takes the reminder value from **%dl** (which is lower part of **%rdx**)  and adds '0' to it (because in ASCII it represents 48 in decimal, could use either '0' or 48) for each digit. Since offset between a digit as integer and digit as a character for each digit is 48 in ASCII, for example:
 digit 0 will be '0' as ASCII character and 48 as ASCII Value (Decimal), and digit 1 will be '1' as ASCII Character and 49 as ASCII Value (Decimal) and so on.
 
-Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that current buffer position gets decremented by 1 byte and the string length counter gets incremented.
+Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that we check if qutient is zero and either exit loop or decrement current buffer position by 1 byte and increment the string length counter.
 
 
 

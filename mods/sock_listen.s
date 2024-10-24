@@ -10,27 +10,31 @@ sock_listen_err_msg_length = . - sock_listen_err_msg
 
 .type sock_listen, @function
 sock_listen:
- pushq %rbp                    # save the caller's base pointer
- movq %rsp, %rbp               # set the new base pointer (stack frame)
+ push %rbp                    # save the caller's base pointer
+ mov %rsp, %rbp               # set the new base pointer (stack frame)
 
- movq    $SYS_sock_listen, %rax
- movq    %rbx, %rdi                 # socket file descriptor (saved in rbx while creating socket)
- movq    $connection_backlog, %rsi
+ push %rax                    # preserve socket file descriptor
+
+ mov    %rax, %rdi                 # socket file descriptor (saved in rbx while creating socket)
+ mov    $SYS_sock_listen, %rax
+ mov    $connection_backlog, %rsi
  syscall
 
-cmpq $0, %rax                   # Compare the return value with 0
+ cmp $0, %rax                   # Compare the return value with 0
  jl  handle_sock_listen_err                 # Jump to error handling if %rax < 0
     
  lea sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
- movq $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
+ mov $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
 
- popq %rbp                     # restore the caller's base pointer
+ pop %rax                     # ret socket file descriptor
+
+ pop %rbp                     # restore the caller's base pointer
  ret                           # return to the caller
 
 handle_sock_listen_err:
  lea sock_listen_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
- movq $sock_listen_err_msg_length, %rdx        # length of the message (from constants.s)
+ mov $sock_listen_err_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
  call exit_program
  

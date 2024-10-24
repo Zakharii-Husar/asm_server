@@ -22,6 +22,7 @@ sock_respond:
  pushq %rbp                    # save the caller's base pointer
  movq %rsp, %rbp               # set the new base pointer (stack frame)
 
+  push %rax
 
     lea     response(%rip), %rsi # address of the response in %rsi
     movq    $response_len, %rdx  # length of the response in %rdx
@@ -36,6 +37,8 @@ sock_respond:
    lea sock_respond_msg(%rip), %rsi           # pointer to the message (from constants.s)
    movq $sock_respond_msg_length, %rdx        # length of the message (from constants.s)
    call print_info
+
+   pop %rax
 
     popq %rbp                     # restore the caller's base pointer
     ret                           # return to the caller

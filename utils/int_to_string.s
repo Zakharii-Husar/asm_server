@@ -17,6 +17,7 @@ int_to_string:
     incq %rcx                   # Increment the length counter
     xor %rdx, %rdx              # Clear RDX for the remainder
     divq %rbx                   # Divide RAX by 10; quotient in RAX, remainder in RDX
+    
     # Convert remainder to ASCII and move it to the string_buffer
     addb $'0', %dl             # Use RDX to hold the ASCII character
     movb %dl, (%rsi)            # Store the converted ASCII digit in string_buffer
@@ -24,6 +25,6 @@ int_to_string:
     jnz .loop                   # If not zero, continue dividing
 
     # Prepare to return values
-    movq %rsi, %rax          # Adjust %rax to point to the start of the string
+    movq %rsi, %rax             # Adjust %rax to point to the start of the string
     movq %rcx, %rdx             # Move length of the string to RDX
     ret                         # Return, RAX has the pointer, RDX has the length

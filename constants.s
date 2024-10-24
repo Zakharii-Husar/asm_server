@@ -24,11 +24,3 @@
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
 
-
-
-    addr_in:
-    .word   AF_INET
-    .word   PORT
-    .long   IP_ADDR
-    .space  PADDING
-
