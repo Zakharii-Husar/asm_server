@@ -13,9 +13,8 @@ sock_listen:
  push %rbp                    # save the caller's base pointer
  mov %rsp, %rbp               # set the new base pointer (stack frame)
 
- push %rax                    # preserve socket file descriptor
 
- mov    %rax, %rdi                 # socket file descriptor (saved in rbx while creating socket)
+ mov %rbx, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_listen, %rax
  mov    $connection_backlog, %rsi
  syscall
@@ -27,7 +26,6 @@ sock_listen:
  mov $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
 
- pop %rax                     # ret socket file descriptor
 
  pop %rbp                     # restore the caller's base pointer
  ret                           # return to the caller

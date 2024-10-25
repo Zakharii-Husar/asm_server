@@ -13,7 +13,7 @@ sock_accept:
  push %rbp                                    # save the caller's base pointer
  mov %rsp, %rbp                               # set the new base pointer (stack frame)
  
- mov    %rax, %rdi                            # socket file descriptor
+ mov %rbx, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_accept, %rax
  xor    %rsi, %rsi                            # addr (NULL, since we don’t care about the client address here)
  xor    %rdx, %rdx                            # addrlen (NULL)

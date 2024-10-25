@@ -65,6 +65,6 @@ push %rax                  # save connection fd
     parent_process:
     call fork_handle_parent
 
-    pop %rax
+    pop %rax           # restore connection fd
 
 jmp main_loop

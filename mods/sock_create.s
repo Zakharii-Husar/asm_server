@@ -21,7 +21,8 @@ sock_create:
 
  cmp $0, %rax                   # Compare the return value with 0
  jl  handle_sock_create_err                 # Jump to error handling if %rax < 0
-    
+ mov %rax, %rbx                             # move socket fd to rbx
+
  lea sock_created_msg(%rip), %rsi           # pointer to the message (from constants.s)
  mov $sock_created_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
