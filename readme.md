@@ -1,11 +1,18 @@
+## REGISTERS
+
+### Callee-Saved Registers:
+- **%rbx** holding TCP Socket File Descriptor.
+- **%r12** hodling Connection FIle Descriptor. 
+
+
+
 ## CREATING AND BINDING TCP SOCKET
 
 ### 1. sock_create
 
 Parameters: none
-Return values: 
-- **%rax** socket file descriptor(fd).
-Side effects: creating a TCP socket.
+Return values: none.
+Side effects: creating a TCP socket and storing its FD in **%rbx**.
 
 The syscall for creating a TCP socket requires 3 parameters:
 
@@ -24,8 +31,8 @@ After successfully making the syscall the TCP Socket [fd (file descriptor)](http
 
 ### 2.sock_bind
 
-Parameters: **%rax** holding file descriptor of the created sockeyt.
-Return values: 
+Parameters: none.
+Return values: none.
 Side effects: biding the created above socket to specific IP address and port.
 
 The syscall for binding the above created  TCP socket takes 2 parameters:
@@ -33,14 +40,22 @@ The syscall for binding the above created  TCP socket takes 2 parameters:
  1. **%rdi**: socket file descriptor saved in **%rbx** during socket creation.
  2. **%rsi** : an address structure (**addr_in**), which contains the **address family**, **port**, and **IP address**.
 
-### 3.LISTEN FOR CONNECTIONS
+### 3. sock_listen
+
+Parameters: none.
+Return values: none.
+Side effects: Listening for incoming connection on specified address, port and protocol.
 
 The listening syscall takes 2 arguments:
 
  1. **%rdi**: socket file descriptor (saved in **%rbx** while creating socket).
  2. **%rsi**: backlog (number of maximum connections that caan be in the que while server is busy to process their requests).
 
-### 4. ACCEPTING CONNECTION
+### 4. sock_accept
+
+Parameters: none.
+Return values: none.
+Side effects: handling incoming connections.
 
 Here we get the control over connection handling. It runs a loop and does following:
 
@@ -62,6 +77,52 @@ The new socket file descriptor (now in **%rdi**) is the one I'll use to send and
 It's possible to use syscalls like **read** and **write** on this new socket to interact with the client.
 
 After handling the connection, I can loop back and wait for the next connection by calling accept again.
+
+### 5. sock_fork
+
+Parameters: none.
+Return values: in **%rax** parent process returns child PID, child returns 0.
+Side effects: Creates a new process by duplicating the current process.
+
+The syscall fork doesn't take any parameters and creates an  exact copy of the current process. After fork, the child process runs independently of the parent and can execute different code or continue running the same program.
+Based on **sock_for** return value I decide to jump to **fork_handle_child** or 
+**fork_handle_parent**.
+
+### 6. fork_handle_child
+Parameters: none.
+Return values: none.
+Side effects: handling particular user interaction (request/response):
+
+1. Send response.
+2. Close connection.
+3. Exit program (kill child process).
+
+### 7. fork_handle_parent
+Parameters: none.
+Return values: none.
+Side effects: Close connection.
+
+### 8. sock_respond
+Parameters: none.
+Return values: none.
+Side effects: Sending HTTP response to the client.
+
+System call sendto(44) takes following parameters:
+
+1. **%rdi** connection FD.
+2. **%%rsi** address to the response.
+3. **%rdx** data length.
+4. **%r10** flags(type int): 0 (by default) do nothing, MSG_DONTWAIT, MSG_CONFIRM. 
+
+Also (especially for UDP) destination address and destination length (but I omited since using already connected socket).
+
+### 9. sock_close_conn
+
+Parameters: **%rdi** boolean value (0 to indicate parent process, 1 for child).
+Return values: none.
+Side effects: Closing connection for parent and child.
+
+The syscall for closing the connection takes 1 argument in **%rdi**: the connection File Descriptor.
 
 ## UTILS
 

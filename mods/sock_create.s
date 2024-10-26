@@ -19,7 +19,7 @@ sock_create:
  mov $SOCK_PROTOCOL, %rdx
  syscall
 
- cmp $0, %rax                   # Compare the return value with 0
+ cmp $0, %rax                              # Compare the return value with 0
  jl  handle_sock_create_err                 # Jump to error handling if %rax < 0
  mov %rax, %rbx                             # move socket fd to rbx
 

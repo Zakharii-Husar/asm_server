@@ -9,11 +9,13 @@
     .include "./asm_server/mods/sock_bind.s"
     .include "./asm_server/mods/sock_listen.s"
     .include "./asm_server/mods/sock_accept.s"
-    .include "./asm_server/mods/sock_fork.s"
     .include "./asm_server/mods/sock_respond.s"
     .include "./asm_server/mods/sock_close_conn.s"
+
+    .include "./asm_server/mods/sock_fork.s"
     .include "./asm_server/mods/fork_handle_child.s"
     .include "./asm_server/mods/fork_handle_parent.s"
+
     .include "./asm_server/mods/exit_program.s"
 
     .include "./asm_server/utils/print_info.s"
@@ -43,7 +45,6 @@ main:
 
     # Main server loop (parent process will jump here after forking)
 main_loop:
-push %rax                  # save connection fd
     # ----------------------------
     # 4. Accept connection (blocking call)
     # ----------------------------
@@ -64,7 +65,5 @@ push %rax                  # save connection fd
     # for  parent process close connection and repeate the cycle
     parent_process:
     call fork_handle_parent
-
-    pop %rax           # restore connection fd
 
 jmp main_loop

@@ -18,31 +18,31 @@ sock_close_child_msg_length = . - sock_close_child_msg
 .type sock_close_conn, @function
 sock_close_conn:
 
-push %rbp                    # save the caller's base pointer
-mov %rsp, %rbp               # set the new base pointer (stack frame)
+push %rbp                                           # save the caller's base pointer
+mov %rsp, %rbp                                      # set the new base pointer (stack frame)
 
 
-mov    %r12, %rdi           # connection file descriptor
-mov    $SYS_close_fd, %rax             # sys_close (system call number for closing a file descriptor: 3)
-syscall                      # close the connection
+mov    %r12, %rdi                                   # connection file descriptor
+mov    $SYS_close_fd, %rax                          # sys_close (system call number for closing a file descriptor: 3)
+syscall                                             # close the connection
 
- cmp $0, %rdi                   # 0 for parent process, 1 for child
+ cmp $0, %rdi                                       # 0 for parent process, 1 for child
  
- jg handle_sock_close_parent
+ je handle_sock_close_parent
  #  handle_sock_close_child:
-  cmp $0, %rax                                    # Compare the return value with 0
- jl  handle_sock_close_child_err                 # Jump to error handling if %rax < 0
+  cmp $0, %rax                                      # Compare the return value with 0
+ jl  handle_sock_close_child_err                    # Jump to error handling if %rax < 0
 
- lea sock_close_child_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $sock_close_child_msg_length, %rdx        # length of the message (from constants.s)
+ lea sock_close_child_msg(%rip), %rsi               # pointer to the message (from constants.s)
+ mov $sock_close_child_msg_length, %rdx             # length of the message (from constants.s)
  call print_info
 
  handle_sock_close_parent:
- cmp $0, %rax                                    # Compare the return value with 0
- jl  handle_sock_close_parent_err                 # Jump to error handling if %rax < 0
+ cmp $0, %rax                                       # Compare the return value with 0
+ jl  handle_sock_close_parent_err                   # Jump to error handling if %rax < 0
     
- lea sock_close_parent_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $sock_close_parent_msg_length, %rdx        # length of the message (from constants.s)
+ lea sock_close_parent_msg(%rip), %rsi              # pointer to the message (from constants.s)
+ mov $sock_close_parent_msg_length, %rdx            # length of the message (from constants.s)
  call print_info
 
 

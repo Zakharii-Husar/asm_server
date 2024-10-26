@@ -24,7 +24,7 @@ sock_respond:
  movq %rsp, %rbp               # set the new base pointer (stack frame)
 
 
-    mov %r12, %rdi                            # moving connection fd into rdi (required for syscall) 
+    mov %r12, %rdi                            # passing connection FD for the syscall
     lea     response(%rip), %rsi              # address of the response in %rsi
     movq    $response_len, %rdx               # length of the response in %rdx
     movq    $SYS_sock_sendto, %rax            # sys_sendto (system call number for sending data: 44)
