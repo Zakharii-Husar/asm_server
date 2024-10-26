@@ -13,6 +13,7 @@ sock_respond_err_msg_length = . - sock_respond_err_msg
   .ascii  "Content-Type: text/plain\r\n"
   .ascii  "\r\n"
   .ascii  "Hello, World!\r\n"
+
   response_len = . - response
 
 .section .text
@@ -22,23 +23,22 @@ sock_respond:
  pushq %rbp                    # save the caller's base pointer
  movq %rsp, %rbp               # set the new base pointer (stack frame)
 
-  push %rax
 
-    lea     response(%rip), %rsi # address of the response in %rsi
-    movq    $response_len, %rdx  # length of the response in %rdx
+    mov %r12, %rdi                            # moving connection fd into rdi (required for syscall) 
+    lea     response(%rip), %rsi              # address of the response in %rsi
+    movq    $response_len, %rdx               # length of the response in %rdx
     movq    $SYS_sock_sendto, %rax            # sys_sendto (system call number for sending data: 44)
-    xorq    %r10, %r10           # flags = 0
-    syscall                      # send the data (response to browser)
+    xorq    %r10, %r10                        # flags = 0
+    syscall                                   # send the data (response to browser)
 
 
-   cmpq $0, %rax                   # Compare the return value with 0
-   jl  handle_sock_respond_err                 # Jump to error handling if %rax < 0
+   cmpq $0, %rax                              # Compare the return value with 0
+   jl  handle_sock_respond_err                # Jump to error handling if %rax < 0
     
    lea sock_respond_msg(%rip), %rsi           # pointer to the message (from constants.s)
    movq $sock_respond_msg_length, %rdx        # length of the message (from constants.s)
    call print_info
 
-   pop %rax
 
     popq %rbp                     # restore the caller's base pointer
     ret                           # return to the caller
