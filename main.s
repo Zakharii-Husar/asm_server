@@ -9,6 +9,7 @@
     .include "./asm_server/mods/sock_bind.s"
     .include "./asm_server/mods/sock_listen.s"
     .include "./asm_server/mods/sock_accept.s"
+    .include "./asm_server/mods/sock_read.s"
     .include "./asm_server/mods/sock_respond.s"
     .include "./asm_server/mods/sock_close_conn.s"
 

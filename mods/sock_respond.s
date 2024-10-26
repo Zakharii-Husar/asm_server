@@ -9,10 +9,10 @@ sock_respond_err_msg_length = . - sock_respond_err_msg
 # Define HTTP response
  response:
   .ascii  "HTTP/1.1 200 OK\r\n"
-  .ascii  "Content-Length: 13\r\n"
+  .ascii  "Content-Length: 4\r\n"
   .ascii  "Content-Type: text/plain\r\n"
   .ascii  "\r\n"
-  .ascii  "Hello, World!\r\n"
+  .ascii  "TEST\r\n"
 
   response_len = . - response
 
