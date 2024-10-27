@@ -6,9 +6,8 @@ push %rbp                    # save the caller's base pointer
 mov %rsp, %rbp               # set the new base pointer (stack frame)
 
 # child_process: 
-call sock_respond            # Send response
-
 call sock_read
+call sock_respond            # Send response
 
 mov $1, %rdi                 # passing 1 to indicate child process on sock_close
 call sock_close_conn         # Close the connection for the child
