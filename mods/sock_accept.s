@@ -1,9 +1,9 @@
 .section .rodata
 
-sock_accepted_msg:    .asciz "Connection was accepted\n"
+sock_accepted_msg:    .asciz "\033[32mConnection was accepted 🔄\033[0m\n"
 sock_accepted_msg_length = . - sock_accepted_msg
 
-sock_accept_err_msg:    .asciz "Faied to accept connection!\n"
+sock_accept_err_msg:    .asciz "\033[31mFailed to accept connection ❌\033[0m\n"
 sock_accept_err_msg_length = . - sock_accept_err_msg
 
 .section .text

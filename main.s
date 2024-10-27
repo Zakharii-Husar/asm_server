@@ -13,7 +13,7 @@
     .include "./asm_server/mods/sock_respond.s"
     .include "./asm_server/mods/sock_close_conn.s"
 
-    .include "./asm_server/mods/sock_fork.s"
+    .include "./asm_server/mods/process_fork.s"
     .include "./asm_server/mods/fork_handle_child.s"
     .include "./asm_server/mods/fork_handle_parent.s"
 
@@ -55,7 +55,7 @@ main_loop:
     # is going back to accepting new connections)
     # --------------------------------
 
-    call sock_fork
+    call process_fork
     cmp $0, %rax               # Check if we're in the child or parent
     jg parent_process
 

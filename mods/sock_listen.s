@@ -1,9 +1,9 @@
 .section .rodata
 
-sock_listen_msg:    .asciz "Socket is listening on http://0.0.0.0:8080\n"
+sock_listen_msg:    .asciz "\033[32mTCP Sock is listening 🎧\033[0m\n"
 sock_listen_msg_length = . - sock_listen_msg
 
-sock_listen_err_msg:    .asciz "Unable to listen on http://0.0.0.0:8080!\n"
+sock_listen_err_msg:    .asciz "\033[31mSocket failed to listen ❌\033[0m\n"
 sock_listen_err_msg_length = . - sock_listen_err_msg
 
 .section .text

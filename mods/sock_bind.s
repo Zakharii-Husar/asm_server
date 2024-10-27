@@ -7,11 +7,11 @@
 
 .section .rodata
 
-sock_bind_err_msg:    .asciz "Faied to bind TCP socket!\n"
-sock_bind_err_msg_length = . - sock_bind_err_msg
-
-sock_bound_msg:    .asciz "Socket was bound\n"
+sock_bound_msg:    .asciz "\033[32mTCP Sock was bound 🔗\033[0m\n"
 sock_bound_msg_length = . - sock_bound_msg
+
+sock_bind_err_msg:    .asciz "\033[31mFailed to bind TCP Socket ❌\033[0m\n"
+sock_bind_err_msg_length = . - sock_bind_err_msg
 
 .section .text
 

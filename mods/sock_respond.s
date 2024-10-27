@@ -1,9 +1,9 @@
 .section .rodata
 
-sock_respond_msg:    .asciz "Response was sent to the client\n"
+sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
 sock_respond_msg_length = . - sock_respond_msg
 
-sock_respond_err_msg:    .asciz "Faied to send response to the client!\n"
+sock_respond_err_msg:    .asciz "\033[31mFailed to respond to the client! ❌\033[0m\n"
 sock_respond_err_msg_length = . - sock_respond_err_msg
 
 # Define HTTP response

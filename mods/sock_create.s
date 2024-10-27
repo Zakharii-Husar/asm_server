@@ -1,10 +1,10 @@
 .section .rodata
 
-sock_create_err_msg:    .asciz "Faied to create TCP socket!\n"
-sock_create_err_msg_length = . - sock_create_err_msg
-
-sock_created_msg:    .asciz "Socket was created\n"
+sock_created_msg:    .asciz "\033[32mTCP Sock was created ✅\033[0m\n"
 sock_created_msg_length = . - sock_created_msg
+
+sock_create_err_msg:    .asciz "\033[31mFailed to create TCP socket ❌\033[0m\n"
+sock_create_err_msg_length = . - sock_create_err_msg
 
 .section .text
 # Create socket (AF_INET, SOCK_STREAM, 0)

@@ -1,17 +1,18 @@
 # sock_close_conn.s
 .section .rodata
 
-sock_close_parent_err_msg:    .asciz "Faied to close parent connection!\n"
-sock_close_parent_err_msg_length = . - sock_close_parent_err_msg
-
-sock_close_parent_msg:    .asciz "Parent connection was closed\n"
+sock_close_parent_msg:    .asciz "\033[33mParent connection was closed 🧔🔒\033[0m\n"
 sock_close_parent_msg_length = . - sock_close_parent_msg
 
-sock_close_child_err_msg:    .asciz "Faied to close child connection!\n"
+sock_close_parent_err_msg:    .asciz "\033[31mFailed to close parent connection! ❌\033[0m\n"
+sock_close_parent_err_msg_length = . - sock_close_parent_err_msg
+
+sock_close_child_msg:    .asciz "\033[33mChild connection was closed 👶🔒\033[0m\n"
+sock_close_child_msg_length = . - sock_close_child_msg
+
+sock_close_child_err_msg:    .asciz "\033[31mFailed to close child connection! ❌\033[0m\n"
 sock_close_child_err_msg_length = . - sock_close_child_err_msg
 
-sock_close_child_msg:    .asciz "Child connection was closed\n"
-sock_close_child_msg_length = . - sock_close_child_msg
 
 .section .text
 

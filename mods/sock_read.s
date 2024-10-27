@@ -1,7 +1,7 @@
 .section .data
 .equ request_buffer_size, 1024
 
-sock_read_err_msg:    .asciz "Faied to read client request!\n"
+sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 sock_read_err_msg_length = . - sock_read_err_msg
 
 .section .bss
