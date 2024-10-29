@@ -15,6 +15,7 @@ sock_read:
 push %rbp                              # save the caller's base pointer
 mov %rsp, %rbp                         # set the new base pointer (stack frame)
 
+
 mov $0, %rdx                            # Set %rdx to 0 for flags if needed
 mov %r12, %rdi                          # client socket file descriptor
 lea request_buffer(%rip), %rsi                # pointer to the request_buffer to store the request
@@ -35,7 +36,7 @@ call print_info
 
 handle_sock_read_err:
  lea sock_read_err_msg(%rip), %rsi      # pointer to the message (from constants.s)
- movq $sock_read_err_msg_length, %rdx   # length of the message (from constants.s)
+ mov $sock_read_err_msg_length, %rdx   # length of the message (from constants.s)
  call print_info
  call exit_program
  

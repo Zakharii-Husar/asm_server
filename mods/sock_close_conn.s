@@ -1,16 +1,16 @@
 # sock_close_conn.s
 .section .rodata
 
-sock_close_parent_msg:    .asciz "\033[33mParent connection was closed 🧔🔒\033[0m\n"
+sock_close_parent_msg:    .asciz "\033[33mParent process was closed 🧔🔒\033[0m\n"
 sock_close_parent_msg_length = . - sock_close_parent_msg
 
-sock_close_parent_err_msg:    .asciz "\033[31mFailed to close parent connection! ❌\033[0m\n"
+sock_close_parent_err_msg:    .asciz "\033[31mFailed to close parent process! ❌\033[0m\n"
 sock_close_parent_err_msg_length = . - sock_close_parent_err_msg
 
-sock_close_child_msg:    .asciz "\033[33mChild connection was closed 👶🔒\033[0m\n"
+sock_close_child_msg:    .asciz "\033[33mChild process was closed 👶🔒\033[0m\n"
 sock_close_child_msg_length = . - sock_close_child_msg
 
-sock_close_child_err_msg:    .asciz "\033[31mFailed to close child connection! ❌\033[0m\n"
+sock_close_child_err_msg:    .asciz "\033[31mFailed to close child process! ❌\033[0m\n"
 sock_close_child_err_msg_length = . - sock_close_child_err_msg
 
 
@@ -24,7 +24,7 @@ mov %rsp, %rbp                                      # set the new base pointer (
 
 
 mov    %r12, %rdi                                   # connection file descriptor
-mov    $SYS_close_fd, %rax                          # sys_close (system call number for closing a file descriptor: 3)
+mov    $SYS_close, %rax                          # sys_close (system call number for closing a file descriptor: 3)
 syscall                                             # close the connection
 
  cmp $0, %rdi                                       # 0 for parent process, 1 for child
