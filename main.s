@@ -32,6 +32,7 @@ main:
 
 # FUNCTION ARGS
 
+call file_open
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

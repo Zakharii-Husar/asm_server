@@ -139,9 +139,11 @@ Placed logic for printig any information to the terminal (status updates, errors
 ### 2. int_to_string
 Parameters:
 - **%rdi** accepting an integer to convert to string.
+- 
 Return values: 
 - **%rax** points to the first string character in the buffer.
 - **%rdx** contains the string length.
+
 Side effects: none.
 
 To convert an integer to string i had to do the following:
@@ -160,5 +162,6 @@ digit 0 will be '0' as ASCII character and 48 as ASCII Value (Decimal), and digi
 
 Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that we check if qutient is zero and either exit loop or decrement current buffer position by 1 byte and increment the string length counter.
 
+### 3. file_open
 
 

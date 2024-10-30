@@ -22,14 +22,14 @@ file_open:
     mov $0, %rsi                     # flags = O_RDONLY
     syscall
 
-    # Save file descriptor in %rbx (assumes no register clobbering)
-    mov %rax, %rbx                   # save file descriptor in %rbx
-    cmp $0, %rbx
+    # Save file descriptor in %r8 (assumes no register clobbering)
+    mov %rax, %r8                   # save file descriptor in %r8
+    cmp $0, %r8
     jl handle_file_error             # jump to error handling if failed to open
 
     # Read file contents into file_buffer
     mov $SYS_read, %rax              # sys_read
-    mov %rbx, %rdi                   # file descriptor
+    mov %r8, %rdi                   # file descriptor
     lea file_buffer(%rip), %rsi      # address of file_buffer
     mov $8192, %rdx                  # max bytes to read
     syscall
@@ -39,7 +39,7 @@ file_open:
 
     # Close the file descriptor
     mov $SYS_close, %rax             # sys_close
-    mov %rbx, %rdi                   # file descriptor
+    mov %r8, %rdi                   # file descriptor
     syscall
 
     pop %rbp
