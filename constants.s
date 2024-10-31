@@ -3,6 +3,7 @@
     .equ SYS_write, 1
     .equ SYS_open, 2
     .equ SYS_close, 3
+    .equ SYS_fstat, 5
     .equ SYS_stdout, 1
     .equ SYS_sock_create, 41
     .equ SYS_sock_bind, 49

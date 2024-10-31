@@ -30,9 +30,15 @@ _start:
 .type main, @function
 main:
 
-# FUNCTION ARGS
 
-call file_open
+# FUNCTION ARGS
+    call file_open
+    mov %rcx, %rdi                                # content length (integer) to be converted
+    call int_to_string                            # Convert integer to ASCII; %rax has address, %rdx has string length
+    
+    mov %rax, %rsi                                # pointer to the message 
+    mov %rdx, %rdx                                # length of the message
+    call print_info
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

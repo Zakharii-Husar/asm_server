@@ -9,9 +9,11 @@ sock_create_err_msg_length = . - sock_create_err_msg
 .section .text
 # Create socket (AF_INET, SOCK_STREAM, 0)
 .type sock_create, @function
+
 sock_create:
  push %rbp                    # save the caller's base pointer
  mov %rsp, %rbp               # set the new base pointer (stack frame)
+ 
 
  mov $SYS_sock_create, %rax
  mov $AF_INET, %rdi

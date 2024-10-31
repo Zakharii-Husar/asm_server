@@ -8,12 +8,11 @@ sock_respond_err_msg_length = . - sock_respond_err_msg
 
 http_header:
     .ascii "HTTP/1.1 200 OK\r\n"
-    .ascii "Content-Length: "
-content_length_placeholder:
-    .space 10                                    # Reserve 10 bytes for Content-Length (as ASCII)
+    .ascii "Content-Length: 143"                     # Reserve 10 bytes for Content-Length (as ASCII)
 after_content_length:
     .ascii "\r\nContent-Type: text/html\r\n\r\n"
 http_header_end:
+
 
 header_length = http_header_end - http_header  # Length of the entire header
 
@@ -21,24 +20,28 @@ header_length = http_header_end - http_header  # Length of the entire header
 
 .type sock_respond, @function
 sock_respond:
- pushq %rbp                    # save the caller's base pointer
- mov %rsp, %rbp               # set the new base pointer (stack frame)
+ pushq %rbp                          # save the caller's base pointer
+ mov %rsp, %rbp                      # set the new base pointer (stack frame)
+
 
 
     # Step 1: Read the HTML file
-    call file_open                 # returns file desc in %r8 and file length in %rcx
+    # call file_open                                # returns file desc in %r8 and file length in %rcx
+    # rcx -> rdi
 
     # Step 2: Prepare HTTP header with content length
 
     # Fill in content length placeholder in the header
-    mov %rcx, %rdi                    # content length (integer) to be converted
-    call int_to_string                # Convert integer to ASCII; %rax has address, %rdx has string length
-    push %rdx
 
-    lea content_length_placeholder(%rip), %rdi  # Destination for ASCII content length
-    mov %rdx, %rcx                              # Length of ASCII string
-    mov %rax, %rsi                              # Source (ASCII content length from int_to_string)
-    rep movsb                                    # Copy %rcx bytes from %rsi to %rdi
+    # lea content_length_placeholder(%rip), %rdi  # Destination for ASCII content length
+    # mov %rdx, %rcx                              # Length of ASCII string
+    # mov %rax, %rsi                              # Source (ASCII content length from int_to_string)
+    # repmovsb                                   # Copy %rcx bytes from %rsi to %rdi
+
+    # PRINT HEADER
+     lea http_header(%rip), %rsi           # pointer to the message (from constants.s)
+     mov $header_length, %rdx        # length of the message (from constants.s)
+     call print_info
 
    
     # Step 3: Send the header with the updated Content-Length
@@ -48,13 +51,11 @@ sock_respond:
     mov $header_length, %rdx            # Length of the entire header
     syscall                            # Perform the write
 
-pop %rdx
-
     # Step 4: send the content
     mov $SYS_write, %rax               # syscall number for write
     mov %r12, %rdi         # File descriptor
     lea file_buffer(%rip), %rsi        # Pointer to the content buffer
-    # mov %rdi, %rdx           # Length of the content
+    mov $143, %rdx           # Length of the content
     syscall                            # Send the content
 
 
