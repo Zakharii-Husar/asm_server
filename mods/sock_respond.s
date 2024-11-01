@@ -8,9 +8,9 @@ sock_respond_err_msg_length = . - sock_respond_err_msg
 
 http_header:
     .ascii "HTTP/1.1 200 OK\r\n"
-    .ascii "Content-Length: 143"                     # Reserve 10 bytes for Content-Length (as ASCII)
+    .ascii "Content-Length: "                     # Reserve 10 bytes for Content-Length (as ASCII)
 after_content_length:
-    .ascii "\r\nContent-Type: text/html\r\n\r\n"
+    .ascii "          \r\nContent-Type: text/html\r\n\r\n"
 http_header_end:
 
 
@@ -26,17 +26,17 @@ sock_respond:
 
 
     # Step 1: Read the HTML file
-    # call file_open                                # returns file desc in %r8 and file length in %rcx
-    # rcx -> rdi
+    call file_open
+    mov %r9, %rdi                                # content length (integer) to be converted
+    call int_to_string                            # Convert integer to ASCII; %rax has address, %rdx has string length
 
     # Step 2: Prepare HTTP header with content length
 
     # Fill in content length placeholder in the header
-
-    # lea content_length_placeholder(%rip), %rdi  # Destination for ASCII content length
-    # mov %rdx, %rcx                              # Length of ASCII string
-    # mov %rax, %rsi                              # Source (ASCII content length from int_to_string)
-    # repmovsb                                   # Copy %rcx bytes from %rsi to %rdi
+    lea after_content_length(%rip), %rdi  # Start of Content-Length placeholder
+    mov %rax, %rsi                  # Source address of ASCII content length
+    mov %rdx, %rcx                  # Length of ASCII string (exact bytes to copy)
+    rep movsb                       # Copy exactly the length of the string
 
     # PRINT HEADER
      lea http_header(%rip), %rsi           # pointer to the message (from constants.s)

@@ -33,7 +33,7 @@ file_open:
 
     # Read file contents into file_buffer
     mov $SYS_read, %rax              # sys_read
-    mov %r8, %rdi                   # file descriptor
+    mov %r8, %rdi                    # file descriptor
     lea file_buffer(%rip), %rsi      # address of file_buffer
     mov $8192, %rdx                  # max bytes to read
     syscall
@@ -48,7 +48,7 @@ file_open:
     cmp $0, %rax
     jl handle_file_error
 
-    # Now you can get the file size from stat_buffer
+    # Get the file size from stat_buffer
      mov 48(%rsi), %r9  # st_size is usually at offset 40 for 64-bit
 
 
