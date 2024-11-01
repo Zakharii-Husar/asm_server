@@ -28,7 +28,7 @@ sock_respond:
     # Step 1: Read the HTML file
     call file_open
     mov %r9, %rdi                                # content length (integer) to be converted
-    call int_to_string                            # Convert integer to ASCII; %rax has address, %rdx has string length
+    call int_to_string                           # Convert integer to ASCII; %rax has address, %rdx has string length
 
     # Step 2: Prepare HTTP header with content length
 
@@ -38,10 +38,10 @@ sock_respond:
     mov %rdx, %rcx                  # Length of ASCII string (exact bytes to copy)
     rep movsb                       # Copy exactly the length of the string
 
-    # PRINT HEADER
-     lea http_header(%rip), %rsi           # pointer to the message (from constants.s)
-     mov $header_length, %rdx        # length of the message (from constants.s)
-     call print_info
+    # PRINT RESPONSE HEADER
+    # lea http_header(%rip), %rsi           # pointer to the message (from constants.s)
+    # mov $header_length, %rdx        # length of the message (from constants.s)
+    # call print_info
 
    
     # Step 3: Send the header with the updated Content-Length
@@ -53,9 +53,9 @@ sock_respond:
 
     # Step 4: send the content
     mov $SYS_write, %rax               # syscall number for write
-    mov %r12, %rdi         # File descriptor
+    mov %r12, %rdi                     # File descriptor
     lea file_buffer(%rip), %rsi        # Pointer to the content buffer
-    mov $143, %rdx           # Length of the content
+    mov %r9, %rdx                     # Length of the content
     syscall                            # Send the content
 
 
@@ -67,8 +67,8 @@ sock_respond:
    call print_info
 
 
-    pop %rbp                     # restore the caller's base pointer
-    ret                           # return to the caller
+   pop %rbp                     # restore the caller's base pointer
+   ret                           # return to the caller
 
 handle_sock_respond_err:
  lea sock_respond_err_msg(%rip), %rsi           # pointer to the message (from constants.s)

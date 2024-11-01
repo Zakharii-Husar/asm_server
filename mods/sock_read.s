@@ -26,10 +26,16 @@ syscall                                 # invoke syscall
 cmp $0, %rax                            # Check if read was successful
 jl handle_sock_read_err                 # Jump if there was an error
 
-
-lea request_buffer(%rip), %rsi          # pointer to the message
+# PRINT THE REQUEST METHOD
+call get_method
+lea request_method(%rip), %rsi          # pointer to the message
 mov %rax, %rdx                          # length of the message
 call print_info
+
+# PRINT CLIENT"S REQUEST
+# lea request_buffer(%rip), %rsi          # pointer to the message
+# mov %rax, %rdx                          # length of the message
+# call print_info
 
  pop %rbp                               # restore the caller's base pointer
  ret                                    # return to the caller
