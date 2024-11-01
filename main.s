@@ -33,7 +33,7 @@ main:
 
 # FUNCTION ARGS
     call file_open
-    mov %rcx, %rdi                                # content length (integer) to be converted
+    mov %r9, %rdi                                # content length (integer) to be converted
     call int_to_string                            # Convert integer to ASCII; %rax has address, %rdx has string length
     
     mov %rax, %rsi                                # pointer to the message 

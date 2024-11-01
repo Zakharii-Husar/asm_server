@@ -25,6 +25,7 @@ file_open:
     lea file_path(%rip), %rdi        # path to the HTML file
     mov $0, %rsi                     # flags = O_RDONLY
     syscall
+    
     # Save file descriptor in %r8 (assumes no register clobbering)
     cmp $0, %rax
     jl handle_file_error             # jump to error handling if failed to open
@@ -34,7 +35,7 @@ file_open:
     mov $SYS_read, %rax              # sys_read
     mov %r8, %rdi                   # file descriptor
     lea file_buffer(%rip), %rsi      # address of file_buffer
-    mov $143, %rdx                  # max bytes to read
+    mov $8192, %rdx                  # max bytes to read
     syscall
 
     # Get file size using fstat
@@ -48,8 +49,8 @@ file_open:
     jl handle_file_error
 
     # Now you can get the file size from stat_buffer
-     movq 48(%rsi), %rcx  # st_size is usually at offset 40 for 64-bit
-      push %rcx
+     mov 48(%rsi), %r9  # st_size is usually at offset 40 for 64-bit
+
 
     # Close the file descriptor
     mov $SYS_close, %rax             # sys_close
@@ -59,7 +60,6 @@ file_open:
     cmp $0, %rax
     jl handle_file_error             # jump to error handling if failed to open
 
-    pop %rcx
     pop %rbp
     ret
 
