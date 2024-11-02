@@ -1,6 +1,14 @@
 .section .data
 .equ request_buffer_size, 1024
 
+GET_STRING: .asciz "GET"    
+
+method_is_get:    .asciz "method is GET\n"
+method_is_get_length = . - method_is_get
+
+method_is_not_get:    .asciz "method is not GET\n"
+method_is_not_get_length = . - method_is_not_get
+
 sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 sock_read_err_msg_length = . - sock_read_err_msg
 
@@ -26,12 +34,29 @@ syscall                                 # invoke syscall
 cmp $0, %rax                            # Check if read was successful
 jl handle_sock_read_err                 # Jump if there was an error
 
-# PRINT THE REQUEST METHOD
+# COMPARE THE REQUEST METHOD
 call get_method
-lea request_method(%rip), %rsi          # pointer to the message
-mov %rax, %rdx                          # length of the message
+
+lea request_method(%rip), %rdi
+lea GET_STRING(%rip), %rsi
+
+call comp_strings
+cmp $1, %rax
+je is_get
+jne is_not_get
+
+is_get:
+lea method_is_get(%rip), %rsi
+mov $method_is_get_length, %rdx
+call print_info
+jmp skip_is_not_get
+
+is_not_get:
+lea method_is_not_get(%rip), %rsi
+mov $method_is_not_get_length, %rdx
 call print_info
 
+skip_is_not_get:
 # PRINT CLIENT"S REQUEST
 # lea request_buffer(%rip), %rsi          # pointer to the message
 # mov %rax, %rdx                          # length of the message

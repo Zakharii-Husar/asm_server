@@ -23,6 +23,7 @@
     .include "./asm_server/utils/int_to_string.s"
     .include "./asm_server/utils/file_open.s"
     .include "./asm_server/utils/get_method.s"
+    .include "./asm_server/utils/comp_strings.s"
 
     .global _start
 
