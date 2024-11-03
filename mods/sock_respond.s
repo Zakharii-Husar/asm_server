@@ -1,3 +1,10 @@
+   # 1. If route has extension -> try exact path
+   # 2. If no extension:
+   #    a. Try with .html first (most common case)
+   #    b. If not found, try .css
+   #    c. If not found, try .js
+   # 3. If nothing found -> 404
+
 .section .data
 
 sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
@@ -23,8 +30,11 @@ sock_respond:
  pushq %rbp                          # save the caller's base pointer
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
 
-
-
+    # Extract route will set %r8 with extension flag
+    call extract_route
+    
+    # file_open will use %r8 to determine how to open file
+    
     # Step 1: Read the HTML file
     call file_open
     mov %r9, %rdi                                # content length (integer) to be converted
@@ -54,7 +64,7 @@ sock_respond:
     # Step 4: send the content
     mov $SYS_write, %rax               # syscall number for write
     mov %r12, %rdi                     # File descriptor
-    lea file_buffer(%rip), %rsi        # Pointer to the content buffer
+    lea response_content_buffer(%rip), %rsi        # Pointer to the content buffer
     mov %r9, %rdx                     # Length of the content
     syscall                            # Send the content
 
