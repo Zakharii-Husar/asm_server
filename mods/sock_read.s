@@ -33,7 +33,13 @@ syscall                                 # invoke syscall
 
 cmp $0, %rax                            # Check if read was successful
 jl handle_sock_read_err                 # Jump if there was an error
+# EXTRACT THE ROUTE FROM THE REQUEST
+call extract_route
 
+# Print the extracted route
+lea request_route(%rip), %rsi          # pointer to extracted route
+mov %rdx, %rdx                         # use the length returned in %rdx
+call print_info
 # EXTRACT THE METHOD FROM THE REQUEST   
 call extract_method
 
@@ -48,16 +54,10 @@ je method_is_allowed
 jne method_is_not_allowed
 
 method_is_allowed:
-lea method_is_get_msg(%rip), %rsi
-mov $method_is_get_msg_length, %rdx
-call print_info
 pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
 method_is_not_allowed:
-lea method_is_not_get_msg(%rip), %rsi
-mov $method_is_not_get_msg_length, %rdx
-call print_info
 pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
