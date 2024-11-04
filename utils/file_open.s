@@ -1,10 +1,11 @@
 .section .bss
 .lcomm response_content_buffer, 8192  # Allocate 8 KB for the file buffer
 .lcomm stat_buffer, 100
-.lcomm full_path, 2048               # New buffer for combined path
+.lcomm full_path_buffer, 2048                # New buffer for combined path
 
 .section .data
 base_path: .asciz "./asm_server/public"    # Base path constant
+html_ext: .asciz ".html"    # Add this line to define the HTML extension
 
 file_open_err_msg:    .asciz "\033[31mFile not found! ❌\033[0m\n"
 file_open_err_msg_length = . - file_open_err_msg
@@ -19,7 +20,7 @@ file_open:
     mov %rsp, %rbp
 
     # Combine paths - using request_route instead of %r12
-    lea full_path(%rip), %rdi    # Destination buffer
+    lea full_path_buffer(%rip), %rdi    # Destination buffer
     lea base_path(%rip), %rsi    # Source (base path)
 
 copy_base:                       # Copy base path first
@@ -41,34 +42,53 @@ copy_req_route:                      # Append request route
     cmpb $0, %al
     jne copy_req_route
 
+    # Check if route has extension (using %r8 from extract_route)
+    cmp $1, %r8
+    je count_route_length    # If has extension, skip appending .html
+
+    # No extension, append .html
+    dec %rdi                     # Add this line to move back one to overwrite null terminator
+    lea html_ext(%rip), %rsi    # Source (.html extension)
+append_ext:
+    movb (%rsi), %al
+    movb %al, (%rdi)
+    inc %rsi
+    inc %rdi
+    cmpb $0, %al
+    jne append_ext
+
+    # Continue with length counting
+count_route_length:
     # After copy_req_route, calculate string length
-    lea full_path(%rip), %rsi    # pointer to full path
+    lea full_path_buffer(%rip), %rsi    # pointer to full path
     mov %rsi, %rcx              # copy start address for length calculation
     
-count_length:
+count_path_loop:    # Added label
     cmpb $0, (%rcx)             # check for null terminator
-    je done_counting
+    je done_counting_path_length
     inc %rcx
-    jmp count_length
+    jmp count_path_loop
 
-done_counting:
+done_counting_path_length:
     sub %rsi, %rcx              # %rcx now contains actual string length
     mov %rcx, %rdx              # move length to %rdx for print_info
 
     # Debug print with actual length
-    lea full_path(%rip), %rsi    # pointer to full path
+    lea full_path_buffer(%rip), %rsi    # pointer to full path
     call print_info
+    
+
 
     # Now open the file using the combined path
     mov $SYS_open, %rax         # sys_open
-    lea full_path(%rip), %rdi   # Load combined path
-    mov $0, %rsi                # flags = O_RDONLY
+    lea full_path_buffer(%rip), %rdi   # Load combined path
+    mov $0, %rsi                       # flags = O_RDONLY
     syscall
 
-    # Save file descriptor in %r8 (assumes no register clobbering)
+    # Save file descriptor in %r8
     cmp $0, %rax
     jl handle_file_error             # jump to error handling if failed to open
-    mov %rax, %r8                   # save file descriptor in %r8
+    mov %rax, %r8                    # save file descriptor in %r8
 
     # Read file contents into response_content_buffer
     mov $SYS_read, %rax              # sys_read
@@ -102,21 +122,7 @@ done_counting:
     pop %rbp
     ret
 
-try_html:
-    # ... append .html and try to open ...
 
-try_css:
-    # ... append .css and try to open ...
-
-try_js:
-    # ... append .js and try to open ...
-
-load_404:
-    # ... load 404.html ...
-
-file_found:
-    pop %rbp
-    ret
 
     handle_file_error:
      lea file_open_err_msg(%rip), %rsi      # pointer to the message (from constants.s)

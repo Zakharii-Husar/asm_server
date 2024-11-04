@@ -37,9 +37,9 @@ jl handle_sock_read_err                 # Jump if there was an error
 call extract_route
 
 # Print the extracted route
-lea request_route(%rip), %rsi          # pointer to extracted route
-mov %rdx, %rdx                         # use the length returned in %rdx
-call print_info
+# lea request_route(%rip), %rsi          # pointer to extracted route
+# mov %rdx, %rdx                         # use the length returned in %rdx
+# call print_info
 # EXTRACT THE METHOD FROM THE REQUEST   
 call extract_method
 
