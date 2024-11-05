@@ -1,4 +1,3 @@
-
 .section .text
 
 .type exit_program, @function

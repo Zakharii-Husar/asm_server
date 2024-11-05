@@ -22,9 +22,10 @@
     .include "./asm_server/utils/print_info.s"
     .include "./asm_server/utils/int_to_string.s"
     .include "./asm_server/utils/file_open.s"
-    .include "./asm_server/utils/comp_strings.s"
     .include "./asm_server/utils/extract_route.s"
     .include "./asm_server/utils/extract_method.s"
+    .include "./asm_server/utils/str_len.s"
+    .include "./asm_server/utils/str_cmp.s"
 
     .global _start
 

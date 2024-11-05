@@ -1,13 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Page Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASM Server</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
+    <div class="container">
+        <div class="server-info">
+            <h1>ASM Server</h1>
+            <div class="status-badge">
+                <span class="dot"></span>
+                <span>Running</span>
+            </div>
+        </div>
+        
+        <div class="server-stats">
+            <div class="stat-box">
+                <h3>Server Status</h3>
+                <p>Active</p>
+            </div>
+            <div class="stat-box">
+                <h3>Uptime</h3>
+                <p id="uptime">0:00:00</p>
+            </div>
+            <div class="stat-box">
+                <h3>Version</h3>
+                <p>1.0.0</p>
+            </div>
+        </div>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+        <div class="info-section">
+            <h2>Welcome to ASM Server</h2>
+            <p>This page is being served by ASM Server. If you can see this page, your server is successfully running.</p>
+        </div>
 
+        <footer>
+            <p>ASM Server © 2024</p>
+        </footer>
+    </div>
 </body>
-<script src="index.js"></script>
 </html>

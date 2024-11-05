@@ -33,20 +33,21 @@ syscall                                 # invoke syscall
 
 cmp $0, %rax                            # Check if read was successful
 jl handle_sock_read_err                 # Jump if there was an error
-# EXTRACT THE ROUTE FROM THE REQUEST
-call extract_route
 
-# Print the extracted route
-# lea request_route(%rip), %rsi          # pointer to extracted route
-# mov %rdx, %rdx                         # use the length returned in %rdx
+# Calculate request length
+# lea request_buffer(%rip), %rdi          # Load buffer address
+# call str_len                             # Calculate string length
+# mov %rax, %rdx                          # Move length to %rdx for print_info
+# PRINT CLIENT'S REQUEST
+# lea request_buffer(%rip), %rsi          # pointer to the message
 # call print_info
-# EXTRACT THE METHOD FROM THE REQUEST   
+
 call extract_method
 
 # COMPARE THE REQUEST METHOD TO "GET"
 lea request_method(%rip), %rdi
 lea GET_STRING(%rip), %rsi
-call comp_strings
+call str_cmp
 
 # Jump to the appropriate label based on the comparison result
 cmp $1, %rax
@@ -54,6 +55,7 @@ je method_is_allowed
 jne method_is_not_allowed
 
 method_is_allowed:
+
 pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
@@ -61,10 +63,6 @@ method_is_not_allowed:
 pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
-# PRINT CLIENT"S REQUEST
-# lea request_buffer(%rip), %rsi          # pointer to the message
-# mov %rax, %rdx                          # length of the message
-# call print_info
 
 
 handle_sock_read_err:

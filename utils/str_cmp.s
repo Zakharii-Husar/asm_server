@@ -1,8 +1,8 @@
 
 .section .text
 
-.type comp_strings, @function
-comp_strings:
+.type str_cmp, @function
+str_cmp:
     push %rbp                        # Save the caller's base pointer
     mov %rsp, %rbp                   # Set the new base pointer (stack frame)
 
