@@ -59,25 +59,14 @@ append_ext:
 
     # Continue with length counting
 count_route_length:
-    # After copy_req_route, calculate string length
-    lea full_path_buffer(%rip), %rsi    # pointer to full path
-    mov %rsi, %rcx              # copy start address for length calculation
+    # After copy_req_route, calculate string length using str_len
+    lea full_path_buffer(%rip), %rdi    # Load address of string into first parameter
+    call str_len                        # Call str_len function
+    mov %rax, %rdx                      # Move returned length to %rdx for print_info
     
-count_path_loop:    # Added label
-    cmpb $0, (%rcx)             # check for null terminator
-    je done_counting_path_length
-    inc %rcx
-    jmp count_path_loop
-
-done_counting_path_length:
-    sub %rsi, %rcx              # %rcx now contains actual string length
-    mov %rcx, %rdx              # move length to %rdx for print_info
-
     # Debug print with actual length
     lea full_path_buffer(%rip), %rsi    # pointer to full path
     call print_info
-    
-
 
     # Now open the file using the combined path
     mov $SYS_open, %rax         # sys_open
