@@ -1,4 +1,13 @@
+.section .bss
+.lcomm original_string, 8192 
+
 .section .data
+
+str_2:    .asciz "string_2"
+str_2_length = . - str_2
+
+str_3:    .asciz "string_3"
+str_3_length = . - str_3
 
 .include "./asm_server/constants.s"
 
@@ -26,7 +35,7 @@
     .include "./asm_server/utils/extract_method.s"
     .include "./asm_server/utils/str_len.s"
     .include "./asm_server/utils/str_cmp.s"
-
+    .include "./asm_server/utils/str_concat.s"
     .global _start
 
 _start:
@@ -34,8 +43,27 @@ _start:
 .type main, @function
 main:
 
+    # Call str_concat with original_string and str_2
+    mov $original_string, %rdi          # First arg: destination buffer
+    mov $str_2, %rsi          # Second arg: source string
+    mov $str_2_length, %rdx   # Third arg: string length
+    call str_concat
 
-# FUNCTION ARGS
+    lea original_string(%rip), %rsi      # pointer to the message (from constants.s)
+    mov %rax, %rdx    # length of the message (from constants.s)
+    call print_info
+
+        # Call str_concat with original_string and str_3
+    mov $original_string, %rdi          # First arg: destination buffer
+    mov $str_3, %rsi          # Second arg: source string
+    mov $str_3_length, %rdx   # Third arg: string length
+    call str_concat
+
+    lea original_string(%rip), %rsi      # pointer to the message (from constants.s)
+    mov %rax, %rdx    # length of the message (from constants.s)
+    call print_info
+
+    # FUNCTION ARGS
     
     # ----------------------------
     # 1. Create Socket
