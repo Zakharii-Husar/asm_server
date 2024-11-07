@@ -43,26 +43,6 @@ _start:
 .type main, @function
 main:
 
-    # Call str_concat with original_string and str_2
-    mov $original_string, %rdi          # First arg: destination buffer
-    mov $str_2, %rsi          # Second arg: source string
-    mov $str_2_length, %rdx   # Third arg: string length
-    call str_concat
-
-    lea original_string(%rip), %rsi      # pointer to the message (from constants.s)
-    mov %rax, %rdx    # length of the message (from constants.s)
-    call print_info
-
-        # Call str_concat with original_string and str_3
-    mov $original_string, %rdi          # First arg: destination buffer
-    mov $str_3, %rsi          # Second arg: source string
-    mov $str_3_length, %rdx   # Third arg: string length
-    call str_concat
-
-    lea original_string(%rip), %rsi      # pointer to the message (from constants.s)
-    mov %rax, %rdx    # length of the message (from constants.s)
-    call print_info
-
     # FUNCTION ARGS
     
     # ----------------------------

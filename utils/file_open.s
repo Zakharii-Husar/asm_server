@@ -19,43 +19,27 @@ file_open:
     push %rbp
     mov %rsp, %rbp
 
-    # Combine paths - using request_route instead of %r12
+    # Combine base path with request route
     lea full_path_buffer(%rip), %rdi    # Destination buffer
-    lea base_path(%rip), %rsi    # Source (base path)
+    lea base_path(%rip), %rsi           # Source (base path)
+    xor %rdx, %rdx                      # Let str_concat calculate length
+    call str_concat
 
-copy_base:                       # Copy base path first
-    movb (%rsi), %al
-    movb %al, (%rdi)
-    inc %rsi
-    inc %rdi
-    cmpb $0, %al
-    jne copy_base
+    # Append request route
+    lea full_path_buffer(%rip), %rdi    # Destination buffer
+    lea request_route(%rip), %rsi       # Source (request route)
+    xor %rdx, %rdx                      # Let str_concat calculate length
+    call str_concat
 
-    dec %rdi                     # Move back one to overwrite null terminator
-    lea request_route(%rip), %rsi  # Source (request route) - CHANGED THIS LINE
-
-copy_req_route:                      # Append request route
-    movb (%rsi), %al
-    movb %al, (%rdi)
-    inc %rsi
-    inc %rdi
-    cmpb $0, %al
-    jne copy_req_route
-
-    # Check if route has extension (using %r8 from extract_route)
+    # Check if route has extension
     cmp $1, %r8
     je count_route_length    # If has extension, skip appending .html
 
     # No extension, append .html
-    dec %rdi                     # Add this line to move back one to overwrite null terminator
-    lea html_ext(%rip), %rsi    # Source (.html extension)
-append_ext:
-    movb (%rsi), %al
-    movb %al, (%rdi)
-    inc %rsi
-    inc %rdi
-    cmpb $0, %al
-    jne append_ext
+    lea full_path_buffer(%rip), %rdi    # Destination buffer
+    lea html_ext(%rip), %rsi            # Source (.html extension)
+    xor %rdx, %rdx                      # Let str_concat calculate length
+    call str_concat
 
     # Continue with length counting
 count_route_length:
@@ -64,9 +48,6 @@ count_route_length:
     call str_len                        # Call str_len function
     mov %rax, %rdx                      # Move returned length to %rdx for print_info
     
-    # Debug print with actual length
-    lea full_path_buffer(%rip), %rsi    # pointer to full path
-    call print_info
 
     # Now open the file using the combined path
     mov $SYS_open, %rax         # sys_open
