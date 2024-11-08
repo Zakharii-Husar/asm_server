@@ -19,6 +19,9 @@ file_open:
     push %rbp
     mov %rsp, %rbp
 
+    call extract_route # returns %rax = 0 if no extension, 1 if has extension
+    mov %rax, %r9
+
     # Combine base path with request route
     lea full_path_buffer(%rip), %rdi    # Destination buffer
     lea base_path(%rip), %rsi           # Source (base path)
@@ -31,9 +34,10 @@ file_open:
     xor %rdx, %rdx                      # Let str_concat calculate length
     call str_concat
 
+
     # Check if route has extension
-    cmp $1, %r8
-    je count_route_length    # If has extension, skip appending .html
+    cmp $1, %r9
+    je route_has_extension    # If has extension, skip appending .html
 
     # No extension, append .html
     lea full_path_buffer(%rip), %rdi    # Destination buffer
@@ -41,16 +45,14 @@ file_open:
     xor %rdx, %rdx                      # Let str_concat calculate length
     call str_concat
 
-    # Continue with length counting
-count_route_length:
-    # After copy_req_route, calculate string length using str_len
-    lea full_path_buffer(%rip), %rdi    # Load address of string into first parameter
-    call str_len                        # Call str_len function
-    mov %rax, %rdx                      # Move returned length to %rdx for print_info
-    
+route_has_extension:
 
+     lea full_path_buffer(%rip), %rsi      # pointer to the message (from constants.s)
+     mov %rax, %rdx    # length of the message (from constants.s)
+     call print_info
+    
     # Now open the file using the combined path
-    mov $SYS_open, %rax         # sys_open
+    mov $SYS_open, %rax                # sys_open
     lea full_path_buffer(%rip), %rdi   # Load combined path
     mov $0, %rsi                       # flags = O_RDONLY
     syscall

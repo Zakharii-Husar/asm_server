@@ -31,9 +31,7 @@ sock_respond:
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
 
     # Extract route will set %r8 with extension flag
-    call extract_route
     
-    # file_open will use %r8 to determine how to open file
     
     # Step 1: Read the HTML file
     call file_open
