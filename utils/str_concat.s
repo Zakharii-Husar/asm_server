@@ -12,12 +12,13 @@ str_concat:
     
     # Check if string length is provided
     test %rdx, %rdx
-    jz offset_buffer
+    jnz offset_buffer         # Changed jz to jnz - if length provided, skip length calculation
 
-    # If not find string length
-    mov %rsi, %rdi         # Move source string to first parameter for str_len
-    call str_len           # Call str_len, result will be in %rax
-    mov %rax, %rdx         # Move length to rdx
+    # Calculate string length if not provided
+    mov %rsi, %rdi           
+    call str_len           
+    mov %rax, %rdx         
+    mov %rsi, %rsi         # Restore source string pointer
     
     offset_buffer:
     
