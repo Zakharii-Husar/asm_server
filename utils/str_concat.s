@@ -12,13 +12,12 @@ str_concat:
     
     # Check if string length is provided
     test %rdx, %rdx
-    jnz offset_buffer         # Changed jz to jnz - if length provided, skip length calculation
+    jnz offset_buffer         # If length provided, skip length calculation
 
     # Calculate string length if not provided
     mov %rsi, %rdi           
     call str_len           
     mov %rax, %rdx         
-    mov %rsi, %rsi         # Restore source string pointer
     
     offset_buffer:
     
@@ -38,14 +37,14 @@ str_concat:
 
     concat_bytes:
     # Copy bytes from source (%rsi) to destination (%rdi)
-    mov %rdx, %rcx        # move length to rcx for rep movsb
-    cld                   # clear direction flag (move forward)
-    rep movsb            # copy bytes until rcx = 0
+    mov %rdx, %rcx          # move length to rcx for rep movsb
+    cld                     # clear direction flag (move forward)
+    rep movsb               # copy bytes until rcx = 0
 
     movb $0, (%rdi)         # Null terminate the resulting string
 
-    mov %r8, %rdi           # Move destination buffer pointer for str_len
-    call str_len           # Get length of concatenated string into %rax
+    mov %rdi, %rax         # Current position after concatenation
+    sub %r8, %rax          # Subtract starting position to get length
 
-    pop %rbp                # restore caller's base pointer
+    pop %rbp               # restore caller's base pointer
     ret
