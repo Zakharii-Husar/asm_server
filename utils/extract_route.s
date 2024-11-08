@@ -16,7 +16,6 @@ extract_route:
     # Initialize registers
     lea request_buffer(%rip), %rsi    # Source buffer (HTTP request)
     lea request_route(%rip), %rdi     # Destination buffer for route
-    xor %rcx, %rcx                    # Clear counter
     
     # Skip first word (HTTP method) by finding first space
 find_first_space:
@@ -39,40 +38,32 @@ copy_route:
     movb %al, (%rdi)                  # Copy character to route buffer
     inc %rsi
     inc %rdi
-    inc %rcx                          # Increment counter
     jmp copy_route
 
 check_for_extension:
-    # Save current position and counter
-    push %rdi
-    push %rcx
+    # Save the end of the string pointer
+    mov %rdi, %r8                     # Save current position
     
-    # Start from end, look for dot
-    dec %rdi
 search_dot:
     cmpb $'.', (%rdi)                 # Is it a dot?
     je found_extension
     cmpb $'/', (%rdi)                 # Hit a slash? No extension
     je no_extension
-    dec %rdi
-    dec %rcx
-    cmp $0, %rcx                      # Start of string? No extension
+    cmp %rdi, %rsi                    # Reached start of string?
     je no_extension
+    dec %rdi
     jmp search_dot
 
 found_extension:
-    pop %rcx
-    pop %rdi
-    mov $1, %r8                       # Flag: has extension
+    mov $1, %rax                      # Flag: has extension
+    mov %r8, %rdi                     # Restore end position
     jmp finish
 
 no_extension:
-    pop %rcx
-    pop %rdi
-    mov $0, %r8                       # Flag: no extension
+    mov $0, %rax                      # Flag: no extension
+    mov %r8, %rdi                     # Restore end position
 
 finish:
-    movb $0, (%rdi)                   # Null terminate
-    mov %rcx, %rdx                    # Store length in rdx
+    movb $0, 1(%rdi)                  # Null terminate after current position
     pop %rbp
     ret
