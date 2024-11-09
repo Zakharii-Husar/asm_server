@@ -1,20 +1,35 @@
 .section .text
-
+.globl print_info
 .type print_info, @function
+
+# Function: print_info
+# Input: string pointer in %rsi
+# Output: none
+# Note: Internally calculates string length using str_len
 print_info:
-    pushq %rbp                    # save the caller's base pointer
-    movq %rsp, %rbp               # set the new base pointer (stack frame)
-
-    # pushing and popping rax and rdi so print_info doesn't clobber  registers
-    pushq %rax
-    pushq %rdi
-
-    movq $SYS_write, %rax         # syscall: sys_write (1)
-    movq $SYS_stdout, %rdi        # file descriptor: stdout (1)
-    syscall                       # make the syscall
-
-    popq %rdi
-    popq %rax
-
-    popq %rbp                     # restore the caller's base pointer
-    ret                           # return to the caller
+    push %rbp
+    mov %rsp, %rbp
+    
+    # Save registers we'll modify
+    push %rdi
+    push %rsi
+    push %rdx
+    
+    # Move string pointer to %rdi for str_len
+    mov %rsi, %rdi
+    call str_len           # str_len will return length in %rax
+    
+    # Set up parameters for write syscall
+    mov $1, %rdi          # file descriptor (stdout)
+    # %rsi already contains string pointer
+    mov %rax, %rdx       # length returned by str_len
+    mov $1, %rax         # syscall number for write
+    syscall
+    
+    # Restore registers
+    pop %rdx
+    pop %rsi
+    pop %rdi
+    
+    pop %rbp
+    ret
