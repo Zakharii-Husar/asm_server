@@ -50,16 +50,16 @@ sock_respond:
     mov $content_length_length, %rdx
     call str_concat
 
-    # Step 1: Extract the route
+    # Extract the route
     call extract_route # returns %rax = 0 if no extension, 1 if has extension
     mov %rax, %rdi     # move the extension parameter for file_open
 
-    # Step 2: Read the HTML file
-    call file_open
-    mov %rax, %rdi                                # content length (integer) to be converted
-    call int_to_string                           # Convert integer to ASCII; %rax has address, %rdx has string length
+    # Read the requested file
+    call file_open         # returns file size in %rax
+    mov %rax, %rdi         # content length (integer) to be converted
+    call int_to_string     # %rax has the string address, %rdx has string length
 
-    # Step 3: Add length to response header
+    # Add content length(in bytes) to response header
     lea response_header_buffer(%rip), %rdi
     mov %rax, %rsi  # rax contains the pointer to the string from int_to_string
     # rdx already contains the length from int_to_string
@@ -88,24 +88,16 @@ sock_respond:
     lea headers_end(%rip), %rsi
     mov $headers_end_length, %rdx
     call str_concat
-
-    # PRINT RESPONSE HEADER
-    lea response_header_buffer(%rip), %rsi
-    call print_info
-
-    # Calculate total header length
-    lea response_header_buffer(%rip), %rdi
-    call str_len                    # Get the total length of our header
     mov %rax, %r10                  # Save the header length for later
 
     # Send the header
+    mov %r10, %rdx                 # Length of the entire header
     mov $SYS_write, %rax           # syscall number for write
     mov %r12, %rdi                 # File descriptor
     lea response_header_buffer(%rip), %rsi  # Pointer to the beginning of the header
-    mov %r10, %rdx                 # Length of the entire header
     syscall
 
-    # Step 6: send the content
+    # Send the content
     mov $SYS_write, %rax          # syscall number for write
     mov %r12, %rdi                # File descriptor
     lea response_content_buffer(%rip), %rsi  # Pointer to the content buffer
