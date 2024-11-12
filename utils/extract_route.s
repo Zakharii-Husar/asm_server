@@ -63,25 +63,29 @@ search_dot:
     jmp search_dot
 
 found_extension:
-    # Copy extension (including dot) to extension buffer
-    mov %rdi, %rsi                    # String source is dot position
-    lea request_file_ext(%rip), %rdi  # Destination is extension buffer
-    xor %rdx, %rdx                    # Let str_concat calculate length
-    call str_concat
-
-    mov $1, %rax                      # Flag: has extension
+    mov %rdi, %r10                     # Save end of route
     jmp finish                        # Skip the no_extension code
 
 no_extension:
     # Append .html extension since none was found
+    mov %rdi, %r10                    # Save beginning of extension
     lea request_route(%rip), %rdi     # Destination buffer
     lea html_ext(%rip), %rsi          # Source (.html extension)
     xor %rdx, %rdx                    # Let str_concat calculate length
     call str_concat
 
-    lea request_route(%rip), %rsi
-    call print_info
 
 finish:
+    # Copy extension (including dot) to extension buffer
+    mov %r10, %rsi                    # Save beginning of extension
+    lea request_file_ext(%rip), %rdi  # Destination is extension buffer
+    xor %rdx, %rdx                    # Let str_concat calculate length
+    call str_concat
+
+    lea request_file_ext(%rip), %rsi
+    call print_info
+
+    lea request_route(%rip), %rsi
+    call print_info
     pop %rbp
     ret
