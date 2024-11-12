@@ -1,8 +1,10 @@
 .section .data
 .equ SPACE, 32                    # ASCII code for space character
+html_ext: .asciz ".html"          # HTML extension definition moved here
 
 .section .bss
 .lcomm request_route, 1024        # Buffer to store the extracted route
+.lcomm request_file_ext, 32       # Buffer to store file extension (including dot)
 
 .section .text
 # ... existing code ...
@@ -28,42 +30,58 @@ find_first_space:
 found_first_space:
     inc %rsi                          # Skip the space
 
-copy_route:
-    movb (%rsi), %al                  # Load character
-    cmp $SPACE, %al                   # Check for space (end of route)
-    je check_for_extension
-    cmp $0, %al                       # Check for null terminator
-    je check_for_extension
+    # Save start of route
+    mov %rsi, %r9                     # Save route start position
     
-    movb %al, (%rdi)                  # Copy character to route buffer
+    # Find end of route (next space)
+find_route_end:
+    movb (%rsi), %al
+    cmp $SPACE, %al                   # Check for space
+    je copy_full_route
+    cmp $0, %al                       # Check for null
+    je copy_full_route
     inc %rsi
-    inc %rdi
-    jmp copy_route
+    jmp find_route_end
 
-check_for_extension:
-    # Save the end of the string pointer
-    mov %rdi, %r8                     # Save current position
+copy_full_route:
+    # Calculate route length
+    mov %rsi, %rdx
+    sub %r9, %rdx                     # Length = end - start
+    mov %r9, %rsi                     # Source is route start
+    call str_concat                   # Copy route to request_route
+
+    # Now search for extension
+    lea request_route(%rip), %rdi    # Start of route
     
 search_dot:
-    cmpb $'.', (%rdi)                 # Is it a dot?
+    movb (%rdi), %al                 # Load current character into al
+    cmpb $0, %al                     # Check for null terminator first
+    je no_extension
+    cmpb $'.', %al                   # Is it a dot?
     je found_extension
-    cmpb $'/', (%rdi)                 # Hit a slash? No extension
-    je no_extension
-    cmp %rdi, %rsi                    # Reached start of string?
-    je no_extension
-    dec %rdi
+    inc %rdi
     jmp search_dot
 
 found_extension:
+    # Copy extension (including dot) to extension buffer
+    mov %rdi, %rsi                    # String source is dot position
+    lea request_file_ext(%rip), %rdi  # Destination is extension buffer
+    xor %rdx, %rdx                    # Let str_concat calculate length
+    call str_concat
+
     mov $1, %rax                      # Flag: has extension
-    mov %r8, %rdi                     # Restore end position
-    jmp finish
+    jmp finish                        # Skip the no_extension code
 
 no_extension:
-    mov $0, %rax                      # Flag: no extension
-    mov %r8, %rdi                     # Restore end position
+    # Append .html extension since none was found
+    lea request_route(%rip), %rdi     # Destination buffer
+    lea html_ext(%rip), %rsi          # Source (.html extension)
+    xor %rdx, %rdx                    # Let str_concat calculate length
+    call str_concat
+
+    lea request_route(%rip), %rsi
+    call print_info
 
 finish:
-    movb $0, 1(%rdi)                  # Null terminate after current position
     pop %rbp
     ret
