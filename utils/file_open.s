@@ -5,7 +5,6 @@
 
 .section .data
 base_path: .asciz "./asm_server/public"    # Base path constant
-html_ext: .asciz ".html"    # Add this line to define the HTML extension
 
 file_open_err_msg:    .asciz "\033[31mFile not found! ❌\033[0m\n"
 file_open_err_msg_length = . - file_open_err_msg
@@ -19,9 +18,6 @@ file_open:
     push %rbp
     mov %rsp, %rbp
 
-    call extract_route # returns %rax = 0 if no extension, 1 if has extension
-    mov %rax, %r9
-
     # Combine base path with request route
     lea full_path_buffer(%rip), %rdi    # Destination buffer
     lea base_path(%rip), %rsi           # Source (base path)
@@ -34,23 +30,6 @@ file_open:
     xor %rdx, %rdx                      # Let str_concat calculate length
     call str_concat
 
-
-    # Check if route has extension
-    cmp $1, %r9
-    je route_has_extension    # If has extension, skip appending .html
-
-    # No extension, append .html
-    lea full_path_buffer(%rip), %rdi    # Destination buffer
-    lea html_ext(%rip), %rsi            # Source (.html extension)
-    xor %rdx, %rdx                      # Let str_concat calculate length
-    call str_concat
-
-route_has_extension:
-
-     lea full_path_buffer(%rip), %rsi      # pointer to the message (from constants.s)
-     mov %rax, %rdx    # length of the message (from constants.s)
-     call print_info
-    
     # Now open the file using the combined path
     mov $SYS_open, %rax                # sys_open
     lea full_path_buffer(%rip), %rdi   # Load combined path
@@ -59,7 +38,7 @@ route_has_extension:
 
     # Save file descriptor in %r8
     cmp $0, %rax
-    jl handle_file_error             # jump to error handling if failed to open
+    jl handle_file_open_error             # jump to error handling if failed to open
     mov %rax, %r8                    # save file descriptor in %r8
 
     # Read file contents into response_content_buffer
@@ -77,10 +56,10 @@ route_has_extension:
 
     # Check if fstat was successful
     cmp $0, %rax
-    jl handle_file_error
+    jl handle_file_open_error
 
     # Get the file size from stat_buffer
-     mov 48(%rsi), %r9  # st_size is usually at offset 40 for 64-bit
+    mov 48(%rsi), %r9  # st_size is usually at offset 40 for 64-bit
 
 
     # Close the file descriptor
@@ -89,14 +68,15 @@ route_has_extension:
     syscall
 
     cmp $0, %rax
-    jl handle_file_error             # jump to error handling if failed to open
+    jl handle_file_open_error             # jump to error handling if failed to open
 
+    mov %r9, %rax      # Restore file size to return it
     pop %rbp
     ret
 
 
 
-    handle_file_error:
+    handle_file_open_error:
      lea file_open_err_msg(%rip), %rsi      # pointer to the message (from constants.s)
      mov $file_open_err_msg_length, %rdx    # length of the message (from constants.s)
      call print_info
