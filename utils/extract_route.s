@@ -1,5 +1,6 @@
 .section .data
 .equ SPACE, 32                    # ASCII code for space character
+index_str: .asciz "index"
 html_ext: .asciz ".html"          # HTML extension definition moved here
 
 .section .bss
@@ -50,8 +51,23 @@ copy_full_route:
     mov %r9, %rsi                     # Source is route start
     call str_concat                   # Copy route to request_route
 
-    # Now search for extension
+    # Check if route is just "/"
     lea request_route(%rip), %rdi    # Start of route
+    movb (%rdi), %al                 # Load first character
+    cmpb $'/', %al                   # Is it a slash?
+    jne search_for_extension         # If not, continue normal flow
+    movb 1(%rdi), %al               # Load second character
+    cmpb $0, %al                    # Is it end of string?
+    jne search_for_extension        # If not, continue normal flow
+    
+    # Append "index" to the route
+    lea request_route(%rip), %rdi    # Destination buffer
+    lea index_str(%rip), %rsi        # Source (.html extension)
+    xor %rdx, %rdx                    # Let str_concat calculate length
+    call str_concat
+
+search_for_extension:               # New label for existing extension search
+    lea request_route(%rip), %rdi   # Start of route
     
 search_dot:
     movb (%rdi), %al                 # Load current character into al
@@ -82,10 +98,5 @@ finish:
     xor %rdx, %rdx                    # Let str_concat calculate length
     call str_concat
 
-    lea request_file_ext(%rip), %rsi
-    call print_info
-
-    lea request_route(%rip), %rsi
-    call print_info
     pop %rbp
     ret
