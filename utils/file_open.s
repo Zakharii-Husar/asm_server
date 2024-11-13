@@ -1,3 +1,17 @@
+# Function: file_open
+# Description: Opens and reads a file from the public directory
+# 
+# Parameters:
+#   - request_route: (global) Null-terminated string containing the requested route/file path
+#
+# Returns:
+#   - %rax: Size of the file that was read, or -1 if an error occurred
+#   - Side effect: Fills response_content_buffer with the file contents
+#
+# Error handling:
+#   - Returns -1 in %rax if file cannot be opened or read
+#
+
 .section .bss
 .lcomm response_content_buffer, 8192  # Allocate 8 KB for the file buffer
 .lcomm stat_buffer, 100
@@ -10,8 +24,6 @@ file_open_err_msg:    .asciz "\033[31mFile not found! ❌\033[0m\n"
 file_open_err_msg_length = . - file_open_err_msg
 
 .section .text
-
-# Function to open and read the HTML file
 
 .type file_open, @function
 file_open:
@@ -77,7 +89,10 @@ file_open:
 
 
     handle_file_open_error:
-     lea file_open_err_msg(%rip), %rsi      # pointer to the message (from constants.s)
-     mov $file_open_err_msg_length, %rdx    # length of the message (from constants.s)
-     call print_info
-     call exit_program
+        lea file_open_err_msg(%rip), %rsi      # pointer to the message
+        mov $file_open_err_msg_length, %rdx    # length of the message
+        call print_info
+        
+        mov $-1, %rax                          # Return -1 to indicate error
+        pop %rbp                               # Restore stack frame
+        ret                                    # Return to caller instead of exiting
