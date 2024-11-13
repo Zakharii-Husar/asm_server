@@ -34,7 +34,7 @@ headers_end_length = . - headers_end
 
 .type sock_respond, @function
 sock_respond:
- push %rbp                          # save the caller's base pointer
+ push %rbp                           # save the caller's base pointer
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
     
 
@@ -78,10 +78,20 @@ sock_respond:
     call str_concat
 
     # Add Content-Type value
-    lea response_header_buffer(%rip), %rdi
-    lea content_type_val(%rip), %rsi
-    mov $content_type_val_length, %rdx
+    call find_content_type # returns %rax = pointer to the content type string, %rdx = length of the content type string    
+
+    lea response_header_buffer(%rip), %rdi  # Pointer to the beginning of the header        
+    mov %rax, %rsi                          # Pointer to the content type string
+    xor %rdx, %rdx                          # Length of the content type string
     call str_concat
+
+    lea response_header_buffer(%rip), %rsi
+    call print_info
+
+    # lea response_header_buffer(%rip), %rdi
+    # lea content_type_val(%rip), %rsi
+    # mov $content_type_val_length, %rdx
+    # call str_concat
 
     # Add final double CRLF to separate headers from body
     lea response_header_buffer(%rip), %rdi
@@ -108,7 +118,11 @@ sock_respond:
    cmp $0, %rax                               # Compare the return value with 0
    jl  handle_sock_respond_err                # Jump to error handling if %rax < 0
     
+
    lea sock_respond_msg(%rip), %rsi
+   call print_info
+
+   lea response_header_buffer(%rip), %rsi
    call print_info
 
 

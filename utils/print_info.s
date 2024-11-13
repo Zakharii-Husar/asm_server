@@ -9,27 +9,27 @@
 print_info:
     push %rbp
     mov %rsp, %rbp
-    
-    # Save registers we'll modify
     push %rdi
     push %rsi
     push %rdx
+    push %rax   
     
     # Move string pointer to %rdi for str_len
     mov %rsi, %rdi
     call str_len           # str_len will return length in %rax
     
     # Set up parameters for write syscall
-    mov $1, %rdi          # file descriptor (stdout)
-    # %rsi already contains string pointer
     mov %rax, %rdx       # length returned by str_len
-    mov $1, %rax         # syscall number for write
+    # %rsi already contains string pointer
+    mov $SYS_stdout, %rdi          # file descriptor (stdout)
+    mov $SYS_write, %rax         # syscall number for write
     syscall
     
-    # Restore registers
+    # Restore registers in reverse order
+    pop %rax
     pop %rdx
     pop %rsi
     pop %rdi
-    
     pop %rbp
+
     ret

@@ -1,10 +1,7 @@
 .section .rodata
 
 sock_accepted_msg:    .asciz "\033[32mConnection was accepted 🔄\033[0m\n"
-sock_accepted_msg_length = . - sock_accepted_msg
-
 sock_accept_err_msg:    .asciz "\033[31mFailed to accept connection ❌\033[0m\n"
-sock_accept_err_msg_length = . - sock_accept_err_msg
 
 .section .text
 
@@ -25,7 +22,6 @@ sock_accept:
 mov    %rax, %r12                             # save the new connection file descriptor in r12
     
  lea sock_accepted_msg(%rip), %rsi            # pointer to the message (from constants.s)
- mov $sock_accepted_msg_length, %rdx          # length of the message (from constants.s)
  call print_info
 
 
@@ -34,6 +30,5 @@ mov    %rax, %r12                             # save the new connection file des
  
 handle_sock_accept_err:
  lea sock_accept_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $sock_accept_err_msg_length, %rdx         # length of the message (from constants.s)
  call print_info
  call exit_program

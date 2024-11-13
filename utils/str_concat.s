@@ -8,11 +8,11 @@
 str_concat:
     push %rbp                  # Save the caller's base pointer
     mov %rsp, %rbp             # Set up new stack frame
-    mov %rdi, %r8             # Save destination buffer
+
+    mov %rdi, %r8              # Save destination buffer
     
-    # Check if string length is provided
-    test %rdx, %rdx
-    jnz offset_buffer         # If length provided, skip length calculation
+    test %rdx, %rdx            # Check if string length is provided
+    jnz offset_buffer          # If length provided, skip length calculation
 
     # Calculate string length if not provided
     mov %rsi, %rdi           
@@ -33,7 +33,7 @@ str_concat:
     jmp concat_bytes       # Skip the rdi setup in start_concat
 
     start_concat:
-    mov %r8, %rdi          # destination
+    mov %r8, %rdi           # destination
 
     concat_bytes:
     # Copy bytes from source (%rsi) to destination (%rdi)
@@ -43,8 +43,8 @@ str_concat:
 
     movb $0, (%rdi)         # Null terminate the resulting string
 
-    mov %rdi, %rax         # Current position after concatenation
-    sub %r8, %rax          # Subtract starting position to get length
+    mov %rdi, %rax          # Current position after concatenation
+    sub %r8, %rax           # Subtract starting position to get length
 
-    pop %rbp               # restore caller's base pointer
+    pop %rbp                # restore caller's base pointer
     ret

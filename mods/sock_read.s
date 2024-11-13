@@ -4,13 +4,8 @@
 GET_STRING: .asciz "GET"    
 
 method_is_get_msg:    .asciz "method is GET\n"
-method_is_get_msg_length = . - method_is_get_msg
-
 method_is_not_get_msg:    .asciz "method is not GET\n"
-method_is_not_get_msg_length = . - method_is_not_get_msg
-
 sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
-sock_read_err_msg_length = . - sock_read_err_msg
 
 .section .bss
 .lcomm request_buffer, 1024  # Allocates 1024 bytes for the request_buffer, zero-initialized
@@ -42,13 +37,11 @@ jl handle_sock_read_err                 # Jump if there was an error
 # lea request_buffer(%rip), %rsi          # pointer to the message
 # call print_info
 
-call extract_method
-
 # COMPARE THE REQUEST METHOD TO "GET"
+call extract_method
 lea request_method(%rip), %rdi
 lea GET_STRING(%rip), %rsi
 call str_cmp
-
 # Jump to the appropriate label based on the comparison result
 cmp $1, %rax
 je method_is_allowed
@@ -60,6 +53,7 @@ pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
 method_is_not_allowed:
+
 pop %rbp                               # restore the caller's base pointer
 ret                                    # return to the caller
 
@@ -67,7 +61,6 @@ ret                                    # return to the caller
 
 handle_sock_read_err:
  lea sock_read_err_msg(%rip), %rsi      # pointer to the message (from constants.s)
- mov $sock_read_err_msg_length, %rdx   # length of the message (from constants.s)
  call print_info
  call exit_program
  

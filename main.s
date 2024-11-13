@@ -1,43 +1,32 @@
-.section .bss
-.lcomm original_string, 8192 
-
 .section .data
-
-str_2:    .asciz "string_2"
-str_2_length = . - str_2
-
-str_3:    .asciz "string_3"
-str_3_length = . - str_3
-
 .include "./asm_server/constants.s"
 
 .section .text
+.include "./asm_server/mods/sock_create.s"
+.include "./asm_server/mods/sock_bind.s"
+.include "./asm_server/mods/sock_listen.s"
+.include "./asm_server/mods/sock_accept.s"
+.include "./asm_server/mods/sock_read.s"
+.include "./asm_server/mods/sock_respond.s"
+.include "./asm_server/mods/sock_close_conn.s"
 
-    # Include function files
-    .include "./asm_server/mods/sock_create.s"
-    .include "./asm_server/mods/sock_bind.s"
-    .include "./asm_server/mods/sock_listen.s"
-    .include "./asm_server/mods/sock_accept.s"
-    .include "./asm_server/mods/sock_read.s"
-    .include "./asm_server/mods/sock_respond.s"
-    .include "./asm_server/mods/sock_close_conn.s"
+.include "./asm_server/mods/process_fork.s"
+.include "./asm_server/mods/fork_handle_child.s"
+.include "./asm_server/mods/fork_handle_parent.s"
 
-    .include "./asm_server/mods/process_fork.s"
-    .include "./asm_server/mods/fork_handle_child.s"
-    .include "./asm_server/mods/fork_handle_parent.s"
+.include "./asm_server/mods/exit_program.s"
 
-    .include "./asm_server/mods/exit_program.s"
+.include "./asm_server/utils/print_info.s"
+.include "./asm_server/utils/int_to_string.s"
+.include "./asm_server/utils/file_open.s"
+.include "./asm_server/utils/extract_route.s"
+.include "./asm_server/utils/extract_method.s"
+.include "./asm_server/utils/str_len.s"
+.include "./asm_server/utils/str_cmp.s"
+.include "./asm_server/utils/str_concat.s"
+.include "./asm_server/utils/find_content_type.s"
 
-    .include "./asm_server/utils/print_info.s"
-    .include "./asm_server/utils/int_to_string.s"
-    .include "./asm_server/utils/file_open.s"
-    .include "./asm_server/utils/extract_route.s"
-    .include "./asm_server/utils/extract_method.s"
-    .include "./asm_server/utils/str_len.s"
-    .include "./asm_server/utils/str_cmp.s"
-    .include "./asm_server/utils/str_concat.s"
-    .global _start
-
+.global _start
 _start:
 
 .type main, @function
@@ -49,6 +38,7 @@ main:
     # 1. Create Socket
     # ----------------------------
     call sock_create
+    
     # ----------------------------
     # 2. Bind Socket
     # ----------------------------
@@ -70,6 +60,7 @@ main_loop:
     # --------------------------------
 
     call process_fork
+
     cmp $0, %rax               # Check if we're in the child or parent
     jg parent_process
 

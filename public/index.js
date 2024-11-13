@@ -1,1 +1,3 @@
-console.log("Hello, world!");
+console.log("TESTING JS:)");
+
+alert("TESTING JS:)");
