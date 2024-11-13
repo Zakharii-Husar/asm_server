@@ -25,6 +25,7 @@
 .include "./asm_server/utils/str_cmp.s"
 .include "./asm_server/utils/str_concat.s"
 .include "./asm_server/utils/find_content_type.s"
+.include "./asm_server/utils/str_to_lower.s"
 
 .global _start
 _start:
