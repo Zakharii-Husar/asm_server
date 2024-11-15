@@ -1,7 +1,12 @@
 .section .bss
     .lcomm response_header_buffer, 1024
 
+     .lcomm file_path_buffer, 2048                # New buffer for combined path
+
 .section .data
+
+base_path: .asciz "./asm_server/public"    # Base path constant
+not_found_path: .asciz "./asm_server/public/404.html"
 
 sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
 sock_respond_msg_length = . - sock_respond_msg
@@ -29,7 +34,6 @@ content_type_val_length = . - content_type_val
 headers_end:    .ascii "\r\n\r\n"
 headers_end_length = . - headers_end
 
-
 .section .text
 
 .type sock_respond, @function
@@ -51,13 +55,33 @@ sock_respond:
     call str_concat
 
     # Extract the route
-    call extract_route # returns %rax = 0 if no extension, 1 if has extension
-    mov %rax, %rdi     # move the extension parameter for file_open
+    call extract_route
+
+    # Concatenate base_path with route to create full path to the file
+    lea file_path_buffer(%rip), %rdi    # Destination buffer
+    lea base_path(%rip), %rsi           # Source (base path)
+    xor %rdx, %rdx                      # Let str_concat calculate length
+    call str_concat
+
+    # Append request route
+    lea file_path_buffer(%rip), %rdi    # Destination buffer
+    lea request_route(%rip), %rsi       # Source (request route)
+    xor %rdx, %rdx                      # Let str_concat calculate length
+    call str_concat
 
     # Read the requested file
-    call file_open         # returns file size in %rax
-    mov %rax, %rdi         # content length (integer) to be converted
-    call int_to_string     # %rax has the string address, %rdx has string length
+    lea file_path_buffer(%rip), %rdi    # Load path into %rdi before calling file_open
+    call file_open                      # returns file size in %rax
+    cmp $-1, %rax                       # Check if file_open returned -1 (error)
+    jne skip_404                        # Jump to skip_404 if file was found
+
+    # Load "./404.html" path and call file_open
+    lea not_found_path(%rip), %rdi      # Load 404 path into %rdi
+    call file_open                      # Try to open 404.html
+
+    skip_404:
+    mov %rax, %rdi        # content length (integer) to be converted
+    call int_to_string    # %rax has the string address, %rdx has string length
 
     # Add content length(in bytes) to response header
     lea response_header_buffer(%rip), %rdi
@@ -87,11 +111,6 @@ sock_respond:
 
     lea response_header_buffer(%rip), %rsi
     call print_info
-
-    # lea response_header_buffer(%rip), %rdi
-    # lea content_type_val(%rip), %rsi
-    # mov $content_type_val_length, %rdx
-    # call str_concat
 
     # Add final double CRLF to separate headers from body
     lea response_header_buffer(%rip), %rdi
