@@ -15,10 +15,8 @@
 .section .bss
 .lcomm response_content_buffer, 8192  # Allocate 8 KB for the file buffer
 .lcomm stat_buffer, 100
-.lcomm full_path_buffer, 2048                # New buffer for combined path
 
 .section .data
-base_path: .asciz "./asm_server/public"    # Base path constant
 
 file_open_err_msg:    .asciz "\033[31mFile not found! ❌\033[0m\n"
 file_open_err_msg_length = . - file_open_err_msg
@@ -29,24 +27,12 @@ file_open_err_msg_length = . - file_open_err_msg
 file_open:
     push %rbp
     mov %rsp, %rbp
+    # %rdi should now contain the file path to open
 
-    # Combine base path with request route
-    lea full_path_buffer(%rip), %rdi    # Destination buffer
-    lea base_path(%rip), %rsi           # Source (base path)
-    xor %rdx, %rdx                      # Let str_concat calculate length
-    call str_concat
-
-    # Append request route
-    lea full_path_buffer(%rip), %rdi    # Destination buffer
-    lea request_route(%rip), %rsi       # Source (request route)
-    xor %rdx, %rdx                      # Let str_concat calculate length
-    call str_concat
-
-    # Now open the file using the combined path
+    # Open the file using the path in %rdi
     mov $SYS_open, %rax                # sys_open
-    lea full_path_buffer(%rip), %rdi   # Load combined path
     mov $0, %rsi                       # flags = O_RDONLY
-    syscall
+    syscall                            # path is already in %rdi
 
     # Save file descriptor in %r8
     cmp $0, %rax
@@ -89,10 +75,13 @@ file_open:
 
 
     handle_file_open_error:
-        lea file_open_err_msg(%rip), %rsi      # pointer to the message
-        mov $file_open_err_msg_length, %rdx    # length of the message
+        mov %rdi, %rsi                     # Load path for printing (already in %rdi)
         call print_info
         
-        mov $-1, %rax                          # Return -1 to indicate error
-        pop %rbp                               # Restore stack frame
-        ret                                    # Return to caller instead of exiting
+        lea file_open_err_msg(%rip), %rsi
+        mov $file_open_err_msg_length, %rdx
+        call print_info
+        
+        mov $-1, %rax
+        pop %rbp
+        ret
