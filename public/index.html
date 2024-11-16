@@ -12,32 +12,42 @@
             <h1>ASM Server</h1>
             <div class="status-badge">
                 <span class="dot"></span>
-                <span>Running</span>
+                <span id="status">Running</span>
             </div>
         </div>
         
         <div class="server-stats">
             <div class="stat-box">
-                <h3>Server Status</h3>
-                <p>Active</p>
-            </div>
-            <div class="stat-box">
-                <h3>Uptime</h3>
-                <p id="uptime">0:00:00</p>
+                <h3>Local Time</h3>
+                <p id="local-time"></p>
             </div>
             <div class="stat-box">
                 <h3>Version</h3>
                 <p>1.0.0</p>
             </div>
+            <div class="stat-box">
+                <h3>Host</h3>
+                <p id="host-name"></p>
+            </div>
+            <div class="stat-box">
+                <h3>Port</h3>
+                <p id="port-number"></p>
+            </div>
         </div>
 
         <div class="info-section">
             <h2>Welcome to ASM Server</h2>
-            <p>This page is being served by ASM Server. If you can see this page, your server is successfully running.</p>
+            <ul>
+                <li>This page is being served by a Server built completely in assembly.</li>
+                <li>If you can see this page, your server is successfully running.</li>
+                <li>Is it overkill? Yes.</li>
+                <li>Am I crazy? No.</li>
+            </ul>
         </div>
 
         <footer>
-            <p>ASM Server © 2024</p>
+            <div>Built by Zakharii Husar 2024</div>
+            <div><a href="https://github.com/Zakharii-Husar/asm_server" target="_blank">GitHub Repo</a></div>
         </footer>
     </div>
     <script src="./index.js"></script>
