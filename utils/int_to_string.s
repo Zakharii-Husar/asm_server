@@ -4,9 +4,7 @@
 # Output:
 #   %rax - pointer to the resulting string
 #   %rdx - length of the string
-#
-# Converts a 64-bit integer to its string representation in base 10.
-# The string is stored in a static buffer and is not null-terminated.
+# Note: The string is stored in a static buffer and is not null-terminated.
 
 .section .bss
     .lcomm string_buffer, 21     # 21 bytes for safety

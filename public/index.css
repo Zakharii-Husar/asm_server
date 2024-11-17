@@ -3,7 +3,8 @@
     --secondary-color: #ffd700;
     --accent-color: #ff1616;
     --background-color: #1a1a1a;
-    --text-color: #ffffff;
+    --text-color: #000000;
+    --text-color-dark: #e0e0e0;
 }
 
 * {
@@ -13,10 +14,11 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Bebas Neue', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.6;
+    font-size: 1.2rem;
 }
 
 .container {
@@ -43,8 +45,10 @@ body {
 }
 
 .server-info h1 {
-    font-size: 2rem;
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(255, 215, 0, 0.9);
     color: var(--primary-color);
+    font-weight: bold;
 }
 
 .status-badge {
@@ -89,8 +93,11 @@ body {
 }
 
 .stat-box h3 {
-    color: var(--secondary-color);
+    font-size: 2rem;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.7);
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
 .info-section {
@@ -104,6 +111,8 @@ body {
 }
 
 .info-section h2 {
+    font-size: 2.2rem;
+    text-shadow: 1px 1px 3px rgba(255, 215, 0, 0.8);
     color: var(--primary-color);
     margin-bottom: 1rem;
 }
@@ -112,6 +121,7 @@ body {
     list-style-type: disc;
     padding-left: 20px;
     margin: 0;
+    font-size: 1.1rem;
 }
 
 footer {

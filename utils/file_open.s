@@ -1,6 +1,10 @@
 # Function: file_open
-# Description: Opens and reads a file from the public directory
-# 
+# Input:
+#   %rdi - Null-terminated string containing the requested route/file path
+# Output:
+#   %rax - Size of the file that was read, or -1 if an error occurred
+#   Side effect: Fills response_content_buffer with the file contents
+#
 # Parameters:
 #   - request_route: (global) Null-terminated string containing the requested route/file path
 #

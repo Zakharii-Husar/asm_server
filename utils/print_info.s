@@ -4,7 +4,7 @@
 
 # Function: print_info
 # Input: string pointer in %rsi
-# Output: none
+# Output: none (prints the string to stdout)
 # Note: Internally calculates string length using str_len
 print_info:
     push %rbp

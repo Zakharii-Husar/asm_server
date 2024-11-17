@@ -1,3 +1,9 @@
+# Function: find_content_type
+# Input: 
+#   %rdi - pointer to the file extension (extracted from the request)
+# Output:
+#   %rax - pointer to the corresponding MIME type string
+
 .section .data
 
 .section .rodata

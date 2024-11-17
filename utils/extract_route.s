@@ -1,3 +1,8 @@
+# Function: extract_route
+# Input: 
+#   %rdi - pointer to the request buffer (global)
+# Output: none (modifies request_route and request_file_ext buffers)
+
 .section .data
 .equ SPACE, 32                    # ASCII code for space character
 index_str: .asciz "index"

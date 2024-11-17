@@ -1,3 +1,9 @@
+# Function: fork_handle_child
+# Input: none (handles child process operations)
+# Output: none (exits the child process)
+# Preserves: preserves all registers except %rbp
+# Exit: terminates the child process after handling socket operations
+
 .section .text
 .type fork_handle_child, @function
 fork_handle_child:

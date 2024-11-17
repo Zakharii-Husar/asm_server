@@ -1,3 +1,10 @@
+# Function: str_concat
+# Input:
+#   %rdi - destination buffer
+#   %rsi - source string (buffer or asciz)
+#   %rdx - string length (optional, if 0, length will be calculated)
+# Output: none (modifies destination buffer in place)
+
 # %rdi >>> %r8 = destination buffer
 # %rsi = string (buffer or asciz)
 # %rdx = string length

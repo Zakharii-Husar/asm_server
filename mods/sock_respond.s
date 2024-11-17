@@ -27,14 +27,48 @@ newline_length = . - newline
 content_type:    .ascii "Content-Type: "
 content_type_length = . - content_type
 
-content_type_val: .ascii "text/html"
-content_type_val_length = . - content_type_val
-
 # Double CRLF to separate headers from body
 headers_end:    .ascii "\r\n\r\n"
 headers_end_length = . - headers_end
 
+.section .rodata
+
+sock_write_err_msg:    .asciz "\033[31mFailed to write to socket! ❌\033[0m\n"
+sock_write_success_msg: .asciz "\033[32mData written to socket successfully! ✅\033[0m\n"
+
 .section .text
+
+# Function: sock_write
+# Parameters:
+#   - %rdi: socket file descriptor (fd) to write to
+#   - %rsi: pointer to the buffer containing the data to write
+#   - %rdx: number of bytes to write from the buffer
+# Return Values:
+#   - Returns the number of bytes written on success (>= 0)
+#   - Calls handle_sock_write_err on failure (if write fails)
+
+.type sock_write, @function
+sock_write:
+ push %rbp                    # save the caller's base pointer
+ mov %rsp, %rbp               # set the new base pointer (stack frame)
+
+ mov %rdi, %r12                # move socket fd to %r12 for syscall
+ mov $SYS_write, %rax          # syscall number for write
+ syscall                        # invoke syscall
+
+ cmp $0, %rax                  # Check if write was successful
+ jl handle_sock_write_err       # Jump if there was an error
+
+ lea sock_write_success_msg(%rip), %rsi  # pointer to success message
+ call print_info                # print success message
+
+ pop %rbp                      # restore the caller's base pointer
+ ret                           # return to the caller
+
+handle_sock_write_err:
+ lea sock_write_err_msg(%rip), %rsi      # pointer to the error message
+ call print_info
+ call exit_program
 
 .type sock_respond, @function
 sock_respond:

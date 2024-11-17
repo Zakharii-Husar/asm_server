@@ -5,6 +5,13 @@ sock_accept_err_msg:    .asciz "\033[31mFailed to accept connection ❌\033[0m\n
 
 .section .text
 
+# Function: sock_accept
+# Parameters: 
+#   - %rdi: Socket file descriptor (fd) to accept connections on
+# Return Values: 
+#   - Returns a new socket file descriptor on success
+#   - Calls exit_program on failure
+
 .type sock_accept, @function
 sock_accept:
  push %rbp                                    # save the caller's base pointer
@@ -19,11 +26,10 @@ sock_accept:
  cmp $0, %rax                                 # Compare the return value with 0
  jl  handle_sock_accept_err                   # Jump to error handling if %rax < 0
 
-mov    %rax, %r12                             # save the new connection file descriptor in r12
+ mov    %rax, %r12                             # save the new connection file descriptor in r12
     
  lea sock_accepted_msg(%rip), %rsi            # pointer to the message (from constants.s)
  call print_info
-
 
  pop %rbp                                      # restore the caller's base pointer
  ret                                           # return to the caller

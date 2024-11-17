@@ -1,3 +1,9 @@
+# Function: str_cmp
+# Input:
+#   %rdi - pointer to the first string
+#   %rsi - pointer to the second string
+# Output: 
+#   %rax - 1 if strings are equal, 0 if not
 
 .section .text
 

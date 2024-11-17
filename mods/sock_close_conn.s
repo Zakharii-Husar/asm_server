@@ -16,6 +16,13 @@ sock_close_child_err_msg_length = . - sock_close_child_err_msg
 
 .section .text
 
+# Function: sock_close_conn
+# Parameters:
+#   - %rdi: Connection file descriptor (0 for parent, 1 for child)
+# Return Values:
+#   - Returns 0 on successful closure of the connection
+#   - Calls exit_program on failure
+
 .type sock_close_conn, @function
 sock_close_conn:
 

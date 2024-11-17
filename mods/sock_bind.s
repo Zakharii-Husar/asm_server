@@ -15,6 +15,13 @@ sock_bind_err_msg_length = . - sock_bind_err_msg
 
 .section .text
 
+# Function: sock_bind
+# Parameters: 
+#   - %rdi: Socket file descriptor (fd) to bind
+# Return Values: 
+#   - Returns 0 on success
+#   - Calls exit_program on failure
+
 .type sock_bind, @function
 sock_bind:
  push %rbp                              # save the caller's base pointer

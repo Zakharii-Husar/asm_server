@@ -1,3 +1,9 @@
+# fork_handle_parent: Handles the fork for the parent process.
+# Parameters:
+#   - None (implicitly uses %rdi for sock_close_conn)
+# Return Value:
+#   - None (returns to the caller)
+
 .section .text
 
 .type fork_handle_parent, @function

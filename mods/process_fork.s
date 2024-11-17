@@ -1,3 +1,9 @@
+# Function: process_fork
+# Parameters: None
+# Return Values: 
+#   - Returns 0 on successful fork
+#   - Calls exit_program on failure
+
 .section .rodata
 
 process_fork_msg:    .asciz "\033[35mProcess was forked ✌️\033[0m\n"

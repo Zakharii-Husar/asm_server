@@ -7,7 +7,10 @@ buffer_size = 8
 
 .section .text
 
-.type extract_method, @function
+# Function: extract_method
+# Input: 
+#   %rdi - pointer to the request buffer (global)
+# Output: none (modifies request_method buffer)
 extract_method:
     push %rbp                        # Save the caller's base pointer
     mov %rsp, %rbp                   # Set the new base pointer (stack frame)

@@ -4,7 +4,13 @@ sock_created_msg:    .asciz "\033[32mTCP Sock was created ✅\033[0m\n"
 sock_create_err_msg:    .asciz "\033[31mFailed to create TCP socket ❌\033[0m\n"
 
 .section .text
-# Create socket (AF_INET, SOCK_STREAM, 0)
+# Function: sock_create
+# Parameters:
+#   - None (uses predefined constants for socket creation)
+# Return Values:
+#   - Returns a socket file descriptor (fd) on success (fd >= 0)
+#   - Calls exit_program on failure (fd < 0)
+
 .type sock_create, @function
 
 sock_create:

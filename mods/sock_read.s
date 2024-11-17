@@ -12,12 +12,20 @@ sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\
 
 .section .text
 
+# Function: sock_read
+# Parameters:
+#   - %rdi: client socket file descriptor (fd) to read from
+#   - %rsi: pointer to the buffer where the read data will be stored
+#   - %rdx: maximum number of bytes to read (request_buffer_size)
+# Return Values:
+#   - Returns the number of bytes read on success (>= 0)
+#   - Calls handle_sock_read_err on failure (if read fails)
+
 .type sock_read, @function
 sock_read:
 
 push %rbp                              # save the caller's base pointer
 mov %rsp, %rbp                         # set the new base pointer (stack frame)
-
 
 mov $0, %rdx                            # Set %rdx to 0 for flags if needed
 mov %r12, %rdi                          # client socket file descriptor
@@ -29,13 +37,6 @@ syscall                                 # invoke syscall
 cmp $0, %rax                            # Check if read was successful
 jl handle_sock_read_err                 # Jump if there was an error
 
-# Calculate request length
-# lea request_buffer(%rip), %rdi          # Load buffer address
-# call str_len                             # Calculate string length
-# mov %rax, %rdx                          # Move length to %rdx for print_info
-# PRINT CLIENT'S REQUEST
-# lea request_buffer(%rip), %rsi          # pointer to the message
-# call print_info
 
 # COMPARE THE REQUEST METHOD TO "GET"
 call extract_method
