@@ -19,49 +19,55 @@ sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\
 #   - %rdx: maximum number of bytes to read (request_buffer_size)
 # Return Values:
 #   - Returns the number of bytes read on success (>= 0)
-#   - Calls handle_sock_read_err on failure (if read fails)
+#   - Calls bad_request on failure (if read fails)
 
 .type sock_read, @function
 sock_read:
+    push %rbp                              # save the caller's base pointer
+    mov %rsp, %rbp                         # set the new base pointer (stack frame)
 
-push %rbp                              # save the caller's base pointer
-mov %rsp, %rbp                         # set the new base pointer (stack frame)
+    # READ CLIENT'S REQUEST
+    mov $0, %rdx                            # Set %rdx to 0 for flags if needed
+    mov %r12, %rdi                          # client socket file descriptor
+    lea request_buffer(%rip), %rsi          # pointer to the request_buffer to store the request
+    mov $request_buffer_size, %rdx          # max number of bytes to read
+    mov $0, %rax                            # syscall number for read
+    syscall                                 # invoke syscall
 
-mov $0, %rdx                            # Set %rdx to 0 for flags if needed
-mov %r12, %rdi                          # client socket file descriptor
-lea request_buffer(%rip), %rsi          # pointer to the request_buffer to store the request
-mov $request_buffer_size, %rdx          # max number of bytes to read
-mov $0, %rax                            # syscall number for read
-syscall                                 # invoke syscall
+    cmp $0, %rax                            # Check if read was successful
+    jl bad_request                 # Jump if there was an error
 
-cmp $0, %rax                            # Check if read was successful
-jl handle_sock_read_err                 # Jump if there was an error
+    # COMPARE THE REQUEST METHOD TO "GET"
+    call extract_method
+    lea request_method(%rip), %rdi
+    lea GET_STRING(%rip), %rsi
+    call str_cmp
+    cmp $0, %rax
+    je method_not_allowed
 
+    # Attempt to open the requested file
+    call extract_route                      # Extract the route
+    lea file_path_buffer(%rip), %rdi       # Load path into %rdi before calling file_open
+    call file_open                          # returns file size in %rax
+    cmp $-1, %rax                           # Check if file_open returned -1 (error)
+    jl file_not_found                       # Jump if file not found
 
-# COMPARE THE REQUEST METHOD TO "GET"
-call extract_method
-lea request_method(%rip), %rdi
-lea GET_STRING(%rip), %rsi
-call str_cmp
-# Jump to the appropriate label based on the comparison result
-cmp $1, %rax
-je method_is_allowed
-jne method_is_not_allowed
+    pop %rbp                               # restore the caller's base pointer
+    ret    
 
-method_is_allowed:
+bad_request:
+    mov $-1, %rax                          # Return -1 for file not found
+    pop %rbp
+    ret
 
-pop %rbp                               # restore the caller's base pointer
-ret                                    # return to the caller
+method_not_allowed:
+    mov $-2, %rax                          # Return -1 for file not found
+    pop %rbp
+    ret
 
-method_is_not_allowed:
+file_not_found:
+    mov $-3, %rax                          # Return -1 for file not found
+    pop %rbp
+    ret
 
-pop %rbp                               # restore the caller's base pointer
-ret                                    # return to the caller
-
-
-
-handle_sock_read_err:
- lea sock_read_err_msg(%rip), %rsi      # pointer to the message (from constants.s)
- call print_info
- call exit_program
  
