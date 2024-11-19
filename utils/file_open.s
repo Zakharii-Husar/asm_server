@@ -32,6 +32,9 @@ file_open:
     push %rbp
     mov %rsp, %rbp
     # %rdi should now contain the file path to open
+    # %rsi now contains the buffer to write into
+
+    mov %rsi, %r9 # preserve buffer address
 
     # Open the file using the path in %rdi
     mov $SYS_open, %rax                # sys_open
@@ -43,10 +46,10 @@ file_open:
     jl handle_file_open_error             # jump to error handling if failed to open
     mov %rax, %r8                    # save file descriptor in %r8
 
-    # Read file contents into response_content_buffer
+    # Read file contents into the buffer passed in %rdi
     mov $SYS_read, %rax              # sys_read
+    mov %r9, %rsi                    # Use the buffer pointer passed in %rsi > %r9
     mov %r8, %rdi                    # file descriptor
-    lea response_content_buffer(%rip), %rsi      # address of response_content_buffer
     mov $8192, %rdx                  # max bytes to read
     syscall
 
@@ -62,7 +65,6 @@ file_open:
 
     # Get the file size from stat_buffer
     mov 48(%rsi), %r9  # st_size is usually at offset 40 for 64-bit
-
 
     # Close the file descriptor
     mov $SYS_close, %rax             # sys_close
