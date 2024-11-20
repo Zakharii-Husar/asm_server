@@ -23,7 +23,7 @@ server_err_path: .asciz "./asm_server/public/500.html"
 # - %rdi Pointer to the response_content_buffer;
 # Return Values:
 #   - %rax: Actual file size (size of the opened file)
-#   - %rdx: Error code (0 if no error, negative value for specific errors)
+#   - %rdx: HTTP status code
 # Side effects:
 #   - Extracts the route and route extension into buffers
 #   - Opens requested file into buffer
@@ -64,7 +64,7 @@ sock_read:
     cmp $-1, %rax                            # Check if file_open returned -1 (error)
     jl file_not_found                        # Jump if file not found
 
-    mov $0, %rdx                             # Set error code to 0 (no error)
+    mov $HTTP_OK_code, %rdx
     jmp finish_sock_read 
 
 # HANDLE ERRORS
@@ -82,7 +82,7 @@ file_not_found:
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
     jl server_err                            # Jump to bad_request if it fails
 
-    mov $-1, %rdx                             # Set error code to -1 (file not found)
+    mov $HTTP_file_not_found_code, %rdx                             # Set error code to -1 (file not found)
     jmp finish_sock_read
 
 bad_request:
@@ -98,7 +98,7 @@ bad_request:
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
     jl server_err                             # Jump to bad_request if it fails
 
-    mov $-2, %rdx                             # Set error code to -2 (bad request)
+    mov $HTTP_bad_req_code, %rdx                             # Set error code to -2 (bad request)
     jmp finish_sock_read
 
 method_not_allowed:
@@ -114,7 +114,7 @@ method_not_allowed:
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
     jl server_err                             # Jump to bad_request if it fails
 
-    mov $-3, %rdx                             # Set error code to -3 (method not allowed)
+    mov $HTTP_method_not_allowed_code, %rdx                             # Set error code to -3 (method not allowed)
     jmp finish_sock_read
 
 server_err:
@@ -127,7 +127,7 @@ server_err:
     mov %r8, %rsi                           # Use the same buffer for the response
     call file_open                            # Attempt to open the not found file
 
-    mov $-4, %rdx                             # Set error code to -4 (server error)
+    mov $HTTP_serve_err_code, %rdx                             # Set error code to -4 (server error)
 
 
 finish_sock_read:
