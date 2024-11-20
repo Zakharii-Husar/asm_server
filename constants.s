@@ -29,4 +29,12 @@
 
     # Max size for respons content buffer
     .equ response_content_buffer_size, 8192
+
+    # HTTP Requests status codes
+
+    .equ HTTP_OK_code, 200
+    .equ HTTP_bad_req_code, 400
+    .equ HTTP_file_not_found_code, 404
+    .equ HTTP_method_not_allowed_code, 405
+    .equ HTTP_serve_err_code, 500
     
