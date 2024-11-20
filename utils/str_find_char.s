@@ -3,7 +3,8 @@
 #   %rsi - pointer to the string (buffer)
 #   %rdi - character to find
 # Output: 
-#   %rax - address of the character or -1 if not found
+#   %rax - address of the character if found or the end of  the string
+#   %rdx - search result (1 if char found, 0 if not)
 
 str_find_char:
     push %rbp
@@ -19,11 +20,13 @@ search_char:
     jmp search_char                   # Repeat the search
 
 found_char:
-    mov %rsi, %rax                    # Return the address of the found character
-    pop %rbp
-    ret
+    mov $1, rdx                       # Return 1 if found
+    jmp finish_str_find_char
 
 not_found:
-    mov $-1, %rax                     # Return -1 if not found
+    mov $0, rdx                       # Return 0 if not found
+
+finish_str_find_char:
+    mov %rsi, %rax                    # Return the address of the end of the string
     pop %rbp
     ret
