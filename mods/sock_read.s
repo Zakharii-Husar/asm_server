@@ -9,6 +9,8 @@ bad_request_path: .asciz "./asm_server/public/400.html"
 
 not_found_path: .asciz "./asm_server/public/404.html"
 
+method_not_allowed_path: .asciz "./asm_server/public/405.html"
+
 server_err_path: .asciz "./asm_server/public/500.html"
 
 .section .bss
