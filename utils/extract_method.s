@@ -1,35 +1,45 @@
 .section .data
 
-buffer_size = 8  
+request_method_buffer_size = 8  
 
 .section .bss
-.lcomm request_method, buffer_size  
-
+.lcomm request_method, request_method_buffer_size  
 .section .text
 
 # Function: extract_method
 # Input: 
-#   %rdi - pointer to the request buffer (global)
-# Output: none (modifies request_method buffer)
+#   %rdi - pointer to the method buffer (destination)
+#   %rsi - pointer to the request buffer (source)
+# Output: none (modifies method buffer)
 extract_method:
     push %rbp                        # Save the caller's base pointer
     mov %rsp, %rbp                   # Set the new base pointer (stack frame)
+    push %r12                        # Save the destination pointer
+    push %r13                        # Save the source pointer
+    
+    # Preserve the original pointers
+    mov %rdi, %r12                   # Pointer to the destination buffer
+    mov %rsi, %r13                   # Pointer to the source buffer
 
-    lea request_buffer(%rip), %rsi   # Load address of request string
-    lea request_method(%rip), %rdi   # Load address of method buffer
-    mov $buffer_size, %rcx           # Max bytes to copy (for safety)
-    xor %rdx, %rdx                   # Clear %rdx to use as length counter
+    # Find the first space character
+    mov %r13, %rdi                   # Move request buffer to first param
+    mov $' ', %rsi                   # Space character to find
+    call str_find_char                 # Find the space
 
-copy_method:
-    mov (%rsi), %al                  # Load byte from request_string
-    cmp $' ', %al                    # Check if it's a space
-    je end                           # If space, we've reached the end of the method
-    stosb                            # Store byte into method buffer
-    inc %rsi                         # Move to next character in source
-    inc %rdx                         # Increment the length counter
-    dec %rcx                         # Decrease buffer size counter
-    jnz copy_method                  # Continue until counter reaches 0 or space is found
+    # Copy the method to the buffer
+    mov %r12, %rdi                   # Move destination buffer to first param
+    mov %r13, %rsi                   # Move source buffer to second param
+    mov %rax, %rdx                   # Move length to third param
+    sub %r13, %rdx                   # Calculate length (end - start)
+    
+    # Length check
+    cmp $request_method_buffer_size, %rdx
+    jle safe_to_copy                 # If length <= buffer size, proceed
+    mov $request_method_buffer_size, %rdx  # Otherwise, truncate to buffer size
+safe_to_copy:
+    call str_concat                  # Copy the method to the buffer
 
-end:
+    pop %r13                         # Restore the source pointer
+    pop %r12                         # Restore the destination pointer
     pop %rbp                         # Restore the caller's base pointer
-    ret                              # Return to the caller with %rdx holding the method length
+    ret                             # Return to the caller
