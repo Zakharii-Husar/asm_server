@@ -75,7 +75,6 @@ no_extension:
     call str_concat
 
 exit_extract_route:
-    pop %rdi                         # Restore the destination buffer from stack
     pop %r13
     pop %r12
     pop %rbp    
