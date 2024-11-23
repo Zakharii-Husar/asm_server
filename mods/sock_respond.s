@@ -1,12 +1,13 @@
+# Implicit parameters:
+# - %r12 Socket file descriptor;
+# - %r13 Result of sock read;
+
 .section .bss
     .lcomm response_header_buffer, 1024
 
-     .lcomm file_path_buffer, 2048                # New buffer for combined path
-
-.section .data
+.section .rodata
 
 base_path: .asciz "./asm_server/public"    # Base path constant
-not_found_path: .asciz "./asm_server/public/404.html"
 
 sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
 sock_respond_msg_length = . - sock_respond_msg
@@ -14,8 +15,6 @@ sock_respond_msg_length = . - sock_respond_msg
 sock_respond_err_msg:    .asciz "\033[31mFailed to respond to the client! ❌\033[0m\n"
 sock_respond_err_msg_length = . - sock_respond_err_msg
 
-http_status:     .ascii "HTTP/1.1 200 OK\r\n"
-http_status_length = . - http_status
 
 content_length:  .ascii "Content-Length: "
 content_length_length = . - content_length
@@ -31,89 +30,35 @@ content_type_length = . - content_type
 headers_end:    .ascii "\r\n\r\n"
 headers_end_length = . - headers_end
 
-.section .rodata
-
-sock_write_err_msg:    .asciz "\033[31mFailed to write to socket! ❌\033[0m\n"
-sock_write_success_msg: .asciz "\033[32mData written to socket successfully! ✅\033[0m\n"
-
 .section .text
-
-# Function: sock_write
-# Parameters:
-#   - %rdi: socket file descriptor (fd) to write to
-#   - %rsi: pointer to the buffer containing the data to write
-#   - %rdx: number of bytes to write from the buffer
-# Return Values:
-#   - Returns the number of bytes written on success (>= 0)
-#   - Calls handle_sock_write_err on failure (if write fails)
-
-.type sock_write, @function
-sock_write:
- push %rbp                    # save the caller's base pointer
- mov %rsp, %rbp               # set the new base pointer (stack frame)
-
- mov %rdi, %r12                # move socket fd to %r12 for syscall
- mov $SYS_write, %rax          # syscall number for write
- syscall                        # invoke syscall
-
- cmp $0, %rax                  # Check if write was successful
- jl handle_sock_write_err       # Jump if there was an error
-
- lea sock_write_success_msg(%rip), %rsi  # pointer to success message
- call print_info                # print success message
-
- pop %rbp                      # restore the caller's base pointer
- ret                           # return to the caller
-
-handle_sock_write_err:
- lea sock_write_err_msg(%rip), %rsi      # pointer to the error message
- call print_info
- call exit_program
 
 .type sock_respond, @function
 sock_respond:
  push %rbp                           # save the caller's base pointer
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
-    
 
-    # Add HTTP status line to response header
+    # ADD HTTP STATUS LINE TO RESPONSE HEADER
+
+    # Init header buffer
     lea response_header_buffer(%rip), %rdi
-    lea http_status(%rip), %rsi
-    mov $http_status_length, %rdx
-    call str_concat
 
-    # Add Content-Length header to response header
+    # Get HTTP status line
+    # Note: status code is in %rdx, need to preserve it
+    push %rdx                    # Save status code as we need %rdx for other operations
+    mov %rdx, %rdi              # Move status code to first parameter
+    call create_status_header        # Returns ptr in %rax, len in %rdx
+    mov %rax, %rsi              # Move status string pointer to %rsi for str_concat
+    # %rdx already contains length from get_http_status
+    lea response_header_buffer(%rip), %rdi
+    call str_concat
+    pop %rdx                    # Restore status code
+
+    # ADD CONTENT-LENGTH HEADER TO RESPONSE HEADER
     lea response_header_buffer(%rip), %rdi
     lea content_length(%rip), %rsi
     mov $content_length_length, %rdx
     call str_concat
 
-    # Extract the route
-    call extract_route
-
-    # Concatenate base_path with route to create full path to the file
-    lea file_path_buffer(%rip), %rdi    # Destination buffer
-    lea base_path(%rip), %rsi           # Source (base path)
-    xor %rdx, %rdx                      # Let str_concat calculate length
-    call str_concat
-
-    # Append request route
-    lea file_path_buffer(%rip), %rdi    # Destination buffer
-    lea request_route(%rip), %rsi       # Source (request route)
-    xor %rdx, %rdx                      # Let str_concat calculate length
-    call str_concat
-
-    # Read the requested file
-    lea file_path_buffer(%rip), %rdi    # Load path into %rdi before calling file_open
-    call file_open                      # returns file size in %rax
-    cmp $-1, %rax                       # Check if file_open returned -1 (error)
-    jne skip_404                        # Jump to skip_404 if file was found
-
-    # Load "./404.html" path and call file_open
-    lea not_found_path(%rip), %rdi      # Load 404 path into %rdi
-    call file_open                      # Try to open 404.html
-
-    skip_404:
     mov %rax, %rdi        # content length (integer) to be converted
     call int_to_string    # %rax has the string address, %rdx has string length
 
