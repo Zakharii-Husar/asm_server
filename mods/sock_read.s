@@ -1,5 +1,5 @@
 .section .data
-.equ request_buffer_size, 1024
+.equ request_content_buffer_size, 1024
 GET_STRING: .asciz "GET"    
 
 sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
@@ -13,7 +13,8 @@ method_not_allowed_path: .asciz "./asm_server/public/405.html"
 server_err_path: .asciz "./asm_server/public/500.html"
 
 .section .bss
-.lcomm request_buffer, 1024  # Allocates 1024 bytes for the request_buffer, zero-initialized
+.lcomm request_content_buffer, request_content_buffer_size  # Allocates 1024 bytes for the request_content_buffer, zero-initialized
+.lcomm request_route_buffer, 256                            # Allocate 256 bytes for the route buffer
 
 .section .text
 
@@ -37,8 +38,8 @@ sock_read:
     # READ AND VALIDATE CLIENT'S REQUEST
     mov $0, %rdx                            # Set %rdx to 0 for flags if needed
     mov %r12, %rdi                          # client socket file descriptor
-    lea request_buffer(%rip), %rsi          # pointer to the request_buffer to store the request
-    mov $request_buffer_size, %rdx          # max number of bytes to read
+    lea request_content_buffer(%rip), %rsi  # pointer to the request_content_buffer to store the request
+    mov $request_content_buffer_size, %rdx  # max number of bytes to read
     mov $0, %rax                            # syscall number for read
     syscall                                 # invoke syscall
 
@@ -54,7 +55,8 @@ sock_read:
     je method_not_allowed
 
     # ATTEMPT TO OPEN THE REQUESTED FILE
-    lea request_buffer(%rip), %rdi           # The HTTP req buffer to extract route and ext from
+    lea request_route_buffer(%rip), %rdi     # Destination buffer for route
+    lea request_content_buffer(%rip), %rsi   # The HTTP req buffer to extract route and ext from
     call extract_route                       # Extract the route
     
     mov %rax, %rdi                           # 1st param for file_open

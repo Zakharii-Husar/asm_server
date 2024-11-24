@@ -1,9 +1,6 @@
-.section .data
-
-request_method_buffer_size = 8  
-
 .section .bss
 .lcomm request_method, request_method_buffer_size  
+
 .section .text
 
 # Function: extract_method
@@ -24,7 +21,7 @@ extract_method:
     # Find the first space character
     mov %r13, %rdi                   # Move request buffer to first param
     mov $' ', %rsi                   # Space character to find
-    call str_find_char                 # Find the space
+    call str_find_char               # Find the space
 
     # Copy the method to the buffer
     mov %r12, %rdi                   # Move destination buffer to first param

@@ -30,3 +30,4 @@ finish_str_find_char:
     mov %rdi, %rax                    # Return address using rdi instead of rsi
     pop %rbp
     ret
+    

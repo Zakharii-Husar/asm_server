@@ -37,12 +37,10 @@ sock_respond:
  push %rbp                           # save the caller's base pointer
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
 
+    # Save content length
+    push %rsi                        # Save content length for later
+
     # ADD HTTP STATUS LINE TO RESPONSE HEADER
-
-    # Init header buffer
-    lea response_header_buffer(%rip), %rdi
-
-    # Get HTTP status line
     # Note: status code is in %rdx, need to preserve it
     push %rdx                    # Save status code as we need %rdx for other operations
     mov %rdx, %rdi              # Move status code to first parameter
@@ -59,8 +57,10 @@ sock_respond:
     mov $content_length_length, %rdx
     call str_concat
 
-    mov %rax, %rdi        # content length (integer) to be converted
-    call int_to_string    # %rax has the string address, %rdx has string length
+    # Convert the actual content length to string
+    pop %rsi                    # Restore content length
+    mov %rsi, %rdi             # Move it to first parameter for int_to_string
+    call int_to_string         # Convert the length to string
 
     # Add content length(in bytes) to response header
     lea response_header_buffer(%rip), %rdi

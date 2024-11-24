@@ -1,6 +1,5 @@
 
 .section .bss
-.lcomm response_content_buffer, 8192  # Allocate 8 KB for the file buffer
 .lcomm stat_buffer, 100
 
 .section .data

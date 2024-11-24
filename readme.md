@@ -3,6 +3,7 @@
 ### Callee-Saved Registers:
 - **%rbx** holding TCP Socket File Descriptor.
 - **%r12** hodling Connection FIle Descriptor. 
+- **%r13** after sock_read call it holds either the error code, or the number of bytes of the file to read.
 
 
 

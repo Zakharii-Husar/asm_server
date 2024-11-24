@@ -24,8 +24,8 @@
 .include "./asm_server/utils/str_len.s"
 .include "./asm_server/utils/str_cmp.s"
 .include "./asm_server/utils/str_concat.s"
+.include "./asm_server/utils/str_find_char.s"
 .include "./asm_server/utils/find_content_type.s"
-.include "./asm_server/utils/str_to_lower.s"
 .include "./asm_server/utils/clear_buffer.s"
 
 
