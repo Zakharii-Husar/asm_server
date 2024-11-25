@@ -19,48 +19,67 @@ server_error_status_length = . - server_error_status
 .type create_status_header, @function
 create_status_header:
     # Input: %rdi = HTTP status code
-    # Output: %rax = pointer to status string
-    #         %rdx = length of status string
+    #        %rsi = pointer to response buffer
+    # Output: %rax = length of concatenated string (returned from str_concat)
+    
+    push %rbp
+    mov %rsp, %rbp
+    push %r12
+    mov %rsi, %r12           # Save buffer pointer
     
     cmp $HTTP_OK_code, %rdi
-    je .return_ok
+    je .write_ok
     
     cmp $HTTP_file_not_found_code, %rdi
-    je .return_not_found
+    je .write_not_found
     
     cmp $HTTP_bad_req_code, %rdi
-    je .return_bad_request
+    je .write_bad_request
     
     cmp $HTTP_method_not_allowed_code, %rdi
-    je .return_method_not_allowed
+    je .write_method_not_allowed
     
     cmp $HTTP_serve_err_code, %rdi
-    je .return_server_error
+    je .write_server_error
     
     # Default to 500 if unknown status code
-    jmp .return_server_error
+    jmp .write_server_error
 
-.return_ok:
-    lea status_ok(%rip), %rax
-    mov $status_ok_length, %rdx
-    ret
+.write_ok:
+    mov %r12, %rdi                      # destination buffer
+    lea status_ok(%rip), %rsi           # source string
+    mov $status_ok_length, %rdx         # length
+    call str_concat
+    jmp .return
 
-.return_not_found:
-    lea file_not_found_status(%rip), %rax
+.write_not_found:
+    mov %r12, %rdi
+    lea file_not_found_status(%rip), %rsi
     mov $file_not_found_status_length, %rdx
-    ret
+    call str_concat
+    jmp .return
 
-.return_bad_request:
-    lea bad_request_status(%rip), %rax
+.write_bad_request:
+    mov %r12, %rdi
+    lea bad_request_status(%rip), %rsi
     mov $bad_request_status_length, %rdx
-    ret
+    call str_concat
+    jmp .return
 
-.return_method_not_allowed:
-    lea method_not_allowed_status(%rip), %rax
+.write_method_not_allowed:
+    mov %r12, %rdi
+    lea method_not_allowed_status(%rip), %rsi
     mov $method_not_allowed_status_length, %rdx
-    ret
+    call str_concat
+    jmp .return
 
-.return_server_error:
-    lea server_error_status(%rip), %rax
+.write_server_error:
+    mov %r12, %rdi
+    lea server_error_status(%rip), %rsi
     mov $server_error_status_length, %rdx
+    call str_concat
+
+.return:
+    pop %r12
+    pop %rbp
     ret
