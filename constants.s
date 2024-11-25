@@ -27,9 +27,13 @@
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
 
-    # Max size for respons content buffer
-    .equ response_content_buffer_size, 8192
-    .equ request_method_buffer_size, 8
+    # Buffers sizes
+    .equ req_method_B_size, 8
+    .equ req_B_size, 1024          # For reading user request
+    .equ route_B_size, 256             # For extracted route
+    .equ extension_B_size, 32          # For extracted extension
+    .equ response_content_B_size, 4096         # For file content
+    .equ response_B_size, 4096         # Add this line
 
     # HTTP Requests status codes
 

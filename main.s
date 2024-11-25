@@ -25,8 +25,10 @@
 .include "./asm_server/utils/str_cmp.s"
 .include "./asm_server/utils/str_concat.s"
 .include "./asm_server/utils/str_find_char.s"
-.include "./asm_server/utils/find_content_type.s"
 .include "./asm_server/utils/clear_buffer.s"
+.include "./asm_server/utils/create_type_header.s"
+.include "./asm_server/utils/create_status_header.s"
+.include "./asm_server/utils/create_length_header.s"
 
 
 .global _start

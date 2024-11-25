@@ -1,30 +1,23 @@
+# Parameters:
+# - %rdi: response content buffer
+# - %rsi: content size
+# - %rdx: status code
+# - %rcx: file extension
+
 # Implicit parameters:
 # - %r12 Socket file descriptor;
-# - %r13 Result of sock read;
+
 
 .section .bss
-    .lcomm response_header_buffer, 1024
+    .lcomm response_header_B, 1024
 
 .section .rodata
-
-base_path: .asciz "./asm_server/public"    # Base path constant
 
 sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
 sock_respond_msg_length = . - sock_respond_msg
 
 sock_respond_err_msg:    .asciz "\033[31mFailed to respond to the client! ❌\033[0m\n"
 sock_respond_err_msg_length = . - sock_respond_err_msg
-
-
-content_length:  .ascii "Content-Length: "
-content_length_length = . - content_length
-
-# Add newline after Content-Length value
-newline:        .ascii "\r\n"
-newline_length = . - newline
-
-content_type:    .ascii "Content-Type: "
-content_type_length = . - content_type
 
 # Double CRLF to separate headers from body
 headers_end:    .ascii "\r\n\r\n"
@@ -37,79 +30,54 @@ sock_respond:
  push %rbp                           # save the caller's base pointer
  mov %rsp, %rbp                      # set the new base pointer (stack frame)
 
-    # Save content length
-    push %rsi                        # Save content length for later
+ push %r13
+ push %r14
+ push %r15
+
+ mov %rdi, %r13 # response content buffer
+ mov %rsi, %r14 # content size
+ mov %rcx, %r15 # file extension
+
 
     # ADD HTTP STATUS LINE TO RESPONSE HEADER
-    # Note: status code is in %rdx, need to preserve it
-    push %rdx                    # Save status code as we need %rdx for other operations
-    mov %rdx, %rdi              # Move status code to first parameter
-    call create_status_header        # Returns ptr in %rax, len in %rdx
-    mov %rax, %rsi              # Move status string pointer to %rsi for str_concat
-    # %rdx already contains length from get_http_status
-    lea response_header_buffer(%rip), %rdi
-    call str_concat
-    pop %rdx                    # Restore status code
+    mov %rdx, %rdi                    # Move status code to first parameter
+    lea response_header_B(%rip), %rsi  # Add this line: pass buffer pointer as second parameter
+    call create_status_header         # Returns ptr in %rax, len in %rdx
+
 
     # ADD CONTENT-LENGTH HEADER TO RESPONSE HEADER
-    lea response_header_buffer(%rip), %rdi
-    lea content_length(%rip), %rsi
-    mov $content_length_length, %rdx
-    call str_concat
+    lea response_header_B(%rip), %rdi # destination
+    mov %r14, %rsi # content size
+    call create_length_header
 
-    # Convert the actual content length to string
-    pop %rsi                    # Restore content length
-    mov %rsi, %rdi             # Move it to first parameter for int_to_string
-    call int_to_string         # Convert the length to string
 
-    # Add content length(in bytes) to response header
-    lea response_header_buffer(%rip), %rdi
-    mov %rax, %rsi  # rax contains the pointer to the string from int_to_string
-    # rdx already contains the length from int_to_string
-    call str_concat
 
-    # Add newline after Content-Length value
-    lea response_header_buffer(%rip), %rdi
-    lea newline(%rip), %rsi
-    mov $newline_length, %rdx
-    call str_concat
+    # ADD CONTENT-TYPE HEADER TO RESPONSE HEADER
+    lea response_header_B(%rip), %rdi  # destination buffer
+    mov %r15, %rsi                          # file extension
+    call create_type_header                 # returns length in %rax
 
-    # Add Content-Type header
-    lea response_header_buffer(%rip), %rdi
-    lea content_type(%rip), %rsi
-    mov $content_type_length, %rdx
-    call str_concat
-
-    # Add Content-Type value
-    call find_content_type # returns %rax = pointer to the content type string, %rdx = length of the content type string    
-
-    lea response_header_buffer(%rip), %rdi  # Pointer to the beginning of the header        
-    mov %rax, %rsi                          # Pointer to the content type string
-    xor %rdx, %rdx                          # Length of the content type string
-    call str_concat
-
-    lea response_header_buffer(%rip), %rsi
+    lea response_header_B(%rip), %rsi
     call print_info
 
-    # Add final double CRLF to separate headers from body
-    lea response_header_buffer(%rip), %rdi
+    # ADD FINAL DOUBLE CRLF TO SEPARATE HEADERS FROM BODY
+    lea response_header_B(%rip), %rdi
     lea headers_end(%rip), %rsi
     mov $headers_end_length, %rdx
     call str_concat
-    mov %rax, %r10                  # Save the header length for later
 
-    # Send the header
-    mov %r10, %rdx                 # Length of the entire header
+    # SEND THE HEADER
+    mov %rax, %rdx                 # Length of the entire header
     mov $SYS_write, %rax           # syscall number for write
     mov %r12, %rdi                 # File descriptor
-    lea response_header_buffer(%rip), %rsi  # Pointer to the beginning of the header
+    lea response_header_B(%rip), %rsi  # Pointer to the beginning of the header
     syscall
 
-    # Send the content
+    # SEND THE CONTENT
     mov $SYS_write, %rax          # syscall number for write
     mov %r12, %rdi                # File descriptor
-    lea response_content_buffer(%rip), %rsi  # Pointer to the content buffer
-    mov %r9, %rdx                 # Length of the content
+    mov %r13 , %rsi       # Pointer to the content buffer
+    mov %r14, %rdx                 # Length of the content
     syscall
 
 
@@ -120,12 +88,16 @@ sock_respond:
    lea sock_respond_msg(%rip), %rsi
    call print_info
 
-   lea response_header_buffer(%rip), %rsi
+   lea response_header_B(%rip), %rsi
    call print_info
 
 
+   pop %r15
+   pop %r14
+   pop %r13
+
    pop %rbp                     # restore the caller's base pointer
-   ret                           # return to the caller
+   ret                          # return to the caller
 
 handle_sock_respond_err:
  lea sock_respond_err_msg(%rip), %rsi           # pointer to the message (from constants.s)

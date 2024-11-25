@@ -1,4 +1,4 @@
-# Function: find_content_type
+# Function: create_type_header
 # Input: 
 #   %rdi - pointer to response buffer
 #   %rsi - file extension
@@ -67,8 +67,8 @@ mime_ico_length = . - mime_ico
 
 .section .text
 
-.type find_content_type, @function
-find_content_type:
+.type create_type_header, @function
+create_type_header:
 push %rbp                          # save the caller's base pointer
 mov %rsp, %rbp                     # set the new base pointer (stack frame)
 push %r12

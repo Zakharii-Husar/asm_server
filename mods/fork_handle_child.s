@@ -1,5 +1,8 @@
 .section .bss
-.lcomm response_content_buffer, response_content_buffer_size  # Allocate space for the file buffer
+.lcomm req_B, req_B_size                     # For reading user request
+.lcomm route_B, route_B_size                 # For extracted route
+.lcomm extension_B, extension_B_size         # For extracted extension
+.lcomm response_content_B, response_content_B_size           # For file content
 
 .section .text
 .type fork_handle_child, @function
@@ -8,13 +11,18 @@ push %rbp                    # save the caller's base pointer
 mov %rsp, %rbp               # set the new base pointer (stack frame)
 
 # child_process: 
-lea response_content_buffer(%rip), %rdi
-call sock_read
+lea req_B(%rip), %rdi    # 1st param: request buffer
+lea route_B(%rip), %rsi      # 2nd param: route buffer
+lea extension_B(%rip), %rdx  # 3rd param: extension buffer
+lea response_content_B(%rip), %rcx   # 4th param: response buffer
+call sock_read                    # Returns: %rax=content size, %rdx=status code
 
-lea response_content_buffer(%rip), %rdi  # 1) Pass the content buffer pointer to sock_respond
-mov %rax, %rsi                           # 2) Pass content size to sock_respond
-mov %rdx, %rdx                           # 3) Pass Error code or 0 on success to sock_respond
-call sock_respond            # Send response
+# Prepare parameters for sock_respond (directly use return values from sock_read)
+lea response_content_B(%rip), %rdi        # 1st param: response content buffer
+mov %rax, %rsi                    # 2nd param: content size
+# mov %rdx, %rdx                   3rd param: status code (already in correct register)
+lea extension_B(%rip), %rcx  # 4th param: file extension
+call sock_respond
 
 mov $1, %rdi                 # passing 1 to indicate child process on sock_close
 call sock_close_conn         # Close the connection for the child

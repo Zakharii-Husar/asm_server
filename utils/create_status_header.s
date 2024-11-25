@@ -50,36 +50,38 @@ create_status_header:
     lea status_ok(%rip), %rsi           # source string
     mov $status_ok_length, %rdx         # length
     call str_concat
-    jmp .return
+    jmp .done                           # Jump to single return point
 
 .write_not_found:
     mov %r12, %rdi
     lea file_not_found_status(%rip), %rsi
     mov $file_not_found_status_length, %rdx
     call str_concat
-    jmp .return
+    jmp .done                           # Jump to single return point
 
 .write_bad_request:
     mov %r12, %rdi
     lea bad_request_status(%rip), %rsi
     mov $bad_request_status_length, %rdx
     call str_concat
-    jmp .return
+    jmp .done                           # Jump to single return point
 
 .write_method_not_allowed:
     mov %r12, %rdi
     lea method_not_allowed_status(%rip), %rsi
     mov $method_not_allowed_status_length, %rdx
     call str_concat
-    jmp .return
+    jmp .done                           # Jump to single return point
 
 .write_server_error:
     mov %r12, %rdi
     lea server_error_status(%rip), %rsi
     mov $server_error_status_length, %rdx
     call str_concat
+    # Falls through to .done since it's the last one
 
-.return:
+.done:                                  # Changed label name from .return
     pop %r12
     pop %rbp
     ret
+    
