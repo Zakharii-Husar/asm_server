@@ -52,7 +52,7 @@ extract_route:
     lea slash_string(%rip), %rsi
     call str_cmp
     cmp $0, %rax
-    jne search_for_extension         # Skip index append if not "/"
+    jne .search_for_extension         # Skip index append if not "/"
 
     # Append "index" to the route
     mov %r12, %rdi                   # Move request_route_buffer to rdi
@@ -60,21 +60,21 @@ extract_route:
     mov $index_str_len, %rdx         # Length of "index"
     call str_concat
 
-search_for_extension:          
+.search_for_extension:          
     mov %r12, %rdi                   # Move request_route_buffer to rdi
     mov $'.', %rsi
     call str_find_char      
     cmp $1, %rdx
-    je exit_extract_route 
+    je .exit_extract_route 
 
-no_extension:
+.no_extension:
     # Append .html extension
     mov %r12, %rdi                   # Move request_route_buffer to rdi
     lea html_ext(%rip), %rsi         
     mov $html_ext_len, %rdx          # Length of ".html"
     call str_concat
 
-exit_extract_route:
+.exit_extract_route:
     pop %r13
     pop %r12
     pop %rbp    

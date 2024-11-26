@@ -43,7 +43,7 @@ file_open:
 
     # Save file descriptor in %r8
     cmp $0, %rax
-    jl handle_file_open_error        # jump to error handling if failed to open
+    jl .handle_file_open_error        # jump to error handling if failed to open
     mov %rax, %r9                    # save file descriptor in %r8
 
     # Read file contents into the buffer passed in %rdi
@@ -61,7 +61,7 @@ file_open:
 
     # Check if fstat was successful
     cmp $0, %rax
-    jl handle_file_open_error
+    jl .handle_file_open_error
 
     # Get the file size from stat_buffer
     # The reason I need to dereference pointer and store the file size
@@ -77,7 +77,7 @@ file_open:
     syscall
 
     cmp $0, %rax
-    jl handle_file_open_error             # jump to error handling if failed to open
+    jl .handle_file_open_error             # jump to error handling if failed to open
 
     mov %rsi, %rax      # Restore file size to return it
     pop %rbp
@@ -85,7 +85,7 @@ file_open:
 
 
 
-    handle_file_open_error:
+    .handle_file_open_error:
         mov %rdi, %rsi                     # Load path for printing (already in %rdi)
         call print_info
         

@@ -28,9 +28,9 @@ extract_method:
     sub %r12, %rdx
     
     cmp $req_method_B_size, %rdx
-    jle copy_method
+    jle .copy_method
     mov $req_method_B_size, %rdx
-copy_method:
+.copy_method:
     call str_concat
 
     # Return pointer to the method buffer

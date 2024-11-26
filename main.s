@@ -34,11 +34,6 @@
 .global _start
 _start:
 
-.type main, @function
-main:
-
-    # FUNCTION ARGS
-    
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
@@ -54,7 +49,7 @@ main:
     call sock_listen
 
     # Main server loop (parent process will jump here after forking)
-main_loop:
+.main_loop:
     # ----------------------------
     # 4. Accept connection (blocking call)
     # ----------------------------
@@ -67,14 +62,14 @@ main_loop:
     call process_fork
 
     cmp $0, %rax               # Check if we're in the child or parent
-    jg parent_process
+    jg .parent_process
 
     # for child process handle user request and close the program 
-    child_process:
+    .child_process:
     call fork_handle_child
 
     # for  parent process close connection and repeate the cycle
-    parent_process:
+    .parent_process:
     call fork_handle_parent
 
-jmp main_loop
+jmp .main_loop

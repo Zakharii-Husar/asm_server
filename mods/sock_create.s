@@ -1,7 +1,7 @@
 .section .rodata
 
-sock_created_msg:    .asciz "\033[32mTCP Sock was created ✅\033[0m\n"
-sock_create_err_msg:    .asciz "\033[31mFailed to create TCP socket ❌\033[0m\n"
+.sock_created_msg:    .asciz "\033[32mTCP Sock was created ✅\033[0m\n"
+.sock_create_err_msg:    .asciz "\033[31mFailed to create TCP socket ❌\033[0m\n"
 
 .section .text
 # Function: sock_create
@@ -25,17 +25,17 @@ sock_create:
  syscall
 
  cmp $0, %rax                              # Compare the return value with 0
- jl  handle_sock_create_err                 # Jump to error handling if %rax < 0
+ jl  .handle_sock_create_err                 # Jump to error handling if %rax < 0
  mov %rax, %rbx                             # move socket fd to rbx
 
- lea sock_created_msg(%rip), %rsi
+ lea .sock_created_msg(%rip), %rsi
  call print_info
 
  pop %rbp                     # restore the caller's base pointer
  ret                           # return to the caller
 
-handle_sock_create_err:
- lea sock_create_err_msg(%rip), %rsi
+.handle_sock_create_err:
+ lea .sock_create_err_msg(%rip), %rsi
  call print_info
  call exit_program
 

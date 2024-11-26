@@ -10,23 +10,23 @@ str_find_char:
     push %rbp
     mov %rsp, %rbp
 
-search_char:
+.search_char:
     movb (%rdi), %al                  # Load current character from rdi
     cmpb $0, %al                      # Check for null terminator first
-    je not_found                      # If null, character not found
+    je .not_found                      # If null, character not found
     cmpb %sil, %al                    # Compare with sil (8-bit part of rsi) 
-    je found_char                     # If equal, character found
+    je .found_char                     # If equal, character found
     inc %rdi                          # Move to next character using rdi
-    jmp search_char                   # Repeat the search
+    jmp .search_char                   # Repeat the search
 
-found_char:
+.found_char:
     mov $1, %rdx                      # Return 1 if found
-    jmp finish_str_find_char
+    jmp .finish_str_find_char
 
-not_found:
+.not_found:
     mov $0, %rdx                      # Return 0 if not found
 
-finish_str_find_char:
+.finish_str_find_char:
     mov %rdi, %rax                    # Return address using rdi instead of rsi
     pop %rbp
     ret

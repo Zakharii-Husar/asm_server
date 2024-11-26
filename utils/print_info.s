@@ -8,11 +8,7 @@
 # Note: Internally calculates string length using str_len
 print_info:
     push %rbp
-    mov %rsp, %rbp
-    push %rdi
-    push %rsi
-    push %rdx
-    push %rax   
+    mov %rsp, %rbp 
     
     # Move string pointer to %rdi for str_len
     mov %rsi, %rdi
@@ -25,11 +21,5 @@ print_info:
     mov $SYS_write, %rax         # syscall number for write
     syscall
     
-    # Restore registers in reverse order
-    pop %rax
-    pop %rdx
-    pop %rsi
-    pop %rdi
     pop %rbp
-
     ret

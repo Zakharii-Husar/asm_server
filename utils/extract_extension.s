@@ -10,7 +10,7 @@ extract_extension:
     # Initialize the route register
     lea request_route(%rip), %rsi     # Destination buffer for route
 
-copy_extension:
+.copy_extension:
     # Copy extension (including dot) to extension buffer
     mov %r10, %rsi                    # %r10 holds beginning of extension
     lea request_file_ext(%rip), %rdi  # Destination is extension buffer

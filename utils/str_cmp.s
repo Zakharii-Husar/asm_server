@@ -13,26 +13,26 @@ str_cmp:
     mov %rsp, %rbp              # Set the new base pointer (stack frame)
 
 
-   cmp_loop:
+   .cmp_loop:
     movb (%rsi), %al            # Load byte from string1
     movb (%rdi), %bl            # Load byte from string2
     cmpb %bl, %al               # Compare the characters
-    jne strings_not_equal       # Jump if not equal
+    jne .strings_not_equal       # Jump if not equal
 
     testb %al, %al              # Check if we've reached the null terminator
-    je strings_equal            # If null terminator, strings are equal
+    je .strings_equal            # If null terminator, strings are equal
 
     inc %rsi                    # Move to the next character in string1
     inc %rdi                    # Move to the next character in string2
-    jmp cmp_loop                # Repeat the loop
+    jmp .cmp_loop                # Repeat the loop
 
-    strings_equal:
+    .strings_equal:
     mov $1, %rax
-    jmp end_comparison
+    jmp .end_comparison
 
-    strings_not_equal:
+    .strings_not_equal:
     mov $0, %rax
 
-    end_comparison:
+    .end_comparison:
     pop %rbp                         # Restore the caller's base pointer
     ret                              # Return to the caller with %rdx holding the method length

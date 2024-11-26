@@ -19,30 +19,30 @@ str_concat:
     mov %rdi, %r8              # Save destination buffer
     
     test %rdx, %rdx            # Check if string length is provided
-    jnz offset_buffer          # If length provided, skip length calculation
+    jnz .offset_buffer          # If length provided, skip length calculation
 
     # Calculate string length if not provided
     mov %rsi, %rdi           
     call str_len           
     mov %rax, %rdx         
     
-    offset_buffer:
+    .offset_buffer:
     
     # Check if destination buffer is empty
     test %r8, %r8
-    jz start_concat         # if empty, jump to start_concat
+    jz .start_concat         # if empty, jump to start_concat
 
     # Find offset of the first null byte
     mov %r8, %rdi
     call str_len
     mov %r8, %rdi          # Restore destination address to rdi
     add %rax, %rdi         # Add offset to destination address
-    jmp concat_bytes       # Skip the rdi setup in start_concat
+    jmp .concat_bytes       # Skip the rdi setup in start_concat
 
-    start_concat:
+    .start_concat:
     mov %r8, %rdi           # destination
 
-    concat_bytes:
+    .concat_bytes:
     # Copy bytes from source (%rsi) to destination (%rdi)
     mov %rdx, %rcx          # move length to rcx for rep movsb
     cld                     # clear direction flag (move forward)

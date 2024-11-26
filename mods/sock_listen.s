@@ -1,10 +1,10 @@
 .section .rodata
 
-sock_listen_msg:    .asciz "\033[32mTCP Sock is listening 🎧\033[0m\n"
-sock_listen_msg_length = . - sock_listen_msg
+.sock_listen_msg:    .asciz "\033[32mTCP Sock is listening 🎧\033[0m\n"
+.sock_listen_msg_length = . - .sock_listen_msg
 
-sock_listen_err_msg:    .asciz "\033[31mSocket failed to listen ❌\033[0m\n"
-sock_listen_err_msg_length = . - sock_listen_err_msg
+.sock_listen_err_msg:    .asciz "\033[31mSocket failed to listen ❌\033[0m\n"
+.sock_listen_err_msg_length = . - .sock_listen_err_msg
 
 .section .text
 
@@ -27,18 +27,18 @@ sock_listen:
  syscall
 
  cmp $0, %rax                   # Compare the return value with 0
- jl  handle_sock_listen_err                 # Jump to error handling if %rax < 0
+ jl  .handle_sock_listen_err                 # Jump to error handling if %rax < 0
     
- lea sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $sock_listen_msg_length, %rdx        # length of the message (from constants.s)
+ lea .sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ mov $.sock_listen_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
 
  pop %rbp                     # restore the caller's base pointer
  ret                           # return to the caller
 
-handle_sock_listen_err:
- lea sock_listen_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $sock_listen_err_msg_length, %rdx        # length of the message (from constants.s)
+.handle_sock_listen_err:
+ lea .sock_listen_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ mov $.sock_listen_err_msg_length, %rdx        # length of the message (from constants.s)
  call print_info
  call exit_program
  
