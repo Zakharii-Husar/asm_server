@@ -1,3 +1,11 @@
+# main.s
+
+# GLOBAL REGISTERS:
+#   - %r12: socket file descriptor
+#   - %r13: connection file descriptor
+#   - %r14: pointer to client info
+#   - %r15: server config pointer
+
 .section .data
 .include "./asm_server/constants.s"
 
@@ -38,7 +46,6 @@ _start:
     # 1. Create Socket
     # ----------------------------
     call sock_create
-    
     # ----------------------------
     # 2. Bind Socket
     # ----------------------------

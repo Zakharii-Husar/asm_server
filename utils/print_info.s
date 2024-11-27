@@ -12,13 +12,15 @@ print_info:
     
     # Move string pointer to %rdi for str_len
     mov %rsi, %rdi
-    call str_len           # str_len will return length in %rax
+    # preserve string pointer
+    push %rsi
+    call str_len               # str_len will return length in %rax
     
     # Set up parameters for write syscall
-    mov %rax, %rdx       # length returned by str_len
-    # %rsi already contains string pointer
-    mov $SYS_stdout, %rdi          # file descriptor (stdout)
-    mov $SYS_write, %rax         # syscall number for write
+    mov %rax, %rdx             # length returned by str_len
+    pop %rsi                   # restore string pointer
+    mov $SYS_stdout, %rdi      # file descriptor (stdout)
+    mov $SYS_write, %rax       # syscall number for write
     syscall
     
     pop %rbp

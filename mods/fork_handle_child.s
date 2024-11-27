@@ -11,7 +11,7 @@ push %rbp                    # save the caller's base pointer
 mov %rsp, %rbp               # set the new base pointer (stack frame)
 
 # child_process: 
-lea req_B(%rip), %rdi    # 1st param: request buffer
+lea req_B(%rip), %rdi        # 1st param: request buffer
 lea route_B(%rip), %rsi      # 2nd param: route buffer
 lea extension_B(%rip), %rdx  # 3rd param: extension buffer
 lea response_content_B(%rip), %rcx   # 4th param: response buffer

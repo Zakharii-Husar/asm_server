@@ -1,5 +1,5 @@
 .section .data
-    addr_in:
+    .addr_in:
     .word   AF_INET
     .word   PORT
     .long   IP_ADDR
@@ -27,9 +27,9 @@ sock_bind:
  push %rbp                              # save the caller's base pointer
  mov %rsp, %rbp                         # set the new base pointer (stack frame)
  
- mov %rbx, %rdi                         # move socket fd into %rdi (1st arg for bind)
+ mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_bind, %rax            # sys_bind
- lea     addr_in(%rip), %rsi            # pointer to the address structure
+ lea     .addr_in(%rip), %rsi            # pointer to the address structure
  mov    $16, %rdx                       # size of the sockaddr_in structure
  syscall                                # make syscall
 
