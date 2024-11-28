@@ -36,8 +36,9 @@ sock_accept:
  mov    %rax, %r13                             # save the new connection file descriptor in r13
     
  lea connection_info(%rip), %r14               # r14 points to client info
- lea .sock_accepted_msg(%rip), %rsi            # pointer to the message (from constants.s)
- call print_info
+
+ # lea .sock_accepted_msg(%rip), %rsi            # pointer to the message (from constants.s)
+ # call print_info
 
  pop %rbp                                      # restore the caller's base pointer
  ret                                           # return to the caller

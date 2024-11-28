@@ -29,9 +29,9 @@ sock_listen:
  cmp $0, %rax                               # Compare the return value with 0
  jl  .handle_sock_listen_err                # Jump to error handling if %rax < 0
     
- lea .sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $.sock_listen_msg_length, %rdx         # length of the message (from constants.s)
- call print_info
+ # lea .sock_listen_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ # mov $.sock_listen_msg_length, %rdx         # length of the message (from constants.s)
+ # call print_info
 
  pop %rbp                     # restore the caller's base pointer
  ret                           # return to the caller

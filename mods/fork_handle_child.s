@@ -1,3 +1,8 @@
+.section .data
+
+CHILD_FORK_TEST: .asciz "CHILD_FORK_TEST"
+
+
 .section .bss
 .lcomm req_B, req_B_size                     # For reading user request
 .lcomm route_B, route_B_size                 # For extracted route
@@ -10,12 +15,14 @@ fork_handle_child:
 push %rbp                    # save the caller's base pointer
 mov %rsp, %rbp               # set the new base pointer (stack frame)
 
+
 # child_process: 
 lea req_B(%rip), %rdi        # 1st param: request buffer
 lea route_B(%rip), %rsi      # 2nd param: route buffer
 lea extension_B(%rip), %rdx  # 3rd param: extension buffer
 lea response_content_B(%rip), %rcx   # 4th param: response buffer
 call sock_read                    # Returns: %rax=content size, %rdx=status code
+
 
 # Prepare parameters for sock_respond (directly use return values from sock_read)
 lea response_content_B(%rip), %rdi        # 1st param: response content buffer

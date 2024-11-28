@@ -57,8 +57,8 @@ sock_respond:
     mov %r15, %rsi                          # file extension
     call create_type_header                 # returns length in %rax
 
-    lea response_header_B(%rip), %rsi
-    call print_info
+    # lea response_header_B(%rip), %rsi
+    # call print_info
 
     # ADD FINAL DOUBLE CRLF TO SEPARATE HEADERS FROM BODY
     lea response_header_B(%rip), %rdi
@@ -85,11 +85,11 @@ sock_respond:
    jl  .handle_sock_respond_err                # Jump to error handling if %rax < 0
     
 
-   lea sock_respond_msg(%rip), %rsi
-   call print_info
+   # lea sock_respond_msg(%rip), %rsi
+   # call print_info
 
-   lea response_header_B(%rip), %rsi
-   call print_info
+   # lea response_header_B(%rip), %rsi
+   # call print_info
 
 
    pop %r15

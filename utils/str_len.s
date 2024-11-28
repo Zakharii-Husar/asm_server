@@ -11,12 +11,12 @@ str_len:
     
     xor %rax, %rax           # Initialize counter to 0
     
-.loop:
+.str_len_loop:
     cmpb $0, (%rdi)          # Compare byte at address in %rdi with 0 (null terminator)
     je .done                 # If equal (found null), we're done
     inc %rax                 # Increment counter
     inc %rdi                 # Move to next character
-    jmp .loop                # Repeat
+    jmp .str_len_loop                # Repeat
 
 .done:
     pop %rbp

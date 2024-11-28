@@ -1,4 +1,6 @@
 .section .data
+
+
 .GET_STRING: .asciz "GET"    
 
 .sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
@@ -47,7 +49,6 @@ sock_read:
     mov %rdx, %r14                          # extension buffer
     mov %rcx, %r15                          # response buffer
 
-    
 
     # READ AND VALIDATE CLIENT'S REQUEST
     mov $0, %rdx                            # Set %rdx to 0 for flags if needed
@@ -57,9 +58,7 @@ sock_read:
     mov $0, %rax                            # syscall number for read
     syscall                                 # invoke syscall
 
-   # Print the request
-    mov %r12, %rsi
-    call print_info
+
 
     cmp $0, %rax                            # Check if read was successful
     jl .bad_request                          # Jump if there was an error

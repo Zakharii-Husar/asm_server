@@ -28,8 +28,8 @@ sock_create:
  jl  .handle_sock_create_err                 # Jump to error handling if %rax < 0
  mov %rax, %r12                              # save socket fd to %r12
 
- lea .sock_created_msg(%rip), %rsi
- call print_info
+ # lea .sock_created_msg(%rip), %rsi
+ # call print_info
 
  pop %rbp                              # restore the caller's base pointer
  ret                                   # return to the caller
