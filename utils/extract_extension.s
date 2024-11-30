@@ -1,5 +1,8 @@
-.section .bss
-.lcomm request_file_ext, 32       # Buffer to store file extension (including dot)
+.section .data
+
+default_extension: .asciz ".html"
+
+.section .text
 
 .globl extract_extension
 .type extract_extension, @function
@@ -14,14 +17,18 @@ extract_extension:
     mov %rsp, %rbp
 
     push %r12
-    mov %rdi, %r12
+    push %r13
+
+    mov %rdi, %r12 # Destination buffer
+    mov %rsi, %r13 # Route buffer
 
     # Save %rdi (destination buffer) on the stack
 
     # Find the dot in the route buffer
-    mov $'.', %rdx                  # Character to find (dot)
+    mov %r13, %rdi
+    mov $'.', %rsi                  # Character to find (dot)
     call str_find_char              # Call str_find_char with %rsi (route buffer) and %rdx (dot)
-    test %rax, %rax                 # Check if dot was found
+    test %rdx, %rdx                 # Check if dot was found
     jz .no_dot_found                # If not found, jump to no dot found
 
     # Copy extension (including dot) to destination buffer
@@ -33,16 +40,16 @@ extract_extension:
     # Convert the destination buffer to lowercase
     mov %r12, %rdi                  # Destination buffer is already in %rdi
     call str_to_lower               # Convert to lowercase
+    jmp .exit_extract_extension                     # Skip the default extension part
 
 .no_dot_found:
-
     # Set default extension ".html"
     mov %r12, %rdi                  # Destination buffer is already in %rdi
-    mov $".html", %rsi              # Address of default extension string
+    lea default_extension(%rip), %rsi              # Address of default extension string
     call str_concat                 # Copy default extension to %rdi (destination buffer)
 
-.convert_to_lower:
-
+.exit_extract_extension:
+    pop %r13
     pop %r12
     pop %rbp
     ret
