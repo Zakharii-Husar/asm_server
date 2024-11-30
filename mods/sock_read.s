@@ -84,13 +84,16 @@ sock_read:
     mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
     call extract_route                     # Extract the route
 
-
     # Build the file path
     mov %r13, %rdi                         # Destination buffer for file path
     lea req_route_B(%rip), %rsi            # Route buffer
     call build_file_path                   # Build the file path
 
 
+        # Extract the extension
+    mov %r14, %rdi                         # Destination buffer for extension
+    lea req_route_B(%rip), %rsi            # The HTTP req buffer to extract ext from
+    call extract_extension                 # Extract the extension  
 
     # Open the file 
 

@@ -1,12 +1,8 @@
-.section .data  
-
-TEST_STRING: .asciz "TESTING"
-
 .section .bss
-.lcomm req_B, req_B_size                     # For reading user request
-.lcomm file_path_B, file_path_B_size         # For built file path
-.lcomm extension_B, extension_B_size         # For extracted extension
-.lcomm response_content_B, response_content_B_size           # For file content
+.lcomm req_B, req_B_size                             # For reading user request
+.lcomm file_path_B, file_path_B_size                 # For built file path
+.lcomm extension_B, extension_B_size                 # For extracted extension
+.lcomm response_content_B, response_content_B_size   # For file content
 
 .section .text
 .type fork_handle_child, @function
@@ -17,7 +13,7 @@ mov %rsp, %rbp               # set the new base pointer (stack frame)
 
 # child_process: 
 lea req_B(%rip), %rdi                # 1st param: request buffer
-lea file_path_B(%rip), %rsi              # 2nd param: route buffer
+lea file_path_B(%rip), %rsi          # 2nd param: route buffer
 lea extension_B(%rip), %rdx          # 3rd param: extension buffer
 lea response_content_B(%rip), %rcx   # 4th param: response buffer
 call sock_read                       # Returns: %rax=content size, %rdx=status code
@@ -25,9 +21,9 @@ call sock_read                       # Returns: %rax=content size, %rdx=status c
 
 # Prepare parameters for sock_respond (directly use return values from sock_read)
 lea response_content_B(%rip), %rdi        # 1st param: response content buffer
-mov %rax, %rsi                    # 2nd param: content size
-# mov %rdx, %rdx                   3rd param: status code (already in correct register)
-lea extension_B(%rip), %rcx  # 4th param: file extension
+mov %rax, %rsi                            # 2nd param: content size
+# mov %rdx, %rdx                          # 3rd param: status code (already in correct register)
+lea extension_B(%rip), %rcx               # 4th param: file extension
 call sock_respond
 
 mov $1, %rdi                 # passing 1 to indicate child process on sock_close
