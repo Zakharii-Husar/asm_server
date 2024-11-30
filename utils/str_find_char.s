@@ -1,3 +1,11 @@
+# str_find_char
+# Parameters:
+#   %rdi - Address of the null-terminated string to search
+#   %rsi - Character to search for (in the lower 8 bits, %sil)
+# Returns:
+#   %rdx - 1 if the character is found, 0 if not found
+#   %rax - Address of the found character or null terminator
+
 str_find_char:
     push %rbp
     mov %rsp, %rbp
