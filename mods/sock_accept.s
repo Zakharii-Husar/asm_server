@@ -2,6 +2,7 @@
 
 .sock_accepted_msg:    .asciz "\033[32mConnection was accepted 🔄\033[0m\n"
 .sock_accept_err_msg:    .asciz "\033[31mFailed to accept connection ❌\033[0m\n"
+.sock_accept_err_msg_len = . - .sock_accept_err_msg
 
 .section .data
 connection_info:
@@ -25,7 +26,7 @@ sock_accept:
  mov %rsp, %rbp                               # set the new base pointer (stack frame)
  
  mov %r12, %rdi                               # move socket fd into %rdi (1st arg for accept)
- lea connection_info(%rip), %rsi              # store client info in our structure
+ lea connection_info(%rip), %rsi              # store client info in connection_info structure
  lea client_len(%rip), %rdx                   
  mov $SYS_sock_accept, %rax
  syscall                                      # make syscall
@@ -37,13 +38,11 @@ sock_accept:
     
  lea connection_info(%rip), %r14               # r14 points to client info
 
- # lea .sock_accepted_msg(%rip), %rsi            # pointer to the message (from constants.s)
- # call print_info
-
  pop %rbp                                      # restore the caller's base pointer
  ret                                           # return to the caller
  
 .handle_sock_accept_err:
- lea .sock_accept_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
+ lea .sock_accept_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
+ mov $.sock_accept_err_msg_len, %rsi
  call print_info
  call exit_program

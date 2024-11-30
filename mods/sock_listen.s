@@ -37,8 +37,8 @@ sock_listen:
  ret                           # return to the caller
 
 .handle_sock_listen_err:
- lea .sock_listen_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $.sock_listen_err_msg_length, %rdx        # length of the message (from constants.s)
+ lea .sock_listen_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
+ mov $.sock_listen_err_msg_length, %rsi        # length of the message (from constants.s)
  call print_info
  call exit_program
  

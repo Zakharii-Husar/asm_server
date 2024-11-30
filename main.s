@@ -29,6 +29,7 @@
 .include "./asm_server/utils/int_to_string.s"
 .include "./asm_server/utils/file_open.s"
 .include "./asm_server/utils/extract_route.s"
+.include "./asm_server/utils/build_file_path.s"
 .include "./asm_server/utils/extract_method.s"
 .include "./asm_server/utils/str_len.s"
 .include "./asm_server/utils/str_cmp.s"
@@ -67,14 +68,14 @@ _start:
     # is going back to accepting new connections)
     # --------------------------------
 
-    call process_fork
+    call process_fork # handles forking and error handling
 
     cmp $0, %rax               # Check if we're in the child or parent
     jg .parent_process
 
     # for child process handle user request and close the program 
     .child_process:
-    call fork_handle_child
+    call fork_handle_child     # handles killing the child process
 
     # for  parent process close connection and repeate the cycle
     .parent_process:

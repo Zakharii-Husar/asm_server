@@ -1,11 +1,12 @@
-.section .data
+.section .bss
+.lcomm req_route_B, req_route_B_size
 
+.section .data
 
 .GET_STRING: .asciz "GET"    
 
-.sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
-.base_path: .asciz "./asm_server/public"
+.sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
 .bad_request_path: .asciz "./asm_server/public/400.html"
 
@@ -21,7 +22,7 @@
 # Function: sock_read
 # Parameters:
 # - %rdi > %r12: Pointer to the request_buffer;
-# - %rsi > %r13: Pointer to the route_buffer;
+# - %rsi > %r13: Pointer to the file_path_buffer;
 # - %rdx > %r14: Pointer to the extension_buffer;
 # - %rcx > %r15: Pointer to the response_buffer;
 # Implicit parameters:
@@ -43,56 +44,63 @@ sock_read:
     push %r14
     push %r15
 
-    mov %r12, %r8                           # Preserve Socket FD    
+    mov %r13, %r8                           # Preserve Connection FD    
     mov %rdi, %r12                          # request buffer
     mov %rsi, %r13                          # route buffer
     mov %rdx, %r14                          # extension buffer
     mov %rcx, %r15                          # response buffer
 
 
+
     # READ AND VALIDATE CLIENT'S REQUEST
-    mov $0, %rdx                            # Set %rdx to 0 for flags if needed
     mov %r8, %rdi                           # client socket file descriptor
     mov %r12, %rsi                          # pointer to the request_content_buffer to store the request
     mov $req_B_size, %rdx                   # max number of bytes to read
     mov $0, %rax                            # syscall number for read
     syscall                                 # invoke syscall
 
-
-
     cmp $0, %rax                            # Check if read was successful
     jl .bad_request                          # Jump if there was an error
+    
 
     # COMPARE THE REQUEST METHOD TO "GET"
     # Extract the method
-    mov %r12, %rsi                         # Load source buffer (request buffer)
+    mov %r12, %rdi                         # Load source buffer (request buffer)
     call extract_method                    # Returns pointer to method in %rax
-    mov %rax, %rdi                        # First parameter for str_cmp
+    mov %rax, %rdi                         # First parameter for str_cmp
+
     lea .GET_STRING(%rip), %rsi            # Second parameter
     call str_cmp
     # Handle the method not allowed
+
     cmp $0, %rax
     je .method_not_allowed
 
+
     # ATTEMPT TO OPEN THE REQUESTED FILE
+
     # Extract the route
-    mov %r13, %rdi                         # Destination buffer for route
+    lea req_route_B(%rip), %rdi            # Destination buffer for route
     mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
     call extract_route                     # Extract the route
 
-    # Concatenate .base_path with route
-    mov %r13, %rdi                         # route buffer as destination
-    lea .base_path(%rip), %rsi              # Load .base_path as source
-    xor %rdx, %rdx                           # Let str_concat calculate length
-    call str_concat                        # Concatenate .base_path with route
+
+    # Build the file path
+    mov %r13, %rdi                         # Destination buffer for file path
+    lea req_route_B(%rip), %rsi            # Route buffer
+    call build_file_path                   # Build the file path
+
+
 
     # Open the file 
-    mov %rax, %rdi                          # 1st param for file_open
+
+    mov %r13, %rdi                          # 1st param for file_open
     mov %r15, %rsi                          # Pass the response_content_buffer pointer as the second param for file_open
     call file_open
     # Handle the file not found error
     cmp $-1, %rax                            # Check if file_open returned -1 (error)
-    jl .file_not_found                        # Jump if file not found
+    je .file_not_found                        # Jump if file not found
+
 
     mov $HTTP_OK_code, %rdx
     jmp .finish_sock_read 

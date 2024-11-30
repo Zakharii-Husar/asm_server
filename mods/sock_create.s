@@ -2,6 +2,7 @@
 
 .sock_created_msg:       .asciz "\033[32mTCP Sock was created ✅\033[0m\n"
 .sock_create_err_msg:    .asciz "\033[31mFailed to create TCP socket ❌\033[0m\n"
+.sock_create_err_msg_length = . - .sock_create_err_msg  
 
 .section .text
 # Function: sock_create
@@ -35,7 +36,8 @@ sock_create:
  ret                                   # return to the caller
 
 .handle_sock_create_err:
- lea .sock_create_err_msg(%rip), %rsi
+ lea .sock_create_err_msg(%rip), %rdi
+ mov $.sock_create_err_msg_length, %rsi
  call print_info
  call exit_program
 

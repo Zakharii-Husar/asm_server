@@ -86,11 +86,9 @@ file_open:
 
 
     .handle_file_open_error:
-        mov %rdi, %rsi                     # Load path for printing (already in %rdi)
-        call print_info
         
-        lea file_open_err_msg(%rip), %rsi
-        mov $file_open_err_msg_length, %rdx
+        lea file_open_err_msg(%rip), %rdi   
+        mov $file_open_err_msg_length, %rsi
         call print_info
         
         mov $-1, %rax

@@ -17,13 +17,13 @@ str_cmp:
     movb (%rsi), %al            # Load byte from string1
     movb (%rdi), %bl            # Load byte from string2
     cmpb %bl, %al               # Compare the characters
-    jne .strings_not_equal       # Jump if not equal
+    jne .strings_not_equal      # Jump if not equal
 
-    testb %al, %al              # Check if we've reached the null terminator
+    testb %al, %al               # Check if we've reached the null terminator
     je .strings_equal            # If null terminator, strings are equal
 
-    inc %rsi                    # Move to the next character in string1
-    inc %rdi                    # Move to the next character in string2
+    inc %rsi                     # Move to the next character in string1
+    inc %rdi                     # Move to the next character in string2
     jmp .cmp_loop                # Repeat the loop
 
     .strings_equal:

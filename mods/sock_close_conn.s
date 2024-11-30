@@ -18,7 +18,7 @@
 
 # Function: sock_close_conn
 # Parameters:
-#   - %rdi: Connection file descriptor (0 for parent, 1 for child)
+#   - %rdi: 0 for parent, 1 for child
 # Return Values:
 #   - Returns 0 on successful closure of the connection
 #   - Calls exit_program on failure
@@ -28,13 +28,13 @@ sock_close_conn:
 
 push %rbp                                           # save the caller's base pointer
 mov %rsp, %rbp                                      # set the new base pointer (stack frame)
-
+mov %rdi, %r8                                      # save the  input parameter
 
 mov    %r13, %rdi                                   # connection file descriptor
 mov    $SYS_close, %rax                             # sys_close (system call number for closing a file descriptor: 3)
 syscall                                             # close the connection
 
- cmp $0, %rdi                                       # 0 for parent process, 1 for child
+ cmp $0, %r8                                       # 0 for parent process, 1 for child
  
  je .handle_sock_close_parent
  #  handle_sock_close_child:
@@ -58,13 +58,13 @@ pop %rbp                                             # restore the caller's base
 ret                                                  # return to the caller
 
 .handle_sock_close_parent_err:
- lea .sock_close_parent_err_msg(%rip), %rsi           # pointer to the message (from constants.s)
- mov $.sock_close_parent_err_msg_length, %rdx         # length of the message (from constants.s)
+ lea .sock_close_parent_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
+ mov $.sock_close_parent_err_msg_length, %rsi         # length of the message (from constants.s)
  call print_info
  call exit_program
 
  handle_sock_close_child_err:
- lea .sock_close_child_err_msg(%rip), %rsi            # pointer to the message (from constants.s)
- mov $.sock_close_child_err_msg_length, %rdx          # length of the message (from constants.s)
+ lea .sock_close_child_err_msg(%rip), %rdi            # pointer to the message (from constants.s)
+ mov $.sock_close_child_err_msg_length, %rsi          # length of the message (from constants.s)
  call print_info
  call exit_program
