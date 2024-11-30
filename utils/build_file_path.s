@@ -1,12 +1,9 @@
 .section .data
 
-TEST_STRING: .asciz "/index.html"
-
 .base_path: .asciz "./asm_server/public"
 .index_str: .asciz "index"
 .html_ext: .asciz ".html"
 .slash: .asciz "/"
-.dot: .asciz "."
 
 .section .text
 .globl extract_route
@@ -27,6 +24,7 @@ build_file_path:
     # Preserve our parameters
     mov %rdi, %r12   # dest buffer
     mov %rsi, %r13   # route buffer
+
 
     # 1. Write base_path to destination
     mov %r12, %rdi           # dest buffer
@@ -57,16 +55,11 @@ build_file_path:
 .check_extension:
 
     # 4. Search for dot in route
-    lea TEST_STRING(%rip), %rdi
-    lea .dot(%rip), %rsi
+    mov %r13, %rdi
+    mov $'.', %rsi
     call str_find_char
-
-    mov %rdx, %rdi
-    call int_to_string
-    mov %rax, %rsi
-    call print_info
-
     cmp $1, %rdx
+
     je  .exit_build_path
 
 
@@ -79,6 +72,7 @@ build_file_path:
 
 .exit_build_path:
     # Restore registers and return
+
     pop %r13
     pop %r12
     pop %rbp
