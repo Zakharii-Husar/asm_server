@@ -41,16 +41,16 @@ file_open:
     mov $0, %rsi                       # flags = O_RDONLY
     syscall                            # path is already in %rdi
 
-    # Save file descriptor in %r8
+    # Save file descriptor in %r9
     cmp $0, %rax
     jl .handle_file_open_error        # jump to error handling if failed to open
-    mov %rax, %r9                    # save file descriptor in %r8
+    mov %rax, %r9                    # save file descriptor in %r9
 
     # Read file contents into the buffer passed in %rdi
     mov $SYS_read, %rax              # sys_read
     mov %r8, %rsi                    # Use the buffer pointer passed in %rsi > %r9
     mov %r9, %rdi                    # file descriptor
-    mov $8192, %rdx                  # max bytes to read
+    mov $response_content_B_size, %rdx                  # max bytes to read
     syscall
 
     # Get file size using fstat
@@ -66,7 +66,7 @@ file_open:
     # Get the file size from stat_buffer
     # The reason I need to dereference pointer and store the file size
     # here: even tho subsequent syscall doesn't use rsi,
-    # content switchesfrom user mode to kernel mode and overwrites rsi
+    # content switches from user mode to kernel mode and overwrites rsi
     # when rsi is pointer, but when system sees that rsi holds some 
     # raw bits it ignores them
     mov 48(%rsi), %rsi  # st_size is usually at offset 40 for 64-bit
@@ -92,5 +92,6 @@ file_open:
         call print_info
         
         mov $-1, %rax
+        mov $0, %rdx
         pop %rbp
         ret

@@ -10,6 +10,11 @@
 
 .include "./asm_server/constants.s"
 
+test_path: .asciz "./asm_server/public/favicon.icos"
+
+.section .bss
+.lcomm test_buffer, 16777216    # Create a 16MB buffer (16 * 1024 * 1024)
+
 .section .text
 .include "./asm_server/mods/sock_create.s"
 .include "./asm_server/mods/sock_bind.s"
@@ -26,7 +31,7 @@
 .include "./asm_server/mods/exit_program.s"
 
 .include "./asm_server/utils/print_info.s"
-.include "./asm_server/utils/int_to_string.s"
+.include "./asm_server/utils/int_to_str.s"
 .include "./asm_server/utils/file_open.s"
 .include "./asm_server/utils/extract_route.s"
 .include "./asm_server/utils/build_file_path.s"

@@ -33,7 +33,7 @@
     .equ req_route_B_size, 256             # For extracted route
     .equ file_path_B_size, 256             # For built file path
     .equ extension_B_size, 32              # For extracted extension
-    .equ response_content_B_size, 4096     # For file content
+    .equ response_content_B_size, 16777216    # Create a 16MB buffer (16 * 1024 * 1024)
     .equ response_B_size, 4096             # Add this line
 
     # HTTP Requests status codes
