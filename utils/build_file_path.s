@@ -1,6 +1,6 @@
 .section .data
 
-.base_path: .asciz "./asm_server/public"
+.base_path: .asciz "./public"
 .index_str: .asciz "index"
 .html_ext: .asciz ".html"
 .slash: .asciz "/"

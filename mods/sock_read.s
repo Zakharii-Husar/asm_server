@@ -8,13 +8,13 @@
 
 .sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
-.bad_request_path: .asciz "./asm_server/public/400.html"
+.bad_request_path: .asciz "./public/400.html"
 
-.not_found_path: .asciz "./asm_server/public/404.html"
+.not_found_path: .asciz "./public/404.html"
 
-.method_not_allowed_path: .asciz "./asm_server/public/405.html"
+.method_not_allowed_path: .asciz "./public/405.html"
 
-.server_err_path: .asciz "./asm_server/public/500.html"
+.server_err_path: .asciz "./public/500.html"
 
 
 .section .text
