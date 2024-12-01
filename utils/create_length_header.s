@@ -35,13 +35,13 @@ create_length_header:
     
     # 2. Convert content length to string
     mov %r13, %rdi
-    call int_to_string
+    call int_to_str
     
     # 3. Add the length value
     mov %r12, %rdi
-    # %rax already contains string pointer from int_to_string
+    # %rax already contains string pointer from int_to_str
     mov %rax, %rsi
-    # %rdx already contains length from int_to_string
+    # %rdx already contains length from int_to_str
     call str_concat
     
     # 4. Add newline

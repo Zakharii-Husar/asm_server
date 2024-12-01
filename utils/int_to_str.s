@@ -1,4 +1,4 @@
-# Function: int_to_string
+# Function: int_to_str
 # Input:
 #   %rdi - integer to convert
 # Output:
@@ -10,8 +10,8 @@
     .lcomm string_buffer, 21     # 21 bytes for safety
 
 .section .text
-.type int_to_string, @function
-int_to_string:
+.type int_to_str, @function
+int_to_str:
     pushq %rbp
     mov %rsp, %rbp
     push %rcx
@@ -21,8 +21,39 @@ int_to_string:
     movq $10, %rbx             # Divisor (base 10)
     xor %rcx, %rcx             # Reset length counter
 
-    # Remove the null terminator initialization
+    # Check if number is negative
+    cmpq $0, %rdi
+    jge .positive
+    
+    # Handle negative number
+    negq %rdi                  # Make number positive
     movq %rdi, %rax
+    
+    # Add minus sign at the beginning (not the end)
+    movq %rsi, %r8            # Save current buffer position
+    movq %rcx, %r9            # Save current length
+    
+    # Convert number first
+.loop_neg:
+    decq %rsi                  
+    incq %rcx                  
+    xor %rdx, %rdx             
+    divq %rbx                  
+    
+    addb $'0', %dl            
+    movb %dl, (%rsi)          
+    testq %rax, %rax          
+    jnz .loop_neg
+
+    # Add minus sign before the digits
+    decq %rsi
+    incq %rcx
+    movb $'-', (%rsi)
+    jmp .exit_int_to_str
+
+.positive:
+    movq %rdi, %rax
+
 .loop:
     decq %rsi                  
     incq %rcx                  
@@ -34,10 +65,11 @@ int_to_string:
     testq %rax, %rax          
     jnz .loop                 
 
+.exit_int_to_str:
     movq %rsi, %rax           
     movq %rcx, %rdx           
     
     pop %rcx
     pop %rbp                  
 
-    ret                       
+    ret
