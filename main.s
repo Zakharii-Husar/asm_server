@@ -75,7 +75,11 @@ _start:
     # is going back to accepting new connections)
     # --------------------------------
 
-    call process_fork # handles forking and error handling
+    # mov %r14, %rdi
+    # xor %rsi, %rsi
+    # call print_info
+
+    call process_fork          # handles forking and error handling
 
     cmp $0, %rax               # Check if we're in the child or parent
     jg .parent_process

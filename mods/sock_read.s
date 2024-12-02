@@ -97,9 +97,10 @@ sock_read:
 
     # Open the file 
 
-    mov %r13, %rdi                          # 1st param for file_open
-    mov %r15, %rsi                          # Pass the response_content_buffer pointer as the second param for file_open
+    mov %r13, %rdi                          # file path buffer
+    mov %r15, %rsi                          # response buffer
     call file_open
+    
     # Handle the file not found error
     cmp $-1, %rax                            # Check if file_open returned -1 (error)
     je .file_not_found                        # Jump if file not found

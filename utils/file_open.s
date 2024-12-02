@@ -1,11 +1,19 @@
-
 .section .bss
 .lcomm stat_buffer, 100
 
 .section .data
 
-file_open_err_msg:    .asciz "\033[31mFile not found! ❌\033[0m\n"
+file_open_err_msg:    .asciz "\033[31mFailed to open file! ❌\033[0m\n"
 file_open_err_msg_length = . - file_open_err_msg
+
+fstat_err_msg:    .asciz "\033[31mFailed to get file size! ❌\033[0m\n"
+fstat_err_msg_length = . - fstat_err_msg
+
+close_err_msg:    .asciz "\033[31mFailed to close file! ❌\033[0m\n"
+close_err_msg_length = . - close_err_msg
+
+read_err_msg:    .asciz "\033[31mFailed to read file! ❌\033[0m\n"
+read_err_msg_length = . - read_err_msg
 
 .section .text
 
@@ -33,35 +41,46 @@ file_open:
     push %rbp
     mov %rsp, %rbp
 
-    mov %rsi, %r8 # preserve buffer address
-
+    push %r12
+    push %r13
+    push %r14
+    push %r15
+    mov %rdi, %r12 # file path buffer
+    mov %rsi, %r13 # response buffer
+    mov $0, %r15 # Initialize return file size
+    
     # Open the file using the path in %rdi
-    # mov %rdi, %rdi
+    mov %r12, %rdi
     mov $SYS_open, %rax                # sys_open
     mov $0, %rsi                       # flags = O_RDONLY
     syscall                            # path is already in %rdi
 
-    # Save file descriptor in %r9
+    mov %rax, %r14 # file descriptor
+
+    # If negative, it's an error
     cmp $0, %rax
     jl .handle_file_open_error        # jump to error handling if failed to open
-    mov %rax, %r9                    # save file descriptor in %r9
+
 
     # Read file contents into the buffer passed in %rdi
     mov $SYS_read, %rax              # sys_read
-    mov %r8, %rsi                    # Use the buffer pointer passed in %rsi > %r9
-    mov %r9, %rdi                    # file descriptor
+    mov %r13, %rsi                    # Use the buffer pointer passed in %rsi > %r9
+    mov %r14, %rdi                    # file descriptor
     mov $response_content_B_size, %rdx                  # max bytes to read
     syscall
 
+    cmp $0, %rax
+    jl .handle_read_error   
+
     # Get file size using fstat
     mov $SYS_fstat, %rax             # sys_fstat
-    mov %r9, %rdi                    # file descriptor
+    mov %r14, %rdi                    # file descriptor
     lea stat_buffer(%rip), %rsi      # address of struct stat
     syscall
 
     # Check if fstat was successful
     cmp $0, %rax
-    jl .handle_file_open_error
+    jl .handle_fstat_error
 
     # Get the file size from stat_buffer
     # The reason I need to dereference pointer and store the file size
@@ -70,28 +89,58 @@ file_open:
     # when rsi is pointer, but when system sees that rsi holds some 
     # raw bits it ignores them
     mov 48(%rsi), %rsi  # st_size is usually at offset 40 for 64-bit
+    mov %rsi, %r15 # return file size
 
     # Close the file descriptor
     mov $SYS_close, %rax            # sys_close
-    mov %r9, %rdi                   # file descriptor
+    mov %r14, %rdi                   # file descriptor
     syscall
 
     cmp $0, %rax
-    jl .handle_file_open_error             # jump to error handling if failed to open
-
-    mov %rsi, %rax      # Restore file size to return it
-    pop %rbp
-    ret
+    jl .handle_close_error
+    jge .exit_file_open             # jump to error handling if failed to open
 
 
 
     .handle_file_open_error:
+
+        mov %rax, %rdi
+        call int_to_str
+        mov %rax, %rdi
+        xor %rsi, %rsi
+        call print_info
         
         lea file_open_err_msg(%rip), %rdi   
         mov $file_open_err_msg_length, %rsi
         call print_info
-        
-        mov $-1, %rax
-        mov $0, %rdx
+
+        jmp .exit_file_open
+
+    .handle_read_error:
+        lea read_err_msg(%rip), %rdi
+        mov $read_err_msg_length, %rsi
+        call print_info
+
+        jmp .exit_file_open
+
+    .handle_fstat_error:
+        lea fstat_err_msg(%rip), %rdi
+        mov $fstat_err_msg_length, %rsi
+        call print_info 
+
+        jmp .exit_file_open
+
+    .handle_close_error:
+        lea close_err_msg(%rip), %rdi
+        mov $close_err_msg_length, %rsi
+        call print_info
+            
+
+    .exit_file_open:
+        mov %r15, %rax
+        pop %r15
+        pop %r14
+        pop %r13
+        pop %r12
         pop %rbp
         ret
