@@ -5,6 +5,7 @@
 
 .GET_STRING: .asciz "GET"    
 
+.err_extension: .asciz "err.html"
 
 .sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
@@ -60,7 +61,7 @@ sock_read:
     syscall                                 # invoke syscall
 
     cmp $0, %rax                            # Check if read was successful
-    jl .bad_request                          # Jump if there was an error
+    jl .bad_request                         # Jump if there was an error
     
 
     # COMPARE THE REQUEST METHOD TO "GET"
@@ -74,6 +75,7 @@ sock_read:
     # Handle the method not allowed
 
     cmp $0, %rax
+    
     je .method_not_allowed
 
 
@@ -90,11 +92,6 @@ sock_read:
     call build_file_path                   # Build the file path
 
 
-        # Extract the extension
-    mov %r14, %rdi                         # Destination buffer for extension
-    lea req_route_B(%rip), %rsi            # The HTTP req buffer to extract ext from
-    call extract_extension                 # Extract the extension  
-
     # Open the file 
 
     mov %r13, %rdi                          # file path buffer
@@ -102,9 +99,8 @@ sock_read:
     call file_open
     
     # Handle the file not found error
-    cmp $-1, %rax                            # Check if file_open returned -1 (error)
-    je .file_not_found                        # Jump if file not found
-
+    cmp $0, %rax                            # Check if file_open returned -1 (error)
+    jle .file_not_found                        # Jump if file not found
 
     mov $HTTP_OK_code, %rdx
     jmp .finish_sock_read 
@@ -112,25 +108,26 @@ sock_read:
 # HANDLE ERRORS
 
 .file_not_found:
-    # Clear the response_content_buffer before the next attempt
-    mov %rdi, %rsi                            # Use the passed response_content_buffer pointer
-    mov $response_B_size, %rsi   # Number of bytes to clear
+    # The buffer clearing is using wrong parameters
+    mov %r15, %rdi                             # response buffer pointer
+    mov $response_content_B_size, %rdx         # Number of bytes to clear (not %rsi)
     call clear_buffer
 
-    lea .not_found_path(%rip), %rdi            # Load .not_found_path as the file path
-    mov %r15, %rsi                             # Use the same buffer for the response
-    call file_open                            # Attempt to open the not found file
+    lea .not_found_path(%rip), %rdi           # Load 404.html path
+    mov %r15, %rsi                            # response buffer
+    call file_open                            
 
-    cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
-    jl .server_err                            # Jump to .bad_request if it fails
+    # Need to handle the case where even 404.html fails to open
+    cmp $0, %rax                              # Check if file_open succeeded
+    jle .server_err                           # If failed, serve 500 error
 
-    mov $HTTP_file_not_found_code, %rdx            # Set error code to -1 (file not found)
+    mov $HTTP_file_not_found_code, %rdx       # Set 404 status code
     jmp .finish_sock_read
 
 .bad_request:
     # Clear the response_content_buffer before the next attempt
-    mov %rdi, %rsi                           # Use the passed response_content_buffer pointer
-    mov $response_B_size, %rsi   # Number of bytes to clear
+    mov %r15, %rdi                            # response buffer pointer
+    mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .bad_request_path(%rip), %rdi          # Load .not_found_path as the file path
@@ -145,8 +142,8 @@ sock_read:
 
 .method_not_allowed:
     # Clear the response_content_buffer before the next attempt
-    mov %rdi, %rsi                           # Use the passed response_content_buffer pointer
-    mov $response_B_size, %rsi   # Number of bytes to clear
+    mov %r15, %rdi                            # response buffer pointer
+    mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .method_not_allowed_path(%rip), %rdi   # Load .not_found_path as the file path
@@ -161,11 +158,11 @@ sock_read:
 
 .server_err:
     # Clear the response_content_buffer before the next attempt
-    mov %rdi, %rsi                           # Use the passed response_content_buffer pointer
-    mov $response_B_size, %rsi   # Number of bytes to clear
+    mov %r15, %rdi                            # response buffer pointer
+    mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
-    lea .bad_request_path(%rip), %rdi          # Load .not_found_path as the file path
+    lea .server_err_path(%rip), %rdi          # Load .not_found_path as the file path
     mov %r15, %rsi                            # Use the same buffer for the response
     call file_open                            # Attempt to open the not found file
 
@@ -177,6 +174,17 @@ sock_read:
     mov $0, %rax                               # Set return value to 0 (no file size)
 
 .finish_sock_read:
+
+    mov %rax, %r12                             # preserve file size
+    mov %rdx, %r15                             # preserve HTTP status code
+    # Extract the extension
+    mov %r14, %rdi                             # Destination buffer for extension
+    mov %r13, %rsi                             # The HTTP req buffer to extract ext from
+    call extract_extension                     # Extract the extension  
+
+    mov %r12, %rax                             # restore file size
+    mov %r15, %rdx                             # restore HTTP status code
+
     pop %r15
     pop %r14
     pop %r13

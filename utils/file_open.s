@@ -98,22 +98,18 @@ file_open:
 
     cmp $0, %rax
     jl .handle_close_error
+    mov %r15, %rax
     jge .exit_file_open             # jump to error handling if failed to open
 
 
 
     .handle_file_open_error:
-
-        mov %rax, %rdi
-        call int_to_str
-        mov %rax, %rdi
-        xor %rsi, %rsi
-        call print_info
         
         lea file_open_err_msg(%rip), %rdi   
         mov $file_open_err_msg_length, %rsi
         call print_info
 
+        mov $-1, %rax
         jmp .exit_file_open
 
     .handle_read_error:
@@ -121,6 +117,7 @@ file_open:
         mov $read_err_msg_length, %rsi
         call print_info
 
+        mov $-1, %rax
         jmp .exit_file_open
 
     .handle_fstat_error:
@@ -128,16 +125,18 @@ file_open:
         mov $fstat_err_msg_length, %rsi
         call print_info 
 
+        mov $-1, %rax
         jmp .exit_file_open
 
     .handle_close_error:
         lea close_err_msg(%rip), %rdi
         mov $close_err_msg_length, %rsi
         call print_info
+
+        mov $-1, %rax
             
 
     .exit_file_open:
-        mov %r15, %rax
         pop %r15
         pop %r14
         pop %r13

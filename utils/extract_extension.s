@@ -22,9 +22,13 @@ extract_extension:
     mov %rdi, %r12 # Destination buffer
     mov %rsi, %r13 # Route buffer
 
-    # Save %rdi (destination buffer) on the stack
+    # Skip the first character in a file path (./public/...)
+    cmpb $'.', (%r13)              # Check if first char is a dot
+    jne .find_extension            # If not a dot, proceed normally
+    inc %r13                       # If it is a dot, skip it
 
-    # Find the dot in the route buffer
+.find_extension:
+    # Find the dot in the route buffer (starting after first char)
     mov %r13, %rdi
     mov $'.', %rsi                  # Character to find (dot)
     call str_find_char              # Call str_find_char with %rsi (route buffer) and %rdx (dot)

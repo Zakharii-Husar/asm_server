@@ -10,10 +10,7 @@
 
 .include "./constants.s"
 
-test_path: .asciz "./public/favicon.icos"
-
 .section .bss
-.lcomm test_buffer, 16777216    # Create a 16MB buffer (16 * 1024 * 1024)
 
 .section .text
 .include "./mods/sock_create.s"
