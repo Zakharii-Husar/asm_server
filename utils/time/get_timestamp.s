@@ -2,10 +2,9 @@
     UTC_stamp: .quad 0       # 8-byte buffer to store time value
 
 .section .text
-.global get_timestamp
-
 # Function: get_timestamp
 # Returns: %rax - current time in seconds since epoch
+.global get_timestamp
 .type get_timestamp, @function
 get_timestamp:
     push %rbp
