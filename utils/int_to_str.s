@@ -69,6 +69,10 @@ int_to_str:
     movq %rsi, %rax           
     movq %rcx, %rdx           
     
+    # Add null termination
+    # will uncomment later
+    # movb $0, (%rsi, %rcx, 1)  # Add null byte at end of string
+    
     pop %rcx
     pop %rbp                  
 

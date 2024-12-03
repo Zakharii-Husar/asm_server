@@ -8,7 +8,9 @@
 connection_info:
     .zero 16              # sockaddr_in structure
     .quad 0               # additional space for fd if needed
-client_len:
+    .quad 0               # extra padding to match original size
+
+connection_info_len:
     .quad 16              # size of sockaddr_in
 
 .section .text
@@ -27,21 +29,29 @@ sock_accept:
  
  mov %r12, %rdi                               # move socket fd into %rdi (1st arg for accept)
  lea connection_info(%rip), %rsi              # store client info in connection_info structure
- lea client_len(%rip), %rdx                   
+ lea connection_info_len(%rip), %rdx          # size of sockaddr_in  
  mov $SYS_sock_accept, %rax
  syscall                                      # make syscall
 
  cmp $0, %rax                                 # Compare the return value with 0
- jl  .handle_sock_accept_err                   # Jump to error handling if %rax < 0
+ jl  .handle_sock_accept_err                  # Jump to error handling if %rax < 0
 
- mov    %rax, %r13                             # save the new connection file descriptor in r13
-    
- lea connection_info(%rip), %r14               # r14 points to client info
+ mov    %rax, %r13                            # save the new connection file descriptor in r13
 
+ lea connection_info(%rip), %rdi
+ call extract_client_ip
+ 
  pop %rbp                                      # restore the caller's base pointer
  ret                                           # return to the caller
  
 .handle_sock_accept_err:
+ mov %rax, %rdi
+ call int_to_str
+
+ mov %rax, %rdi
+ xor %rsi, %rsi
+ call print_info
+
  lea .sock_accept_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
  mov $.sock_accept_err_msg_len, %rsi
  call print_info

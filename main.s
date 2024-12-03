@@ -3,7 +3,7 @@
 # GLOBAL REGISTERS:
 #   - %r12: socket file descriptor
 #   - %r13: connection file descriptor
-#   - %r14: pointer to client info
+#   - %r14: pointer to client ip
 #   - %r15: server config pointer
 
 .section .data
@@ -29,6 +29,7 @@
 
 .include "./utils/print_info.s"
 .include "./utils/int_to_str.s"
+.include "./utils/extract_client_ip.s"
 .include "./utils/file_open.s"
 .include "./utils/extract_route.s"
 .include "./utils/build_file_path.s"
@@ -71,10 +72,6 @@ _start:
     # 5. Fork the process(child reads and responds to a user and parent
     # is going back to accepting new connections)
     # --------------------------------
-
-    # mov %r14, %rdi
-    # xor %rsi, %rsi
-    # call print_info
 
     call process_fork          # handles forking and error handling
 
