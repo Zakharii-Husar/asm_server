@@ -12,7 +12,7 @@
     .equ SYS_fork, 57
     .equ SYS_sock_sendto, 44
     .equ SYS_exit, 60
-
+    .equ SYS_time, 201
     # create socket args
     .equ AF_INET, 2 
     .equ SOCK_STREAM, 1

@@ -44,10 +44,12 @@
 .include "./utils/create_type_header.s"
 .include "./utils/create_status_header.s"
 .include "./utils/create_length_header.s"
-
+.include "./utils/get_timestamp.s"
 
 .global _start
 _start:
+
+    call get_time
 
     # ----------------------------
     # 1. Create Socket
