@@ -4,18 +4,12 @@
 .section .data
 .include "./utils/time/time_constants.s"
 
-.dash: .string "-"
-.colon: .string ":"
-.time_separator: .string "T"
-
-.section .bss
-.comm date_buffer, 20
-
 .section .text
 # Include helper functions
 .include "./utils/time/get_timestamp.s"
 .include "./utils/time/is_leap_year.s"
 .include "./utils/time/get_days_in_month.s"
+.include "./utils/time/format_time.s"
 
 .global get_time_now
 .type get_time_now, @function
@@ -77,113 +71,30 @@ get_time_now:
     mov %rcx, %r14           # Save month in r14
     inc %r15                 # Adjust day to 1-based index
 
-    # STEP 4: FORMAT DATE
-    # %r12 = remaining seconds
-    # %r13 = year
-    # %r14 = month
-    # %r15 = day
-
-    mov %r13, %rdi
-    call int_to_str
-
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .dash(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-
-    mov %r14, %rdi
-    call int_to_str
-
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .dash(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    mov %r15, %rdi
-    call int_to_str
-
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .time_separator(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-
     # STEP 5: CALCULATE HOURS, MINUTES, SECONDS
     mov %r12, %rax           # Load remaining seconds into rax
-    xor %rdx, %rdx           # Clear rdx for division
-    
-    mov $3600, %rbx          # Seconds per hour
+    xor %rdx, %rdx          
+    mov $3600, %rbx         
     div %rbx                 # rax = hours, rdx = remaining seconds
-    mov %rax, %r12           # Save hours in r12
+    mov %rax, %r10          
     
-    mov %rdx, %rax          # Move remaining seconds to rax for next division
-    xor %rdx, %rdx          # Clear rdx again
-    mov $60, %rbx           # Seconds per minute
+    mov %rdx, %rax          
+    xor %rdx, %rdx          
+    mov $60, %rbx           
     div %rbx                # rax = minutes, rdx = seconds
-    mov %rax, %r13          # Save minutes in r13
-    mov %rdx, %r14          # Save seconds in r14
+    mov %rax, %r11          
+    mov %rdx, %r12          
 
-   # append hours
-    mov %r12, %rdi
-    call int_to_str
+    # Call format_time with all parameters
+    mov %r13, %rdi          # year
+    mov %r14, %rsi          # month
+    mov %r15, %rdx          # day
+    mov %r10, %rcx          # hours
+    mov %r11, %r8           # minutes
+    mov %r12, %r9           # seconds
+    call format_time
 
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .colon(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    # append minutes
-    mov %r13, %rdi
-    call int_to_str
-
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .colon(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    # append seconds
-    mov %r14, %rdi
-    call int_to_str
-
-    lea date_buffer(%rip), %rdi
-    mov %rax, %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    lea .colon(%rip), %rsi
-    xor %rdx, %rdx
-    call str_concat
-
-    lea date_buffer(%rip), %rdi
-    xor %rsi, %rsi
-    call print_info 
+    # format_time returns pointer to formatted string in rax
 
     # Restore non-volatile registers
     pop %r15
