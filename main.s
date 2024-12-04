@@ -3,12 +3,10 @@
 # GLOBAL REGISTERS:
 #   - %r12: socket file descriptor
 #   - %r13: connection file descriptor
-#   - %r14: pointer to client ip
+#   - %r14: pointer to client ip (buffer holding string)
 #   - %r15: server config pointer
 
 .section .data
-
-test_str: .asciz "-50"
 
 .include "./constants.s"
 
@@ -49,8 +47,19 @@ test_str: .asciz "-50"
 .include "./utils/create_length_header.s"
 .include "./utils/time/get_time_now.s"
 
+.include "./utils/time/get_timestamp.s"
+.include "./utils/time/is_leap_year.s"
+.include "./utils/time/get_days_in_month.s"
+.include "./utils/time/format_time.s"
+.include "./utils/time/adjust_timezone.s"
+
 .global _start
 _start:
+
+    call get_time_now
+    mov %rax, %rdi
+    xor %rsi, %rsi
+    call print_info
 
     # ----------------------------
     # 1. Create Socket

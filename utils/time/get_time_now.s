@@ -5,11 +5,6 @@
 .include "./utils/time/time_constants.s"
 
 .section .text
-# Include helper functions
-.include "./utils/time/get_timestamp.s"
-.include "./utils/time/is_leap_year.s"
-.include "./utils/time/get_days_in_month.s"
-.include "./utils/time/format_time.s"
 
 .global get_time_now
 .type get_time_now, @function
@@ -23,6 +18,8 @@ get_time_now:
     push %r15
 
     call get_timestamp
+    mov %rax, %rdi
+    call adjust_timezone
     # STEP 1: CONVERT SECONDS TO DAYS AND REMAINING SECONDS
     # mov %rax, %rdi
     # mov %rdi, %rax
