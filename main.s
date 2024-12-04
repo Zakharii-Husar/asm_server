@@ -8,6 +8,8 @@
 
 .section .data
 
+test_str: .asciz "-50"
+
 .include "./constants.s"
 
 .section .bss
@@ -40,6 +42,7 @@
 .include "./utils/str_concat.s"
 .include "./utils/str_find_char.s"
 .include "./utils/str_to_lower.s"
+.include "./utils/str_to_int.s"
 .include "./utils/clear_buffer.s"
 .include "./utils/create_type_header.s"
 .include "./utils/create_status_header.s"
@@ -48,8 +51,6 @@
 
 .global _start
 _start:
-
-    call get_time_now
 
     # ----------------------------
     # 1. Create Socket
