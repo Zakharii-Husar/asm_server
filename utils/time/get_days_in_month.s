@@ -2,13 +2,14 @@
 .global get_days_in_month
 .type get_days_in_month, @function
 
-# Input: Current year in rcx
+# Input: rdi = Current year
 # Output: rax = pointer to appropriate days_per_month array
 .global get_days_in_month
 .type get_days_in_month, @function
 get_days_in_month:
     push %rbp
     mov %rsp, %rbp
+    mov %rdi, %rdi
     call is_leap_year
     test %rax, %rax
     jz .normal_month

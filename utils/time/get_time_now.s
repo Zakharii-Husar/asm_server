@@ -24,10 +24,10 @@ get_time_now:
     push %rdx                 # Save seconds for later use
 
     # STEP 2: CALCULATE YEAR
-    mov epoch_year(%rip), %rcx # Load starting year 1970
+    mov epoch_year(%rip), %rdi  # Load starting year 1970 into rdi
 .year_loop:
     mov %rax, %rsi            # Save days remaining in rsi
-    call is_leap_year          # Check if current year is leap year (result in rax)
+    call is_leap_year           # Now correctly passing year in rdi
     testq %rax, %rax
     jz .normal_year
     mov $366, %rdx
@@ -46,7 +46,8 @@ get_time_now:
 
     # STEP 3: CALCULATE MONTH
     mov %rsi, %rdi            # Remaining days in rdi
-    call get_days_in_month     # Select days_per_month or days_per_month_leap
+    mov %rcx, %rdi             # Move year to rdi before calling
+    call get_days_in_month     # Now correctly passing year in rdi
     mov %rax, %rbx            # Pointer to days_per_month array
     xor %rcx, %rcx            # Month index
 .month_loop:
