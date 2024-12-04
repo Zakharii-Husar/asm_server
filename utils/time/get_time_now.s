@@ -2,7 +2,7 @@
 # Output: rax = pointer to formatted string "YYYY-MM-DD HH:MM:SS"
 
 .section .data
-.include "time_constants.s"
+.include "./utils/time/time_constants.s"
 date_buffer: .space 20      # Buffer for final "YYYY-MM-DD HH:MM:SS"
 dash: .ascii "-"            # Separators
 colon: .ascii ":"
@@ -10,9 +10,9 @@ space: .ascii " "
 
 .section .text
 # Include helper functions
-.include "get_timestamp.s"
-.include "is_leap_year.s"
-.include "get_days_in_month.s"
+.include "./utils/time/get_timestamp.s"
+.include "./utils/time/is_leap_year.s"
+.include "./utils/time/get_days_in_month.s"
 
 .global get_time_now
 .type get_time_now, @function

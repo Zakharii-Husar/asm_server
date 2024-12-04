@@ -51,6 +51,10 @@ _start:
 
     call get_time_now
 
+    mov %rax, %rdi
+    xor %rsi, %rsi
+    call print_info
+
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
