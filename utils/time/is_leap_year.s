@@ -1,6 +1,6 @@
 .section .text
 # Input: rdi = year to check
-# Output: rax = 1 if leap year, 0 if not
+# Output: rax = number of days in year (365 or 366)
 
 # A year is a leap year if:
 # It is divisible by 4, and
@@ -35,10 +35,10 @@ is_leap_year:
     jz .leap
 
 .not_leap:
-    xor %rax, %rax
+    mov $365, %rax
     jmp .is_leap_year_end
 .leap:
-    mov $1, %rax
+    mov $366, %rax
 
 .is_leap_year_end:
     pop %rbp
