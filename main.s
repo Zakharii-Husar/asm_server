@@ -53,13 +53,13 @@
 .include "./utils/time/format_time.s"
 .include "./utils/time/adjust_timezone.s"
 
+.include "./utils/srvr_conf/init_srvr_config.s"
+.include "./utils/srvr_conf/parse_srvr_config.s"
+
 .global _start
 _start:
 
-    call get_time_now
-    mov %rax, %rdi
-    xor %rsi, %rsi
-    call print_info
+    call init_srvr_config
 
     # ----------------------------
     # 1. Create Socket
