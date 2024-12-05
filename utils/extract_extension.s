@@ -31,6 +31,7 @@ extract_extension:
     # Find the dot in the route buffer (starting after first char)
     mov %r13, %rdi
     mov $'.', %rsi                  # Character to find (dot)
+    xor %rdx, %rdx                  # no boundary check
     call str_find_char              # Call str_find_char with %rsi (route buffer) and %rdx (dot)
     test %rdx, %rdx                 # Check if dot was found
     jz .no_dot_found                # If not found, jump to no dot found

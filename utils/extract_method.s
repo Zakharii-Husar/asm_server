@@ -17,6 +17,7 @@ extract_method:
     # Find the first space character
     # %rdi is already the source pointer
     mov $' ', %rsi
+    xor %rdx, %rdx                   # no boundary check
     call str_find_char
 
     # Copy the method to the internal buffer

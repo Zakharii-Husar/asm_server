@@ -20,6 +20,7 @@ extract_route:
     # Find first space using str_find_char
     mov %rsi, %rdi                   # Move request_content_buffer to rdi
     mov $SPACE, %rsi                 # Move space character to rsi
+    xor %rdx, %rdx                   # no boundary check
     call str_find_char               # Find first space
     inc %rax                         # Skip the space
     mov %rax, %r13                   # Save start of route in callee-saved register
@@ -27,6 +28,7 @@ extract_route:
     # Find end of route (next space)
     mov %r13, %rdi                   # Move start position to rdi
     mov $SPACE, %rsi                 # Move space character to rsi
+    xor %rdx, %rdx                   # no boundary check
     call str_find_char               # Find next space
 
     # Copy route to buffer

@@ -57,6 +57,7 @@ build_file_path:
     # 4. Search for dot in route
     mov %r13, %rdi
     mov $'.', %rsi
+    xor %rdx, %rdx       # no boundary check
     call str_find_char
     cmp $1, %rdx
 
