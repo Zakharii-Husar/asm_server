@@ -53,7 +53,6 @@ sock_read:
 
     # CLEAR THE BUFFERS
     # Method buffer is cleared in extract_method
-
     # Clear the route buffer
     lea req_route_B(%rip), %rdi
     mov $req_route_B_size, %rsi
@@ -184,6 +183,7 @@ sock_read:
     jne .finish_sock_read
 
     mov $0, %rax                               # Set return value to 0 (no file size)
+    
 
 .finish_sock_read:
 
