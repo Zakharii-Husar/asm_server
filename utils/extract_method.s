@@ -12,10 +12,15 @@ extract_method:
     push %rbp
     mov %rsp, %rbp
     push %r12
-
     mov %rdi, %r12                   # Save the source pointer
+
+    # Clear the method buffer first
+    lea req_method_B(%rip), %rdi
+    mov $req_method_B_size, %rsi
+    call clear_buffer
+
     # Find the first space character
-    # %rdi is already the source pointer
+    mov %r12, %rdi
     mov $' ', %rsi
     xor %rdx, %rdx                   # no boundary check
     call str_find_char

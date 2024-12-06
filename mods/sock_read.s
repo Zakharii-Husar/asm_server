@@ -5,6 +5,8 @@
 
 .GET_STRING: .asciz "GET"    
 
+space_char: .asciz " "
+
 .sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
 .bad_request_path: .asciz "./public/400.html"
@@ -67,28 +69,40 @@ sock_read:
     mov %r12, %rdi                         # Load source buffer (request buffer)
     call extract_method                    # Returns pointer to method in %rax
     mov %rax, %rdi                         # First parameter for str_cmp
-
     lea .GET_STRING(%rip), %rsi            # Second parameter
     call str_cmp
     # Handle the method not allowed
-
     cmp $0, %rax
-    
     je .method_not_allowed
 
 
     # ATTEMPT TO OPEN THE REQUESTED FILE
+
+    # Clear the route buffer first
+    lea req_route_B(%rip), %rdi
+    mov $req_route_B_size, %rsi
+    call clear_buffer
 
     # Extract the route
     lea req_route_B(%rip), %rdi            # Destination buffer for route
     mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
     call extract_route                     # Extract the route
 
+    # Clear file path buffer first
+    mov %r13, %rdi
+    mov $file_path_B_size, %rsi
+    call clear_buffer
+
     # Build the file path
     mov %r13, %rdi                         # Destination buffer for file path
     lea req_route_B(%rip), %rsi            # Route buffer
     call build_file_path                   # Build the file path
 
+
+    # Clear the response buffer first
+    mov %r15, %rdi
+    mov $response_content_B_size, %rsi
+    call clear_buffer
 
     # Open the file 
     mov %r13, %rdi                          # file path buffer
@@ -105,7 +119,6 @@ sock_read:
 # HANDLE ERRORS
 
 .file_not_found:
-    # The buffer clearing is using wrong parameters
     mov %r15, %rdi                             # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear (not %rsi)
     call clear_buffer
