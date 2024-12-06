@@ -27,12 +27,12 @@ str_find_char:
 
 .found_char:
     mov $1, %rdx               # Return 1 if found
-    mov %rdi, %rax            # Return address of character
+    mov %rdi, %rax             # Return address of character
     jmp .finish
 
 .not_found:
     mov $0, %rdx               # Return 0 if not found
-    xor %rax, %rax            # Return 0 instead of boundary address
+    mov $0, %rax               # Return 0 instead of boundary address
 
 .finish:
     pop %rbp

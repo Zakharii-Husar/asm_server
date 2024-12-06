@@ -9,6 +9,7 @@ server_config_struct:
     .lcomm conf_max_conn, 8      # 64-bit integer for max connections
     .lcomm conf_buffer_size, 8   # 64-bit integer for buffer size
     .lcomm conf_timezone, 8      # 64-bit integer for timezone
+    .lcomm conf_error_log_fd, 8  # 64-bit integer for error log file descriptor
 server_config_struct_end:        # Label to calculate struct size
 
 .lcomm server_conf_file_B, 4096  # Buffer for server config file
@@ -24,19 +25,17 @@ init_srvr_config:
     push %rbp
     mov %rsp, %rbp
 
-    # Load struct base address into r15
-    lea server_config_struct(%rip), %r15
-
     # Call file_open with path and buffer
     lea server_conf_path(%rip), %rdi
     lea server_conf_file_B(%rip), %rsi
     call file_open
 
     # Check return value
-    cmp $0, %rax
-    jl .config_error
+    test %rax, %rax
+    js .config_error
 
-    # Call parse_srvr_config with buffer pointer
+    # Load struct base address into r15
+    lea server_config_struct(%rip), %r15
     lea server_conf_file_B(%rip), %rdi
     call parse_srvr_config
 

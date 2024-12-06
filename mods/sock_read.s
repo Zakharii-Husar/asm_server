@@ -5,8 +5,6 @@
 
 .GET_STRING: .asciz "GET"    
 
-.err_extension: .asciz "err.html"
-
 .sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
 
 .bad_request_path: .asciz "./public/400.html"
@@ -93,7 +91,6 @@ sock_read:
 
 
     # Open the file 
-
     mov %r13, %rdi                          # file path buffer
     mov %r15, %rsi                          # response buffer
     call file_open

@@ -8,9 +8,15 @@
 
 .section .data
 
+test_str:
+    .asciz "/indexhtml- ./index.css ./index.js"
+
+
 .include "./constants.s"
 
 .section .bss
+
+.lcomm buffer, 1024
 
 .section .text
 .include "./mods/sock_create.s"
@@ -59,7 +65,6 @@
 .global _start
 _start:
 
-    call init_srvr_config
 
     # ----------------------------
     # 1. Create Socket
