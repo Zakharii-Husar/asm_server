@@ -51,6 +51,24 @@ sock_read:
     mov %rdx, %r14                          # extension buffer
     mov %rcx, %r15                          # response buffer
 
+    # CLEAR THE BUFFERS
+    # Method buffer is cleared in extract_method
+
+    # Clear the route buffer
+    lea req_route_B(%rip), %rdi
+    mov $req_route_B_size, %rsi
+    call clear_buffer
+    # Clear file path buffer
+    mov %r13, %rdi
+    mov $file_path_B_size, %rsi
+    call clear_buffer
+    # Clear the response buffer
+    mov %r15, %rdi
+    mov $response_content_B_size, %rsi
+    call clear_buffer
+
+
+
 
 
     # READ AND VALIDATE CLIENT'S REQUEST
@@ -78,31 +96,15 @@ sock_read:
 
     # ATTEMPT TO OPEN THE REQUESTED FILE
 
-    # Clear the route buffer first
-    lea req_route_B(%rip), %rdi
-    mov $req_route_B_size, %rsi
-    call clear_buffer
-
     # Extract the route
     lea req_route_B(%rip), %rdi            # Destination buffer for route
     mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
     call extract_route                     # Extract the route
 
-    # Clear file path buffer first
-    mov %r13, %rdi
-    mov $file_path_B_size, %rsi
-    call clear_buffer
-
     # Build the file path
     mov %r13, %rdi                         # Destination buffer for file path
     lea req_route_B(%rip), %rsi            # Route buffer
     call build_file_path                   # Build the file path
-
-
-    # Clear the response buffer first
-    mov %r15, %rdi
-    mov $response_content_B_size, %rsi
-    call clear_buffer
 
     # Open the file 
     mov %r13, %rdi                          # file path buffer
