@@ -1,9 +1,6 @@
 .section .data
-    .addr_in:
-    .word   AF_INET
-    .word   PORT
-    .long   IP_ADDR
-    .space  PADDING
+    .addr_in:                      # Just reserve the space, no initialization
+    .space 16                      # 16 bytes for sockaddr_in structure
 
 .section .rodata
 
@@ -27,9 +24,18 @@ sock_bind:
  push %rbp                              # save the caller's base pointer
  mov %rsp, %rbp                         # set the new base pointer (stack frame)
  
+ # Initialize the struct before binding
+ lea .addr_in(%rip), %rax               # Get pointer to struct
+ movw $2, (%rax)                        # AF_INET
+ movl CONF_PORT_OFFSET(%r15), %edx      # Get port from config into 32-bit register
+ movw %dx, 2(%rax)                      # Store lower 16 bits into struct
+ movl CONF_HOST_OFFSET(%r15), %edx      # Get host IP from config
+ movl %edx, 4(%rax)                     # Store IP address into struct
+ movq $0, 8(%rax)                       # Padding
+ 
  mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_bind, %rax            # sys_bind
- lea     .addr_in(%rip), %rsi            # pointer to the address structure
+ lea     .addr_in(%rip), %rsi           # pointer to the address structure
  mov    $16, %rdx                       # size of the sockaddr_in structure
  syscall                                # make syscall
 
