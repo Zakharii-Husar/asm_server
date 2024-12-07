@@ -5,7 +5,7 @@
 #   %rdx - Boundary character (0 for unbounded search)
 # Returns:
 #   %rdx - 1 if character found, 0 if not found
-#   %rax - Address of found character or 0 if not found
+#   %rax - Address of found character or boundary/null character if not found
 
 str_find_char:
     push %rbp
@@ -32,7 +32,7 @@ str_find_char:
 
 .not_found:
     mov $0, %rdx               # Return 0 if not found
-    mov $0, %rax               # Return 0 instead of boundary address
+    mov %rdi, %rax            # Return address of boundary/null character
 
 .finish:
     pop %rbp
