@@ -109,8 +109,13 @@ file_open:
 
     cmp $0, %rax
     jl .handle_close_error
-    mov %r9, %rax
-    jge .exit_file_open             # jump to error handling if failed to open
+    
+    mov %r9, %rax # return file size
+    # Check if we need to include null terminator in returned size
+    cmp $1, %r12
+    jne .exit_file_open
+    inc %rax                        # Include null terminator in size if requested
+    jmp .exit_file_open             # jump to error handling if failed to open
 
 
 
