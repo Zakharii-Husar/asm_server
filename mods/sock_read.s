@@ -108,6 +108,7 @@ sock_read:
     # Open the file 
     mov %r13, %rdi                          # file path buffer
     mov %r15, %rsi                          # response buffer
+    xor %rdx, %rdx                          # null termination flag
     call file_open
     
     # Handle the file not found error
@@ -126,6 +127,7 @@ sock_read:
 
     lea .not_found_path(%rip), %rdi           # Load 404.html path
     mov %r15, %rsi                            # response buffer
+    xor %rdx, %rdx                          # null termination flag
     call file_open                            
 
     # Need to handle the case where even 404.html fails to open
@@ -143,6 +145,7 @@ sock_read:
 
     lea .bad_request_path(%rip), %rdi          # Load .not_found_path as the file path
     mov %r15, %rsi                            # Use the same buffer for the response
+    xor %rdx, %rdx                            # null termination flag
     call file_open                            # Attempt to open the not found file
 
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
@@ -159,6 +162,7 @@ sock_read:
 
     lea .method_not_allowed_path(%rip), %rdi   # Load .not_found_path as the file path
     mov %r15, %rsi                             # Use the same buffer for the response
+    xor %rdx, %rdx                              # null termination flag
     call file_open                            # Attempt to open the not found file
 
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
@@ -175,6 +179,7 @@ sock_read:
 
     lea .server_err_path(%rip), %rdi          # Load .not_found_path as the file path
     mov %r15, %rsi                            # Use the same buffer for the response
+    xor %rdx, %rdx                            # null termination flag
     call file_open                            # Attempt to open the not found file
 
     mov $HTTP_serve_err_code, %rdx            # Set error code to -4 (server error)

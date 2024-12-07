@@ -23,6 +23,7 @@ file_open:
     # Parameters:
     # %rdi contains the file path to open
     # %rsi contains the buffer to write into
+    # %rdx contains null termination flag (1 = terminate, 0 = don't terminate)
 
     # Return value:
     # %rax on success returns file size
@@ -40,22 +41,19 @@ file_open:
 
     push %rbp
     mov %rsp, %rbp
-
     push %r12
-    push %r13
-    push %r14
-    push %r15
-    mov %rdi, %r12 # file path buffer
-    mov %rsi, %r13 # response buffer
-    mov $0, %r15 # Initialize return file size
+
+    mov %rsi, %r8      # response buffer
+    mov $0, %r9        # Initialize return file size
+    mov %rdx, %r12     # save null termination flag
     
     # Open the file using the path in %rdi
-    mov %r12, %rdi
+    # mov %rdi, %rdi already contains file path from caller
     mov $SYS_open, %rax                # sys_open
     mov $0, %rsi                       # flags = O_RDONLY
     syscall                            # path is already in %rdi
 
-    mov %rax, %r14 # file descriptor
+    mov %rax, %r10 # file descriptor
 
     # If negative, it's an error
     cmp $0, %rax
@@ -64,17 +62,30 @@ file_open:
 
     # Read file contents into the buffer passed in %rdi
     mov $SYS_read, %rax              # sys_read
-    mov %r13, %rsi                    # Use the buffer pointer passed in %rsi > %r9
-    mov %r14, %rdi                    # file descriptor
+    mov %r8, %rsi                    # Use the buffer pointer passed in %rsi > %r9
+    mov %r10, %rdi                    # file descriptor
     mov $response_content_B_size, %rdx                  # max bytes to read
     syscall
 
     cmp $0, %rax
     jl .handle_read_error   
 
+    # Save bytes read temporarily
+    mov %rax, %r9
+
+    # Check if null termination was requested
+    cmp $1, %r12
+    jne .skip_termination
+    
+    # Add null terminator after the last byte read
+    mov %r8, %rdi
+    add %r9, %rdi      # Point to byte after last read byte
+    movb $0, (%rdi)    # Add null terminator
+    
+.skip_termination:
     # Get file size using fstat
     mov $SYS_fstat, %rax             # sys_fstat
-    mov %r14, %rdi                    # file descriptor
+    mov %r10, %rdi                    # file descriptor
     lea stat_buffer(%rip), %rsi      # address of struct stat
     syscall
 
@@ -89,16 +100,16 @@ file_open:
     # when rsi is pointer, but when system sees that rsi holds some 
     # raw bits it ignores them
     mov 48(%rsi), %rsi  # st_size is usually at offset 40 for 64-bit
-    mov %rsi, %r15 # return file size
+    mov %rsi, %r9 # return file size
 
     # Close the file descriptor
     mov $SYS_close, %rax            # sys_close
-    mov %r14, %rdi                   # file descriptor
+    mov %r10, %rdi                   # file descriptor
     syscall
 
     cmp $0, %rax
     jl .handle_close_error
-    mov %r15, %rax
+    mov %r9, %rax
     jge .exit_file_open             # jump to error handling if failed to open
 
 
@@ -137,9 +148,6 @@ file_open:
             
 
     .exit_file_open:
-        pop %r15
-        pop %r14
-        pop %r13
         pop %r12
         pop %rbp
         ret

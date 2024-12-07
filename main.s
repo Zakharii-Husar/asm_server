@@ -65,6 +65,13 @@ test_str:
 .global _start
 _start:
 
+    call init_srvr_config
+
+    mov CONF_TIMEZONE_OFFSET(%r15), %rdi
+    call int_to_str
+    mov %rax, %rdi
+    xor %rsi, %rsi
+    call print_info
 
     # ----------------------------
     # 1. Create Socket
