@@ -12,9 +12,6 @@ server_name_key: .asciz "server_name"
 default_file_key: .asciz "default_file"
 access_log_path_key: .asciz "access_log_path"
 
-.section .bss
-.lcomm config_key, 20
-.lcomm config_value, 20
 # str_find_char
 # Parameters:
 #   %rdi - Address of the beginning of the line
@@ -31,14 +28,6 @@ parse_key_value:
     mov %rdi, %r12 # store address of beginning of line
     mov %rsi, %r13 # store address of '='
 
-    # Clear config_key and config_value buffers
-    lea config_key(%rip), %rdi
-    mov $20, %rsi
-    call clear_buffer
-
-    lea config_value(%rip), %rdi
-    mov $20, %rsi
-    call clear_buffer
 
     # Calculate key length
     mov %r13, %rax    # Move '=' address to %rax
@@ -71,8 +60,9 @@ parse_key_value:
     lea config_value(%rip), %rdi
     lea 1(%r13), %rsi
     call str_concat
+    
 
-    # Now compare keys and handle accordingly
+    # Compare keys and handle accordingly
     lea config_key(%rip), %rdi
     lea timezone_key(%rip), %rsi
     call str_cmp
@@ -132,7 +122,7 @@ parse_key_value:
     call str_cmp
     cmp $1, %rax
     je .handle_access_log_path_key
-    
+
     jmp .exit_parse_key_value
 
 .handle_timezone_key:
@@ -209,6 +199,7 @@ parse_key_value:
     jmp .exit_parse_key_value
 
 .handle_access_log_path_key:
+
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi # destination buffer
     lea config_value(%rip), %rsi                # source string
     mov $CONF_ACCESS_LOG_PATH_SIZE, %rdx        # length

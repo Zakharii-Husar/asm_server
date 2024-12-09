@@ -28,6 +28,7 @@ init_srvr_config:
     # Call file_open with path and buffer
     lea server_conf_path(%rip), %rdi
     lea server_conf_file_B(%rip), %rsi
+    mov $1, %rdx
     call file_open
 
     # Check return value

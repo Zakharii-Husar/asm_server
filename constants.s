@@ -18,11 +18,6 @@
     .equ SOCK_STREAM, 1
     .equ SOCK_PROTOCOL, 0
 
-    # sock bind args
-    .equ PORT, 0x901F      # Port number (8080) in network byte order (use htons equivalent in assembly)
-    .equ IP_ADDR, 0    # IP address (0.0.0.0 - binds to all interfaces)
-    .equ PADDING, 8    # Padding (8 bytes to make the structure 16 bytes in total)
-
 
     # sock listen args
     .equ connection_backlog, 10   # backlog (max number of queued connections)
@@ -52,7 +47,9 @@
     .equ CONF_MAX_CONN_SIZE, 8
     .equ CONF_BUFFER_SIZE_SIZE, 8
     .equ CONF_TIMEZONE_SIZE, 8
-    .equ CONF_ERROR_LOG_FD_SIZE, 8
+    .equ CONF_SERVER_NAME_SIZE, 256
+    .equ CONF_DEFAULT_FILE_SIZE, 256
+    .equ CONF_ACCESS_LOG_PATH_SIZE, 256
 
     # Server Config Struct Field Offsets
     .equ CONF_HOST_OFFSET, 0
@@ -62,8 +59,10 @@
     .equ CONF_MAX_CONN_OFFSET, CONF_LOG_PATH_OFFSET + CONF_LOG_PATH_SIZE
     .equ CONF_BUFFER_SIZE_OFFSET, CONF_MAX_CONN_OFFSET + CONF_MAX_CONN_SIZE
     .equ CONF_TIMEZONE_OFFSET, CONF_BUFFER_SIZE_OFFSET + CONF_BUFFER_SIZE_SIZE
-    .equ CONF_ERROR_LOG_FD_OFFSET, CONF_TIMEZONE_OFFSET + CONF_TIMEZONE_SIZE
+    .equ CONF_SERVER_NAME_OFFSET, CONF_TIMEZONE_OFFSET + CONF_TIMEZONE_SIZE
+    .equ CONF_DEFAULT_FILE_OFFSET, CONF_SERVER_NAME_OFFSET + CONF_SERVER_NAME_SIZE
+    .equ CONF_ACCESS_LOG_PATH_OFFSET, CONF_DEFAULT_FILE_OFFSET + CONF_DEFAULT_FILE_SIZE
 
     # Total struct size
-    .equ SERVER_CONFIG_STRUCT_SIZE, CONF_ERROR_LOG_FD_OFFSET + CONF_ERROR_LOG_FD_SIZE
+    .equ SERVER_CONFIG_STRUCT_SIZE, CONF_ACCESS_LOG_PATH_OFFSET + CONF_ACCESS_LOG_PATH_SIZE
     

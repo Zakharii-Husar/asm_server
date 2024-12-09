@@ -24,3 +24,4 @@ char_cmp:
 .exit_char_cmp:
     pop %rbp
     ret
+    

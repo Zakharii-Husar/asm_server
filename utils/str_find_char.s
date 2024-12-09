@@ -6,7 +6,9 @@
 # Returns:
 #   %rdx - 1 if character found, 0 if not found
 #   %rax - Address of found character or boundary/null character if not found
+.section .text
 
+.type str_find_char, @function
 str_find_char:
     push %rbp
     mov %rsp, %rbp

@@ -1,5 +1,11 @@
 .section .data
-timezone_key: .asciz "TIMEZONE"
+
+equal_sign: .asciz "="
+n_line: .asciz "\n"
+
+.section .bss
+.lcomm config_key, 20
+.lcomm config_value, 20
 
 .section .text
 .type parse_srvr_config, @function
@@ -13,69 +19,108 @@ parse_srvr_config:
 
     mov %rdi, %r12              # Buffer pointer
     mov %rsi, %rbx              # File size
-    
-    # Calculate end of buffer address
-    lea (%rdi, %rsi), %r14      # r14 = buffer_start + size (points to one past last valid byte)
-    
-.parse_next_line:
-    # Check if we've reached or passed buffer end
-    cmp %r14, %r12
-    jge .exit_parse_srvr_config
-    
-    # Find '=' in current line, stop at newline
-    mov %r12, %rdi              # Current line start
-    mov $'=', %rsi              # Character to find
-    mov $'\n', %rdx             # Stop at newline
-    call str_find_char
-    
-    # If '=' not found and no newline found (rdx = 0), we're at end of buffer
-    cmp $0, %rdx
-    je .exit_parse_srvr_config
-    
-    # Save position of '='
-    mov %rax, %r13              # Save position of '='
-    
-    # Temporarily null-terminate the key
-    movb (%r13), %r14b         # Save '=' character
-    movb $0, (%r13)            # Null-terminate key
 
-    # Compare with TIMEZONE key
-    mov %r12, %rdi             # First string (key)
-    lea timezone_key(%rip), %rsi
-    call str_cmp
+.process_new_line:
+
+    # Clear config_key and config_value buffers
+    lea config_key(%rip), %rdi
+    mov $20, %rsi
+    call clear_buffer
+
+    lea config_value(%rip), %rdi
+    mov $20, %rsi
+    call clear_buffer
+    
+    # STEP 1: Skip spaces
+    .skip_spaces:
+    mov (%r12), %rdi
+    mov $' ', %rsi
+    call char_cmp
+    cmp $0, %rax
+    je .skip_empty_line
+    inc %r12
+    jmp .skip_spaces
+
+
+    # STEP 2: Skip empty lines
+    .skip_empty_line:
+    mov (%r12), %rdi
+    mov $'\n', %rsi
+    call char_cmp
     cmp $1, %rax
-    je .handle_timezone
+    je .skip_current_line
 
-    # Restore '=' character if no match
-    movb %r14b, (%r13)
+    # STEP 3: Skip tabs
+    mov (%r12), %rdi
+    mov $'\t', %rsi
+    call char_cmp
+    cmp $1, %rax
+    je .skip_current_line
 
-.find_next_line:
-    # Find next newline or null
+    # STEP 4: Skip comments
+    mov (%r12), %rdi
+    mov $'#', %rsi
+    call char_cmp
+    cmp $1, %rax
+    je .skip_current_line
+
+
+.search_for_equal_sign:
+    
+    # STEP 3: Look for '=' or '\n'
+    # %r12 holds the beginning of the line
+    # 3.1. Save beginning of key
+
+    # 3.2. Look for '='
     mov %r12, %rdi
-    mov $'\n', %rsi            
-    xor %rdx, %rdx             # 0 means search until null terminator
-    call str_find_char
-    
-    # If no newline found (rdx = 0), we're done after processing this line
-    cmp $0, %rdx
-    je .exit_parse_srvr_config
-    
-    # Move to start of next line
-    lea 1(%rax), %r12
-    
-    # Check if new position is past buffer end
-    cmp %r14, %r12
-    jge .exit_parse_srvr_config
-    
-    jmp .parse_next_line
+    mov $'=', %rsi # search for '='
+    mov $' ', %rdx # boundary check is the end of the line
+    call str_find_char # returns 1 if '=' was found, 0 if not
+    cmp $0, %rdx # check if '=' was not found
+    je .skip_current_line # if not found, skip line
 
-.handle_timezone:
-    # Restore '=' and point to value
-    movb %r14b, (%r13)
-    lea 1(%r13), %rdi          # Value after '='
-    call str_to_int            # Convert string to integer
-    mov %rax, CONF_TIMEZONE_OFFSET(%r15)
-    jmp .find_next_line
+    # 3.3. Save the address of '='
+    mov %r12, %rdi # address of beginning of line
+    mov %r12, %rdi # address of beginning of line
+    mov %rax, %r13 # the address of '='
+
+    # 3.4. Save key
+    lea config_key(%rip), %rdi    # destination for key
+    mov %r12, %rsi               # source (beginning of key)
+    mov %r13, %rdx               # address of '='
+    sub %r12, %rdx               # calculate length (end - start)
+    call str_concat
+
+    # 3.5. Find the end of the value
+    mov %r13, %rdi
+    mov $' ', %rsi
+    mov $'\n', %rdx
+    call str_find_char
+
+    # 3.6. Save value
+    lea config_value(%rip), %rdi # destination for value
+    mov %r13, %rsi               # source (beginning of value)
+    inc %rsi                     # move to the next character after '='
+    mov %rax, %rdx               # address of ' ' or '\n'
+    sub %r13, %rdx               # calculate length (end - start)
+    call str_concat
+
+    lea config_key(%rip), %rdi
+    lea config_value(%rip), %rsi
+    call parse_key_value
+
+
+.skip_current_line:
+    mov %r12, %rdi           # address of current position
+    mov $'\n', %rsi          # search for '\n'
+    mov $0, %rdx             # boundary check
+    call str_find_char       # returns in %rdx 1 if '\n' was found, 0 if not
+    cmp $0, %rdx 
+    je .exit_parse_srvr_config  # if '\n' was not found, exit
+    mov %rax, %r12           # move address of '\n' to r12
+    inc %r12                 # move to the next character after '\n'
+    jmp .process_new_line    # start fresh with the new line
+
 
 .exit_parse_srvr_config:
     pop %r14
@@ -83,4 +128,4 @@ parse_srvr_config:
     pop %r12
     pop %rbx
     pop %rbp
-    ret 
+    ret

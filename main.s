@@ -8,10 +8,6 @@
 
 .section .data
 
-test_str:
-    .asciz "/indexhtml- ./index.css ./index.js"
-
-
 .include "./constants.s"
 
 .section .bss
@@ -47,6 +43,7 @@ test_str:
 .include "./utils/str_find_char.s"
 .include "./utils/str_to_lower.s"
 .include "./utils/str_to_int.s"
+.include "./utils/char_cmp.s"
 .include "./utils/clear_buffer.s"
 .include "./utils/create_type_header.s"
 .include "./utils/create_status_header.s"
@@ -60,18 +57,24 @@ test_str:
 .include "./utils/time/adjust_timezone.s"
 
 .include "./utils/srvr_conf/init_srvr_config.s"
+.include "./utils/srvr_conf/htons.s"
+.include "./utils/srvr_conf/ip_to_network.s"
+
 .include "./utils/srvr_conf/parse_srvr_config.s"
+.include "./utils/srvr_conf/parse_key_value.s"
+
 
 .global _start
 _start:
 
     call init_srvr_config
 
-    mov CONF_TIMEZONE_OFFSET(%r15), %rdi
-    call int_to_str
-    mov %rax, %rdi
+    # Get the address of the public path, not its value
+    lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi
     xor %rsi, %rsi
     call print_info
+
+
 
     # ----------------------------
     # 1. Create Socket
