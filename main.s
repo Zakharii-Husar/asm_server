@@ -7,12 +7,8 @@
 #   - %r15: server config pointer
 
 .section .data
-
+newl: .asciz "\n"
 .include "./constants.s"
-
-.section .bss
-
-.lcomm buffer, 1024
 
 .section .text
 .include "./mods/sock_create.s"
@@ -63,19 +59,10 @@
 .include "./utils/srvr_conf/parse_srvr_config.s"
 .include "./utils/srvr_conf/parse_key_value.s"
 
-
 .global _start
 _start:
-
+    # 0. Initialize server config
     call init_srvr_config
-
-    # Get the address of the public path, not its value
-    lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi
-    xor %rsi, %rsi
-    call print_info
-
-
-
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

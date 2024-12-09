@@ -105,6 +105,7 @@ parse_key_value:
     mov %r13, %rdi           # Pass config_value pointer
     call str_to_int
     mov %rax, CONF_TIMEZONE_OFFSET(%r15)
+
     jmp .exit_parse_key_value
 
 .handle_port_key:
@@ -137,14 +138,14 @@ parse_key_value:
 .handle_public_dir_key:
     lea CONF_PUBLIC_PATH_OFFSET(%r15), %rdi    # destination buffer
     mov %r13, %rsi               # source string
-    mov $CONF_PUBLIC_PATH_SIZE, %rdx           # length
+    xor %rdx, %rdx
     call str_concat
     jmp .exit_parse_key_value
 
 .handle_error_log_path_key:
-    lea CONF_LOG_PATH_OFFSET(%r15), %rdi       # destination buffer
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi       # destination buffer
     mov %r13, %rsi               # source string
-    mov $CONF_LOG_PATH_SIZE, %rdx              # length
+    xor %rdx, %rdx
     call str_concat
     jmp .exit_parse_key_value
 
@@ -163,14 +164,15 @@ parse_key_value:
 .handle_server_name_key:
     lea CONF_SERVER_NAME_OFFSET(%r15), %rdi    # destination buffer
     mov %r13, %rsi               # source string
-    mov $CONF_SERVER_NAME_SIZE, %rdx           # length
+    xor %rdx, %rdx
     call str_concat
+    
     jmp .exit_parse_key_value
 
 .handle_default_file_key:
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi   # destination buffer
     mov %r13, %rsi               # source string
-    mov $CONF_DEFAULT_FILE_SIZE, %rdx          # length
+    xor %rdx, %rdx
     call str_concat
     jmp .exit_parse_key_value
 
@@ -178,10 +180,9 @@ parse_key_value:
 
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi # destination buffer
     mov %r13, %rsi                # source string
-    mov $CONF_ACCESS_LOG_PATH_SIZE, %rdx        # length
+    xor %rdx, %rdx
     call str_concat
     jmp .exit_parse_key_value
-
 .exit_parse_key_value:
 
     pop %r13
