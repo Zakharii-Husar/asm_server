@@ -1,4 +1,8 @@
 .section .data
+
+equal_sign: .asciz "="
+n_line: .asciz "\n"
+
 timezone_key: .asciz "timezone"
 port_key: .asciz "port"
 host_key: .asciz "host"
@@ -24,100 +28,72 @@ parse_key_value:
     mov %rsp, %rbp
     push %r12
     push %r13
-    push %r14
-    mov %rdi, %r12 # store address of beginning of line
-    mov %rsi, %r13 # store address of '='
+    
+    # %rdi now contains pointer to config_key
+    # %rsi now contains pointer to config_value
+    mov %rdi, %r12  # store key pointer
+    mov %rsi, %r13  # store value pointer
 
-
-    # Calculate key length
-    mov %r13, %rax    # Move '=' address to %rax
-    sub %r12, %rax    # Subtract start address from '=' address
-    mov %rax, %r14    # Store key length in r14
-
-    # Copy key to config_key
-    lea config_key(%rip), %rdi
-    mov %r12, %rsi
-    mov %r14, %rdx
-    call str_concat
-
-    # Convert key to lowercase
-    lea config_key(%rip), %rdi
+    # Convert key to lowercase (key is already in the buffer)
+    mov %r12, %rdi
     call str_to_lower
 
-    # Extract value first (common for all keys)
-    mov %r13, %rdi           # Address of '=' character
-    inc %rdi                 # Move past the '=' character
-    mov $' ', %rsi          # Looking for space character
-    mov $'\n', %rdx         # Or newline character
-    call str_find_char      # Returns address of delimiter in %rax
-
-    # Calculate value length and copy (common for all keys)
-    mov %rax, %rdx          # Store delimiter address
-    sub %r13, %rdx          # Calculate length (delimiter addr - '=' addr)
-    dec %rdx                # Adjust for the '=' character
-
-    # Copy value to config_value
-    lea config_value(%rip), %rdi
-    lea 1(%r13), %rsi
-    call str_concat
-    
-
-    # Compare keys and handle accordingly
-    lea config_key(%rip), %rdi
+    # Now compare keys and handle accordingly
+    mov %r12, %rdi
     lea timezone_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_timezone_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea port_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_port_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea host_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_host_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea public_dir_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_public_dir_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea error_log_path_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_error_log_path_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea max_conn_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_max_conn_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea buffer_size_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_buffer_size_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea server_name_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_server_name_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea default_file_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_default_file_key
 
-    lea config_key(%rip), %rdi
+    mov %r12, %rdi
     lea access_log_path_key(%rip), %rsi
     call str_cmp
     cmp $1, %rax
@@ -126,13 +102,13 @@ parse_key_value:
     jmp .exit_parse_key_value
 
 .handle_timezone_key:
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi           # Pass config_value pointer
     call str_to_int
     mov %rax, CONF_TIMEZONE_OFFSET(%r15)
     jmp .exit_parse_key_value
 
 .handle_port_key:
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi           # Pass config_value pointer
     call str_to_int
     mov %rax, %rdi
     call htons
@@ -140,13 +116,13 @@ parse_key_value:
     jmp .exit_parse_key_value
 
 .handle_host_key:
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi           # Pass config_value pointer
     lea localhost_str(%rip), %rsi
     call str_cmp
     cmp $1, %rax
     je .handle_localhost
 
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi           # Pass config_value pointer
     call ip_to_network
     jmp .store_host_ip
 
@@ -160,40 +136,40 @@ parse_key_value:
 
 .handle_public_dir_key:
     lea CONF_PUBLIC_PATH_OFFSET(%r15), %rdi    # destination buffer
-    lea config_value(%rip), %rsi               # source string
+    mov %r13, %rsi               # source string
     mov $CONF_PUBLIC_PATH_SIZE, %rdx           # length
     call str_concat
     jmp .exit_parse_key_value
 
 .handle_error_log_path_key:
     lea CONF_LOG_PATH_OFFSET(%r15), %rdi       # destination buffer
-    lea config_value(%rip), %rsi               # source string
+    mov %r13, %rsi               # source string
     mov $CONF_LOG_PATH_SIZE, %rdx              # length
     call str_concat
     jmp .exit_parse_key_value
 
 .handle_max_conn_key:
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi
     call str_to_int
     mov %rax, CONF_MAX_CONN_OFFSET(%r15)
     jmp .exit_parse_key_value
 
 .handle_buffer_size_key:
-    lea config_value(%rip), %rdi
+    mov %r13, %rdi
     call str_to_int
     mov %rax, CONF_BUFFER_SIZE_OFFSET(%r15)
     jmp .exit_parse_key_value
 
 .handle_server_name_key:
     lea CONF_SERVER_NAME_OFFSET(%r15), %rdi    # destination buffer
-    lea config_value(%rip), %rsi               # source string
+    mov %r13, %rsi               # source string
     mov $CONF_SERVER_NAME_SIZE, %rdx           # length
     call str_concat
     jmp .exit_parse_key_value
 
 .handle_default_file_key:
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi   # destination buffer
-    lea config_value(%rip), %rsi               # source string
+    mov %r13, %rsi               # source string
     mov $CONF_DEFAULT_FILE_SIZE, %rdx          # length
     call str_concat
     jmp .exit_parse_key_value
@@ -201,13 +177,13 @@ parse_key_value:
 .handle_access_log_path_key:
 
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi # destination buffer
-    lea config_value(%rip), %rsi                # source string
+    mov %r13, %rsi                # source string
     mov $CONF_ACCESS_LOG_PATH_SIZE, %rdx        # length
     call str_concat
     jmp .exit_parse_key_value
 
 .exit_parse_key_value:
-    pop %r14
+
     pop %r13
     pop %r12
     pop %rbp

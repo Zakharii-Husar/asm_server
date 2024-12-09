@@ -1,8 +1,3 @@
-.section .data
-
-equal_sign: .asciz "="
-n_line: .asciz "\n"
-
 .section .bss
 .lcomm config_key, 20
 .lcomm config_value, 20
