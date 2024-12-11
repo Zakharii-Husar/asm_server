@@ -12,6 +12,7 @@ get_time_now:
     push %rbp
     mov %rsp, %rbp
     # Save non-volatile registers
+    push %rbx
     push %r12
     push %r13
     push %r14
@@ -98,6 +99,6 @@ get_time_now:
     pop %r14
     pop %r13
     pop %r12
-    
+    pop %rbx
     pop %rbp
     ret

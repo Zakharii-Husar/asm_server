@@ -28,8 +28,8 @@ build_file_path:
 
     # 1. Write base_path to destination
     mov %r12, %rdi           # dest buffer
-    lea .base_path(%rip), %rsi
-    xor %rdx, %rdx          # Let str_concat calculate length
+    lea CONF_PUBLIC_DIR_OFFSET(%r15), %rsi  
+    xor %rdx, %rdx          
     call str_concat
 
     # 2. Concat route to destination
@@ -53,7 +53,6 @@ build_file_path:
     jmp .append_extension
 
 .check_extension:
-
     # 4. Search for dot in route
     mov %r13, %rdi
     mov $'.', %rsi
@@ -72,7 +71,6 @@ build_file_path:
     call str_concat
 
 .exit_build_path:
-    # Restore registers and return
 
     pop %r13
     pop %r12

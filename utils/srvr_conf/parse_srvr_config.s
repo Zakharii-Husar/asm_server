@@ -7,13 +7,10 @@
 parse_srvr_config:
     push %rbp
     mov %rsp, %rbp
-    push %rbx                    # Save preserved registers
     push %r12
     push %r13
-    push %r15                    # Add this: preserve r15
 
     mov %rdi, %r12              # Buffer pointer
-    mov %rsi, %rbx              # File size
 
 .process_new_line:
 
@@ -119,9 +116,7 @@ parse_srvr_config:
 
 
 .exit_parse_srvr_config:
-    pop %r15                     # Add this: restore r15
     pop %r13
     pop %r12
-    pop %rbx
     pop %rbp
     ret

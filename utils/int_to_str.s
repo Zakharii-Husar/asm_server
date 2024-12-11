@@ -13,9 +13,8 @@
 .type int_to_str, @function
 int_to_str:
     pushq %rbp
-    mov %rsp, %rbp
-    push %rcx
-
+    mov %rsp, %rb
+    push %rbx
     lea string_buffer(%rip), %rsi
     addq $21, %rsi             # Move to end of buffer
     movq $10, %rbx             # Divisor (base 10)
@@ -73,7 +72,7 @@ int_to_str:
     # will uncomment later
     # movb $0, (%rsi, %rcx, 1)  # Add null byte at end of string
     
-    pop %rcx
+    pop %rbx
     pop %rbp                  
 
     ret

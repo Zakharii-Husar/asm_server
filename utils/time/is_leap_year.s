@@ -12,6 +12,7 @@
 is_leap_year:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
 
     mov %rdi, %rax
     xor %rdx, %rdx
@@ -41,5 +42,6 @@ is_leap_year:
     mov $366, %rax
 
 .is_leap_year_end:
+    pop %rbx
     pop %rbp
     ret

@@ -7,6 +7,9 @@
 #   - %r15: server config pointer
 
 .section .data
+
+printing_from_main: .asciz "printing from main\n"
+
 newl: .asciz "\n"
 .include "./constants.s"
 
@@ -63,6 +66,8 @@ newl: .asciz "\n"
 _start:
     # 0. Initialize server config
     call init_srvr_config
+
+
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

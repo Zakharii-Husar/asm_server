@@ -2,15 +2,18 @@
 # Server config struct
 .align 8
 server_config_struct:
-    .lcomm conf_host, 256        # String buffer for hostname
-    .lcomm conf_port, 8          # 64-bit integer for port
-    .lcomm conf_public_path, 256 # String buffer for public path
-    .lcomm conf_log_path, 256    # String buffer for log path
-    .lcomm conf_max_conn, 8      # 64-bit integer for max connections
-    .lcomm conf_buffer_size, 8   # 64-bit integer for buffer size
-    .lcomm conf_timezone, 8      # 64-bit integer for timezone
-    .lcomm conf_error_log_fd, 8  # 64-bit integer for error log file descriptor
-server_config_struct_end:        # Label to calculate struct size
+    .lcomm conf_host, CONF_HOST_SIZE
+    .lcomm conf_port, CONF_PORT_SIZE
+    .lcomm conf_public_path, CONF_PUBLIC_DIR_SIZE
+    .lcomm conf_log_path, CONF_ERROR_LOG_PATH_SIZE
+    .lcomm conf_max_conn, CONF_MAX_CONN_SIZE
+    .lcomm conf_buffer_size, CONF_BUFFER_SIZE_SIZE
+    .lcomm conf_timezone, CONF_TIMEZONE_SIZE
+    .lcomm conf_server_name, CONF_SERVER_NAME_SIZE
+    .lcomm conf_default_file, CONF_DEFAULT_FILE_SIZE
+    .lcomm conf_access_log_path, CONF_ACCESS_LOG_PATH_SIZE
+    .lcomm conf_error_log_fd, 8
+server_config_struct_end:
 
 .lcomm server_conf_file_B, 4096  # Buffer for server config file
 

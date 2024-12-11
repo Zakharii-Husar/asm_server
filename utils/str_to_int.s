@@ -8,6 +8,7 @@
 str_to_int:
     push %rbp
     mov %rsp, %rbp
+    push %rbx
     xor %rax, %rax          # Clear rax for result
     xor %rcx, %rcx          # Clear rcx for sign (0 = positive, 1 = negative)
 
@@ -49,6 +50,7 @@ str_to_int:
     neg %rax                # Negate result if negative
 
 .exit_str_to_int:
+    pop %rbx
     pop %rbp
     ret
     

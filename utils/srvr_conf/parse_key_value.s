@@ -136,10 +136,11 @@ parse_key_value:
       jmp .exit_parse_key_value
 
 .handle_public_dir_key:
-    lea CONF_PUBLIC_PATH_OFFSET(%r15), %rdi    # destination buffer
+    lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi    # destination buffer
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
     call str_concat
+
     jmp .exit_parse_key_value
 
 .handle_error_log_path_key:

@@ -32,11 +32,11 @@ sock_respond:
 
  push %r12
  push %r14
- push %r15
+ push %rbx
 
  mov %rdi, %r12 # response content buffer
  mov %rsi, %r14 # content size
- mov %rcx, %r15 # file extension
+ mov %rcx, %rbx # file extension
 
 
     # ADD HTTP STATUS LINE TO RESPONSE HEADER
@@ -51,7 +51,7 @@ sock_respond:
 
     # ADD CONTENT-TYPE HEADER TO RESPONSE HEADER
     lea response_header_B(%rip), %rdi  # destination buffer
-    mov %r15, %rsi                          # file extension buffer pointer
+    mov %rbx, %rsi                          # file extension buffer pointer
     call create_type_header                 # returns length in %rax
 
 
@@ -81,7 +81,7 @@ sock_respond:
    jl  .handle_sock_respond_err                # Jump to error handling if %rax < 0
 
 
-   pop %r15
+   pop %rbx
    pop %r14
    pop %r12
 
