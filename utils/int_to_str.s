@@ -5,16 +5,25 @@
 #   %rax - pointer to the resulting string
 #   %rdx - length of the string
 # Note: The string is stored in a static buffer and is not null-terminated.
+.section .data
+    .equ string_buffer_size, 21
 
 .section .bss
-    .lcomm string_buffer, 21     # 21 bytes for safety
+    .lcomm string_buffer, string_buffer_size
 
 .section .text
 .type int_to_str, @function
 int_to_str:
     pushq %rbp
-    mov %rsp, %rb
+    mov %rsp, %rbx
     push %rbx
+    
+    # Clear buffer
+    lea string_buffer(%rip), %rdi
+    mov $string_buffer_size, %rsi
+    call clear_buffer
+
+    # Upload buffer
     lea string_buffer(%rip), %rsi
     addq $21, %rsi             # Move to end of buffer
     movq $10, %rbx             # Divisor (base 10)
