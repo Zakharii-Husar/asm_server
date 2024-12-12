@@ -1,26 +1,15 @@
-.section .bss
-# Server config struct
-.align 8
-server_config_struct:
-    .lcomm conf_host, CONF_HOST_SIZE
-    .lcomm conf_port, CONF_PORT_SIZE
-    .lcomm conf_public_path, CONF_PUBLIC_DIR_SIZE
-    .lcomm conf_log_path, CONF_ERROR_LOG_PATH_SIZE
-    .lcomm conf_max_conn, CONF_MAX_CONN_SIZE
-    .lcomm conf_buffer_size, CONF_BUFFER_SIZE_SIZE
-    .lcomm conf_timezone, CONF_TIMEZONE_SIZE
-    .lcomm conf_server_name, CONF_SERVER_NAME_SIZE
-    .lcomm conf_default_file, CONF_DEFAULT_FILE_SIZE
-    .lcomm conf_access_log_path, CONF_ACCESS_LOG_PATH_SIZE
-    .lcomm conf_error_log_fd, 8
-server_config_struct_end:
-
-.lcomm server_conf_file_B, 4096  # Buffer for server config file
-
 .section .data
 server_conf_path: .asciz "./conf/server.conf"
 config_load_err_msg: .asciz "\033[31mFailed to load server config! ❌\033[0m\n"
 config_load_success_msg: .asciz "\033[32mServer config loaded successfully! ✅\033[0m\n"
+
+server_conf_file_B_size = 4096
+
+.section .bss
+.align 8
+.lcomm server_config_struct, SERVER_CONFIG_STRUCT_SIZE    # Allocate single contiguous block
+
+.lcomm server_conf_file_B, server_conf_file_B_size  # Buffer for server config file
 
 .section .text
 .type init_srvr_config, @function
@@ -28,10 +17,15 @@ init_srvr_config:
     push %rbp
     mov %rsp, %rbp
 
+    lea server_conf_file_B(%rip), %rdi
+    mov $server_conf_file_B_size, %rsi
+    call clear_buffer
+
     # Call file_open with path and buffer
     lea server_conf_path(%rip), %rdi
     lea server_conf_file_B(%rip), %rsi
-    mov $1, %rdx
+    mov $server_conf_file_B_size, %rdx
+    mov $1, %rcx
     call file_open
 
     # Check return value
@@ -55,5 +49,6 @@ init_srvr_config:
     call print_info
 
 .exit_init_config:
+
     pop %rbp
     ret
