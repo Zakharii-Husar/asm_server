@@ -4,8 +4,10 @@
 .time_separator: .string "T"
 .zero_pad: .string "0"
 
+ .equ DATE_BUFFER_SIZE, 20
+
 .section .bss
-.comm date_buffer, 20
+.comm date_buffer, DATE_BUFFER_SIZE
 
 .section .text
 .global format_time
@@ -41,12 +43,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Add dash after year
     lea date_buffer(%rip), %rdi
     lea .dash(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Format month
@@ -59,6 +63,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     pop %rdi
 .skip_month_pad:
@@ -67,12 +72,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Add dash after month
     lea date_buffer(%rip), %rdi
     lea .dash(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Format day
@@ -82,6 +89,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     mov %r15, %rdi
 .skip_day_pad:
@@ -90,12 +98,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Add T separator
     lea date_buffer(%rip), %rdi
     lea .time_separator(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Format hours
@@ -105,6 +115,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     mov %r14, %rdi
 .skip_hour_pad:
@@ -113,12 +124,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Add colon after hours
     lea date_buffer(%rip), %rdi
     lea .colon(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Format minutes
@@ -128,6 +141,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     mov %r13, %rdi
 .skip_minute_pad:
@@ -136,12 +150,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Add colon after minutes
     lea date_buffer(%rip), %rdi
     lea .colon(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Format seconds
@@ -151,6 +167,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     mov %r12, %rdi
 .skip_second_pad:
@@ -159,6 +176,7 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
     
     # Return pointer to formatted string

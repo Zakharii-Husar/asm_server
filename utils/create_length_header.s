@@ -31,6 +31,7 @@ create_length_header:
     mov %r12, %rdi
     lea content_length(%rip), %rsi
     mov $content_length_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     
     # 2. Convert content length to string
@@ -42,12 +43,14 @@ create_length_header:
     # %rax already contains string pointer from int_to_str
     mov %rax, %rsi
     # %rdx already contains length from int_to_str
+    mov $response_header_B_size, %rcx
     call str_concat
     
     # 4. Add newline
     mov %r12, %rdi
     lea newline(%rip), %rsi
     mov $newline_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     
     pop %r13

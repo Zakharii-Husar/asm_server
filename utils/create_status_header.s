@@ -25,7 +25,8 @@ create_status_header:
     push %rbp
     mov %rsp, %rbp
     push %r12
-    mov %rsi, %r12           # Save buffer pointer
+    
+    mov %rsi, %r12     # Save buffer pointer
     
     cmp $HTTP_OK_code, %rdi
     je .write_ok
@@ -49,6 +50,7 @@ create_status_header:
     mov %r12, %rdi                      # destination buffer
     lea status_ok(%rip), %rsi           # source string
     mov $status_ok_length, %rdx         # length
+    mov $response_header_B_size, %rcx
     call str_concat
     jmp .return_status_header                           # Jump to single return point
 
@@ -56,6 +58,7 @@ create_status_header:
     mov %r12, %rdi
     lea file_not_found_status(%rip), %rsi
     mov $file_not_found_status_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     jmp .return_status_header                           # Jump to single return point
 
@@ -63,6 +66,7 @@ create_status_header:
     mov %r12, %rdi
     lea bad_request_status(%rip), %rsi
     mov $bad_request_status_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     jmp .return_status_header                           # Jump to single return point
 
@@ -70,13 +74,15 @@ create_status_header:
     mov %r12, %rdi
     lea method_not_allowed_status(%rip), %rsi
     mov $method_not_allowed_status_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     jmp .return_status_header                           # Jump to single return point
 
 .write_server_error:
     mov %r12, %rdi
-    lea server_error_status(%rip), %rsi
+    lea server_error_status(%rip), %rsi 
     mov $server_error_status_length, %rdx
+    mov $response_header_B_size, %rcx
     call str_concat
     # Falls through to .return_status_header since it's the last one
 

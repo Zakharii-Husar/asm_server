@@ -40,6 +40,7 @@ extract_extension:
     mov %r12, %rdi                  # Restore %rdi (destination buffer)
     mov %rax, %rsi                  # %rax now holds the address of the dot
     xor %rdx, %rdx                  # Let str_concat calculate length
+    mov $extension_B_size, %rcx
     call str_concat                 # Copy from %rsi (dot position) to %rdi (destination buffer)
 
     # Convert the destination buffer to lowercase
@@ -51,9 +52,12 @@ extract_extension:
     # Set default extension ".html"
     mov %r12, %rdi                  # Destination buffer is already in %rdi
     lea default_extension(%rip), %rsi              # Address of default extension string
+    xor %rdx, %rdx
+    mov $extension_B_size, %rcx
     call str_concat                 # Copy default extension to %rdi (destination buffer)
 
 .exit_extract_extension:
+    mov %r12, %rdi
     pop %r13
     pop %r12
     pop %rbp

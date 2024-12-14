@@ -139,6 +139,7 @@ parse_key_value:
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi    # destination buffer
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
+    mov $CONF_PUBLIC_DIR_SIZE, %rcx
     call str_concat
 
     jmp .exit_parse_key_value
@@ -147,6 +148,7 @@ parse_key_value:
     lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi       # destination buffer
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
+    mov $CONF_ERROR_LOG_PATH_SIZE, %rcx
     call str_concat
     jmp .exit_parse_key_value
 
@@ -166,6 +168,7 @@ parse_key_value:
     lea CONF_SERVER_NAME_OFFSET(%r15), %rdi    # destination buffer
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
+    mov $CONF_SERVER_NAME_SIZE, %rcx
     call str_concat
     
     jmp .exit_parse_key_value
@@ -174,6 +177,7 @@ parse_key_value:
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi   # destination buffer
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
+    mov $CONF_DEFAULT_FILE_SIZE, %rcx
     call str_concat
     jmp .exit_parse_key_value
 
@@ -182,6 +186,7 @@ parse_key_value:
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi # destination buffer
     mov %r13, %rsi                # source string
     xor %rdx, %rdx
+    mov $CONF_ACCESS_LOG_PATH_SIZE, %rcx
     call str_concat
     jmp .exit_parse_key_value
 .exit_parse_key_value:

@@ -25,17 +25,18 @@ build_file_path:
     mov %rdi, %r12   # dest buffer
     mov %rsi, %r13   # route buffer
 
-
     # 1. Write base_path to destination
     mov %r12, %rdi           # dest buffer
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rsi  
-    xor %rdx, %rdx          
+    xor %rdx, %rdx
+    mov $file_path_B_size, %rcx
     call str_concat
 
     # 2. Concat route to destination
     mov %r12, %rdi
     mov %r13, %rsi
     xor %rdx, %rdx
+    mov $file_path_B_size, %rcx
     call str_concat
 
     # 3. Check if route is just "/"
@@ -49,6 +50,7 @@ build_file_path:
     mov %r12, %rdi
     lea .index_str(%rip), %rsi
     xor %rdx, %rdx
+    mov $file_path_B_size, %rcx
     call str_concat
     jmp .append_extension
 
@@ -68,9 +70,11 @@ build_file_path:
     mov %r12, %rdi
     lea .html_ext(%rip), %rsi
     xor %rdx, %rdx
+    mov $file_path_B_size, %rcx
     call str_concat
 
 .exit_build_path:
+
 
     pop %r13
     pop %r12

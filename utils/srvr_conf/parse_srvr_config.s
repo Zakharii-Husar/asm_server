@@ -1,6 +1,13 @@
+.section .data
+    .equ CONFIG_KEY_SIZE, 20
+    .equ CONFIG_VALUE_SIZE, 20
+
+    line_separator: .asciz "\n"
+    eq_sign: .asciz "="
+
 .section .bss
-.lcomm config_key, 20
-.lcomm config_value, 20
+.lcomm config_key, CONFIG_KEY_SIZE
+.lcomm config_value, CONFIG_VALUE_SIZE
 
 .section .text
 .type parse_srvr_config, @function
@@ -16,11 +23,11 @@ parse_srvr_config:
 
     # Clear config_key and config_value buffers
     lea config_key(%rip), %rdi
-    mov $20, %rsi
+    mov $CONFIG_KEY_SIZE, %rsi
     call clear_buffer
 
     lea config_value(%rip), %rdi
-    mov $20, %rsi
+    mov $CONFIG_VALUE_SIZE, %rsi
     call clear_buffer
     
     # STEP 1: Skip spaces
@@ -81,6 +88,7 @@ parse_srvr_config:
     mov %r12, %rsi               # source (beginning of key)
     mov %r13, %rdx               # address of '='
     sub %r12, %rdx               # calculate length (end - start)
+    mov $CONFIG_KEY_SIZE, %rcx
     call str_concat
 
     # 3.5. Find the end of the value
@@ -96,6 +104,7 @@ parse_srvr_config:
     mov %rax, %rdx               # address of ' ' or '\n'
     sub %r13, %rdx               # calculate length (end - start)
     dec %rdx                     # subtract 1 to exclude the space
+    mov $CONFIG_VALUE_SIZE, %rcx
     call str_concat
 
     lea config_key(%rip), %rdi

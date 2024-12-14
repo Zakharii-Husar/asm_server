@@ -3,57 +3,79 @@
 #   %rdi - destination buffer
 #   %rsi - source string (buffer or asciz)
 #   %rdx - string length (optional, if 0, length will be calculated)
+#   %rcx - max size of destination buffer
 # Output: none (modifies destination buffer in place)
-
-# %rdi >>> %r12 = destination buffer
-# %rsi = string (buffer or asciz)
-# %rdx = string length
 
 .section .text
 
 .type str_concat, @function
 str_concat:
-    push %rbp                  # Save the caller's base pointer
-    mov %rsp, %rbp             # Set up new stack frame
+    push %rbp                  
+    mov %rsp, %rbp             
     push %r12
+    push %r13
+    push %r14
 
-    mov %rdi, %r12              # Save destination buffer
-    
-    test %rdx, %rdx            # Check if string length is provided
-    jnz .offset_buffer          # If length provided, skip length calculation
+    # Save input parameters
+    mov %rdi, %r12            # Destination buffer
+    mov %rsi, %r14            # Source string
+    mov %rcx, %r13            # Max buffer size
 
-    # Calculate string length if not provided
-    mov %rsi, %rdi           
-    call str_len           
-    mov %rax, %rdx         
+    # Get source length if not provided
+    test %rdx, %rdx
+    jnz .use_provided_length
     
-    .offset_buffer:
-    
-    # Check if destination buffer is empty
-    test %r12, %r12
-    jz .start_concat         # if empty, jump to start_concat
+    mov %r14, %rdi
+    call str_len
+    mov %rax, %rdx
 
-    # Find offset of the first null byte
+.use_provided_length:
+    # Simple bounds check:
+    # 1. Get current dest length
+    mov %r12, %rdi
+    call str_len              
+    
+    # 2. Check if source + dest + 1 <= max size
+    add %rdx, %rax            # Add source length
+    inc %rax                  # Add 1 for null terminator
+    cmp %r13, %rax           # Compare with max size
+    jg .buffer_overflow
+
+    # Find end of destination string
     mov %r12, %rdi
     call str_len
-    mov %r12, %rdi          # Restore destination address to rdi
-    add %rax, %rdi         # Add offset to destination address
-    jmp .concat_bytes       # Skip the rdi setup in start_concat
+    add %rax, %r12           # Point to end of string
 
-    .start_concat:
-    mov %r12, %rdi           # destination
+    # Do the concatenation
+    mov %r12, %rdi           # Destination = end of current content
+    mov %r14, %rsi           # Source
+    mov %rdx, %rcx           # Length to copy
+    cld
+    rep movsb
 
-    .concat_bytes:
-    # Copy bytes from source (%rsi) to destination (%rdi)
-    mov %rdx, %rcx          # move length to rcx for rep movsb
-    cld                     # clear direction flag (move forward)
-    rep movsb               # copy bytes until rcx = 0
+    # Add null terminator
+    movb $0, (%rdi)
 
-    movb $0, (%rdi)         # Null terminate the resulting string
-
-    mov %rdi, %rax          # Current position after concatenation
-    sub %r12, %rax           # Subtract starting position to get length
-
+    pop %r14
+    pop %r13
     pop %r12
-    pop %rbp                # restore caller's base pointer
+    pop %rbp
     ret
+
+.buffer_overflow:
+    lea overflow_msg(%rip), %rdi
+    xor %rsi, %rsi
+    call print_info
+
+    mov %r12, %rdi
+    xor %rsi, %rsi
+    call print_info
+    
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbp
+    ret
+
+.section .rodata
+overflow_msg: .asciz "Buffer overflow detected in str_concat!\n"

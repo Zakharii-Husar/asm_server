@@ -107,6 +107,7 @@ sock_read:
     cmp $0, %rax                            # Check if file_open returned -1 (error)
     jle .file_not_found                        # Jump if file not found
 
+    
     mov $HTTP_OK_code, %rdx
     jmp .finish_sock_read 
 
@@ -195,6 +196,7 @@ sock_read:
     mov %r13, %rsi                             # The HTTP req buffer to extract ext from
     call extract_extension                     # Extract the extension  
 
+
     mov %r12, %rax                             # restore file size
     mov %rbx, %rdx                             # restore HTTP status code
 
@@ -202,8 +204,6 @@ sock_read:
     pop %r14
     pop %r13
     pop %r12
-
-    # mov %rax, %rax (file size is already in %rax after file_open)
     pop %rbp                                  # restore the caller's base pointer
     ret
 

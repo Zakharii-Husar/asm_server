@@ -6,9 +6,13 @@
 #   - %r14: pointer to client ip (buffer holding string)
 #   - %r15: server config pointer
 
+.section .bss
+
+.lcomm test_buffer, 20
+
+
 .section .data
 
-printing_from_main: .asciz "printing from main\n"
 
 newl: .asciz "\n"
 .include "./constants.s"
@@ -64,10 +68,9 @@ newl: .asciz "\n"
 
 .global _start
 _start:
+
     # 0. Initialize server config
     call init_srvr_config
-
-
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
@@ -80,6 +83,7 @@ _start:
     # 3. Listen for requests
     # ----------------------------
     call sock_listen
+    
 
     # Main server loop (parent process will jump here after forking)
 .main_loop:

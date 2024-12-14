@@ -1,8 +1,11 @@
-.section .bss
-.lcomm client_ip, 16                        # Buffer for IPv4 address string
-
 .section .data
+.equ client_ip_B_size, 16
+
 .dot: .asciz "."
+
+.section .bss
+.lcomm client_ip, client_ip_B_size          # Buffer for IPv4 address string
+
 .section .text
 # Function: extract_client_ip
 # Arguments:
@@ -15,7 +18,12 @@ extract_client_ip:
     mov %rsp, %rbp
     push %r12                       # Save %r12 since we'll use it
 
-    lea client_ip(%rip), %r14
+    # Clear the client_ip buffer before use
+    lea client_ip(%rip), %rdi
+    mov $client_ip_B_size, %rsi
+    call clear_buffer
+
+    lea client_ip(%rip), %r14      # Get fresh buffer pointer
     
     mov 4(%rdi), %ecx              # Load sin_addr (4 bytes) into ECX
     bswap %ecx                     # Convert from network byte order
@@ -29,11 +37,14 @@ extract_client_ip:
 
     mov %r14, %rdi
     mov %rax, %rsi
+    xor %rdx, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     # SECOND BYTE
@@ -45,11 +56,14 @@ extract_client_ip:
 
     mov %r14, %rdi
     mov %rax, %rsi
+    xor %rdx, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     # THIRD BYTE
@@ -61,11 +75,14 @@ extract_client_ip:
 
     mov %r14, %rdi
     mov %rax, %rsi
+    xor %rdx, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     # FOURTH BYTE
@@ -76,6 +93,8 @@ extract_client_ip:
 
     mov %r14, %rdi
     mov %rax, %rsi
+    xor %rdx, %rdx
+    mov $client_ip_B_size, %rcx
     call str_concat
 
     pop %r12                      # Restore %r12
