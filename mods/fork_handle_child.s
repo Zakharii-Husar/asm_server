@@ -32,10 +32,6 @@ lea response_content_B(%rip), %rcx   # 4th param: response buffer
 call sock_read                       # Returns: %rax=content size, %rdx=status code
 
 
-lea response_content_B(%rip), %rdi
-mov $723, %rsi
-call print_info
-
 # Prepare parameters for sock_respond (directly use return values from sock_read)
 lea response_content_B(%rip), %rdi        # 1st param: response content buffer
 mov %rax, %rsi                            # 2nd param: content size

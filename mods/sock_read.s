@@ -24,10 +24,10 @@ space_char: .asciz " "
 # Parameters:
 # - %rdi > %r12: Pointer to the request_buffer;
 # - %rsi > %r13: Pointer to the file_path_buffer;
-# - %rdx > %r14: Pointer to the extension_buffer;
-# - %rcx > %rbx: Pointer to the response_buffer;
+# - %rdx > push: Pointer to the extension_buffer;
+# - %rcx > %r14: Pointer to the response_content_B;
 # Implicit parameters:
-# - %r12 Socket file descriptor;
+# - %r13 Connection file descriptor;
 # Return Values:
 #   - %rax: Actual file size (size of the opened file)
 #   - %rdx: HTTP status code
@@ -43,13 +43,12 @@ sock_read:
     push %r12
     push %r13
     push %r14
-    push %rbx
+    push %rdx # extension buffer
 
     mov %r13, %r8                           # Preserve Connection FD    
     mov %rdi, %r12                          # request buffer
     mov %rsi, %r13                          # route buffer
-    mov %rdx, %r14                          # extension buffer
-    mov %rcx, %rbx                          # response buffer
+    mov %rcx, %r14                          # response_content_B buffer
 
     # CLEAR THE BUFFERS
     # Method buffer is cleared in extract_method
@@ -98,11 +97,11 @@ sock_read:
 
     # Open the file 
     mov %r13, %rdi                          # file path buffer
-    mov %rbx, %rsi                          # response buffer
+    mov %r14, %rsi                          # response buffer
     mov $response_content_B_size, %rdx      # buffer size
     xor %rcx, %rcx                          # null termination flag
     call file_open
-    
+
     # Handle the file not found error
     cmp $0, %rax                            # Check if file_open returned -1 (error)
     jle .file_not_found                        # Jump if file not found
@@ -114,12 +113,12 @@ sock_read:
 # HANDLE ERRORS
 
 .file_not_found:
-    mov %rbx, %rdi                             # response buffer pointer
+    mov %r14, %rdi                             # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear (not %rsi)
     call clear_buffer
 
     lea .not_found_path(%rip), %rdi           # Load 404.html path
-    mov %rbx, %rsi                            # response buffer
+    mov %r14, %rsi                            # response buffer
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                          # null termination flag
     call file_open      
@@ -133,12 +132,12 @@ sock_read:
 
 .bad_request:
     # Clear the response_content_buffer before the next attempt
-    mov %rbx, %rdi                            # response buffer pointer
+    mov %r14, %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .bad_request_path(%rip), %rdi          # Load .not_found_path as the file path
-    mov %rbx, %rsi                            # Use the same buffer for the response
+    mov %r14, %rsi                            # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                            # null termination flag
     call file_open                            # Attempt to open the not found file
@@ -151,12 +150,12 @@ sock_read:
 
 .method_not_allowed:
     # Clear the response_content_buffer before the next attempt
-    mov %rbx, %rdi                            # response buffer pointer
+    mov %r14, %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .method_not_allowed_path(%rip), %rdi   # Load .not_found_path as the file path
-    mov %rbx, %rsi                             # Use the same buffer for the response
+    mov %r14, %rsi                             # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                              # null termination flag
     call file_open                            # Attempt to open the not found file
@@ -169,12 +168,12 @@ sock_read:
 
 .server_err:
     # Clear the response_content_buffer before the next attempt
-    mov %rbx, %rdi                            # response buffer pointer
+    mov %r14, %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .server_err_path(%rip), %rdi          # Load .not_found_path as the file path
-    mov %rbx, %rsi                            # Use the same buffer for the response
+    mov %r14, %rsi                            # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                            # null termination flag
     call file_open                            # Attempt to open the not found file
@@ -190,17 +189,17 @@ sock_read:
 .finish_sock_read:
 
     mov %rax, %r12                             # preserve file size
-    mov %rdx, %rbx                             # preserve HTTP status code
+    mov %rdx, %r14                             # preserve HTTP status code
     # Extract the extension
-    mov %r14, %rdi                             # Destination buffer for extension
+    pop %rdx
+    mov %rdx, %rdi                             # Destination buffer for extension
     mov %r13, %rsi                             # The HTTP req buffer to extract ext from
     call extract_extension                     # Extract the extension  
 
 
     mov %r12, %rax                             # restore file size
-    mov %rbx, %rdx                             # restore HTTP status code
+    mov %r14, %rdx                             # restore HTTP status code
 
-    pop %rbx
     pop %r14
     pop %r13
     pop %r12
