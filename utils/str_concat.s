@@ -66,10 +66,6 @@ str_concat:
     lea overflow_msg(%rip), %rdi
     xor %rsi, %rsi
     call print_info
-
-    mov %r12, %rdi
-    xor %rsi, %rsi
-    call print_info
     
     pop %r14
     pop %r13

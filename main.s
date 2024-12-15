@@ -66,6 +66,7 @@ newl: .asciz "\n"
 .include "./utils/srvr_conf/parse_srvr_config.s"
 .include "./utils/srvr_conf/parse_key_value.s"
 
+.include "./utils/hex_dump.s"
 .global _start
 _start:
 

@@ -8,61 +8,61 @@
 .section .rodata
 
 // Extensions for comparison
-ext_html:   .asciz ".html"
+ext_html:   .ascii ".html"
 ext_html_length = . - ext_html
-ext_css:    .asciz ".css"
+ext_css:    .ascii ".css"
 ext_css_length = . - ext_css
 
-ext_js:     .asciz ".js"
+ext_js:     .ascii ".js"
 ext_js_length = . - ext_js
 
-ext_jpg:    .asciz ".jpg"
+ext_jpg:    .ascii ".jpg"
 ext_jpg_length = . - ext_jpg
 
-ext_jpeg:   .asciz ".jpeg"
+ext_jpeg:   .ascii ".jpeg"
 ext_jpeg_length = . - ext_jpeg
 
-ext_png:    .asciz ".png"
+ext_png:    .ascii ".png"
 ext_png_length = . - ext_png
 
-ext_gif:    .asciz ".gif"
+ext_gif:    .ascii ".gif"
 ext_gif_length = . - ext_gif
 
-ext_webp:   .asciz ".webp"
+ext_webp:   .ascii ".webp"
 ext_webp_length = . - ext_webp
 
-ext_svg:    .asciz ".svg"
+ext_svg:    .ascii ".svg"
 ext_svg_length = . - ext_svg
 
-ext_ico:    .asciz ".ico"
+ext_ico:    .ascii ".ico"
 ext_ico_length = . - ext_ico
 
 // MIME types for return values
-mime_css:    .asciz "Content-Type: text/css\r\n"
+mime_css:    .ascii "Content-Type: text/css\r\n"
 mime_css_length = . - mime_css
 
-mime_js:     .asciz "Content-Type: text/javascript\r\n"
+mime_js:     .ascii "Content-Type: text/javascript\r\n"
 mime_js_length = . - mime_js
 
-mime_html:   .asciz "Content-Type: text/html\r\n"
+mime_html:   .ascii "Content-Type: text/html\r\n"
 mime_html_length = . - mime_html
 
-mime_jpeg:   .asciz "Content-Type: image/jpeg\r\n"
+mime_jpeg:   .ascii "Content-Type: image/jpeg\r\n"
 mime_jpeg_length = . - mime_jpeg
 
-mime_png:    .asciz "Content-Type: image/png\r\n"
+mime_png:    .ascii "Content-Type: image/png\r\n"
 mime_png_length = . - mime_png
 
-mime_gif:    .asciz "Content-Type: image/gif\r\n"
+mime_gif:    .ascii "Content-Type: image/gif\r\n"
 mime_gif_length = . - mime_gif
 
-mime_webp:   .asciz "Content-Type: image/webp\r\n"
+mime_webp:   .ascii "Content-Type: image/webp\r\n"
 mime_webp_length = . - mime_webp
 
-mime_svg:    .asciz "Content-Type: image/svg+xml\r\n"
+mime_svg:    .ascii "Content-Type: image/svg+xml\r\n"
 mime_svg_length = . - mime_svg
 
-mime_ico:    .asciz "Content-Type: image/x-icon\r\n"
+mime_ico:    .ascii "Content-Type: image/x-icon\r\n"
 mime_ico_length = . - mime_ico
 
 .section .text

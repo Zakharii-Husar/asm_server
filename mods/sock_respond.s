@@ -14,7 +14,6 @@
 
 .section .rodata
 
-break_line: .asciz "\n"
 
 sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
 sock_respond_msg_length = . - sock_respond_msg
@@ -72,6 +71,9 @@ sock_respond:
     mov $response_header_B_size, %rcx
     call str_concat
     
+    # Get the actual length of the complete header
+    lea response_header_B(%rip), %rdi
+    call str_len              # Get the total length of headers
 
     # SEND THE HEADER
     mov %rax, %rdx                 # Length of the entire header
@@ -79,7 +81,6 @@ sock_respond:
     mov %r13, %rdi                 # File descriptor
     lea response_header_B(%rip), %rsi  # Pointer to the beginning of the header
     syscall
-    
 
 
     # SEND THE CONTENT
