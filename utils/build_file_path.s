@@ -1,6 +1,5 @@
 .section .data
 
-.base_path: .asciz "./public"
 .index_str: .asciz "index"
 .html_ext: .asciz ".html"
 .slash: .asciz "/"
@@ -25,7 +24,7 @@ build_file_path:
     mov %rdi, %r12   # dest buffer
     mov %rsi, %r13   # route buffer
 
-    # 1. Write base_path to destination
+    # 1. Write base path to destination
     mov %r12, %rdi           # dest buffer
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rsi  
     xor %rdx, %rdx
@@ -46,17 +45,18 @@ build_file_path:
     cmp $0, %rax
     je .check_extension
 
-    # If route is "/", append "index"
-    mov %r12, %rdi
-    lea .index_str(%rip), %rsi
+    # If route is "/", append default file name
+    mov %r12, %rdi           # dest buffer
+    lea CONF_DEFAULT_FILE_OFFSET(%r15), %rsi  
     xor %rdx, %rdx
     mov $file_path_B_size, %rcx
     call str_concat
-    jmp .append_extension
 
 .check_extension:
-    # 4. Search for dot in route
-    mov %r13, %rdi
+    # 4. Search for dot in the destination buffer
+    
+    mov %r12, %rdi
+    inc %rdi # skip the first dot in the base path
     mov $'.', %rsi
     xor %rdx, %rdx       # no boundary check
     call str_find_char
@@ -74,8 +74,6 @@ build_file_path:
     call str_concat
 
 .exit_build_path:
-
-
     pop %r13
     pop %r12
     pop %rbp
