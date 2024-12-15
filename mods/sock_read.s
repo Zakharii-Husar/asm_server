@@ -98,7 +98,7 @@ sock_read:
     # Open the file 
     mov %r13, %rdi                          # file path buffer
     mov %r14, %rsi                          # response buffer
-    mov $response_content_B_size, %rdx      # buffer size
+    mov CONF_BUFFER_SIZE_OFFSET(%r15), %rdx      # buffer size
     xor %rcx, %rcx                          # null termination flag
     call file_open
 

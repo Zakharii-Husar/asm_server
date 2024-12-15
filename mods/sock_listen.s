@@ -23,7 +23,7 @@ sock_listen:
 
  mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_listen, %rax
- mov    $connection_backlog, %rsi
+ lea CONF_MAX_CONN_OFFSET(%r15), %rsi
  syscall
 
  cmp $0, %rax                               # Compare the return value with 0

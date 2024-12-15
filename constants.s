@@ -19,9 +19,6 @@
     .equ SOCK_PROTOCOL, 0
 
 
-    # sock listen args
-    .equ connection_backlog, 10   # backlog (max number of queued connections)
-
     # Buffers sizes
     .equ req_method_B_size, 8
     .equ req_B_size, 1024                  # For reading user request
