@@ -51,6 +51,7 @@ newl: .asciz "\n"
 .include "./utils/create_type_header.s"
 .include "./utils/create_status_header.s"
 .include "./utils/create_length_header.s"
+.include "./utils/create_server_header.s"
 .include "./utils/time/get_time_now.s"
 
 .include "./utils/time/get_timestamp.s"

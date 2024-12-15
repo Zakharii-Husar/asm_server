@@ -62,6 +62,10 @@ sock_respond:
     lea response_header_B(%rip), %rdi       # destination buffer
     mov %rcx, %rsi                          # file extension buffer pointer
     call create_type_header                 # returns length in %rax
+
+    lea response_header_B(%rip), %rdi      # destination buffer
+    mov $response_header_B_size, %rsi      # max buffer size
+    call create_server_header
     
 
     # ADD FINAL DOUBLE CRLF TO SEPARATE HEADERS FROM BODY
