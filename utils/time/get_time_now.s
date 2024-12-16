@@ -1,4 +1,3 @@
-# Input: rdi = timestamp (seconds since Unix epoch)
 # Output: rax = pointer to formatted string "YYYY-MM-DD HH:MM:SS"
 
 .section .data
@@ -92,8 +91,10 @@ get_time_now:
     mov %r12, %r9           # seconds
     call format_time
 
+    mov %rax, %rdi
+    xor %rsi, %rsi
+    call print_info
     # format_time returns pointer to formatted string in rax
-
     # Restore non-volatile registers
     pop %r15
     pop %r14

@@ -67,12 +67,16 @@ newl: .asciz "\n"
 .include "./utils/srvr_conf/parse_srvr_config.s"
 .include "./utils/srvr_conf/parse_key_value.s"
 
+# .include "./utils/srvr_conf/log_access.s"
+
 .include "./utils/hex_dump.s"
 .global _start
 _start:
 
     # 0. Initialize server config
     call init_srvr_config
+
+    call get_time_now
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

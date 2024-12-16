@@ -3,8 +3,10 @@
 .colon: .string ":"
 .time_separator: .string "T"
 .zero_pad: .string "0"
+.open_bracket: .string "["    # Add opening bracket
+.close_bracket: .string "]"   # Add closing bracket
 
- .equ DATE_BUFFER_SIZE, 20
+ .equ DATE_BUFFER_SIZE, 22
 
 .section .bss
 .comm date_buffer, DATE_BUFFER_SIZE
@@ -36,8 +38,17 @@ format_time:
     mov %rcx, %r14          # Save hours
     mov %rdx, %r15          # Save day
     push %rsi               # Save month
+    push %rdi               # Save year
+
+        # Start with opening bracket
+    lea date_buffer(%rip), %rdi
+    lea .open_bracket(%rip), %rsi
+    xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
+    call str_concat
     
-    # Year is already in rdi (no padding needed for year)
+    # Convert year to string
+    pop %rdi # restore year
     call int_to_str
     
     lea date_buffer(%rip), %rdi
@@ -175,6 +186,13 @@ format_time:
     
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
+    xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
+    call str_concat
+
+        # Add closing bracket at the end
+    lea date_buffer(%rip), %rdi
+    lea .close_bracket(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
