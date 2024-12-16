@@ -1,22 +1,26 @@
-.section .bss
-.lcomm req_method_B, req_method_B_size  
-
 .section .text
 
 # Function: extract_method
 # Input: 
 #   %rdi - pointer to the request buffer (source)
-# Output: 
-#   %rax - pointer to the extracted method string
+#   %rsi - pointer to the request method buffer (destination)
+#   %rdx - destination buffer size
+# Output: void
+# Side effects: writes the method if found to the destination buffer
 extract_method:
     push %rbp
     mov %rsp, %rbp
     push %r12
-    mov %rdi, %r12                   # Save the source pointer
+    push %r13
+    push %r14
 
+    mov %rdi, %r12                   # Save the source pointer
+    mov %rsi, %r13                   # Save the destination pointer
+    mov %rdx, %r14                   # Save the destination buffer size
+   
     # Clear the method buffer first
-    lea req_method_B(%rip), %rdi
-    mov $req_method_B_size, %rsi
+    mov %r13, %rdi
+    mov %r14, %rsi
     call clear_buffer
 
     # Find the first space character
@@ -26,21 +30,23 @@ extract_method:
     call str_find_char
 
     # Copy the method to the internal buffer
-    lea req_method_B(%rip), %rdi   # Get address of internal buffer
+    mov %r13, %rdi   # Get address of destination buffer
     mov %r12, %rsi
     mov %rax, %rdx
     sub %r12, %rdx
 
-    cmp $req_method_B_size, %rdx
+    cmp %r14, %rdx
     jle .copy_method
-    mov $req_method_B_size, %rdx
+    mov %r14, %rdx
 .copy_method:
-    mov $req_method_B_size, %rcx
+    mov %r14, %rcx
     call str_concat
 
     # Return pointer to the method buffer
-    lea req_method_B(%rip), %rax
+    mov %r13, %rax
 
+    pop %r14
+    pop %r13
     pop %r12
     pop %rbp
     ret
