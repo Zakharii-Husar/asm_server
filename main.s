@@ -63,7 +63,7 @@ newl: .asciz "\n"
 .include "./utils/srvr_conf/init_srvr_config.s"
 .include "./utils/srvr_conf/htons.s"
 .include "./utils/srvr_conf/ip_to_network.s"
-
+.include "./utils/srvr_conf/open_log_files.s"
 .include "./utils/srvr_conf/parse_srvr_config.s"
 .include "./utils/srvr_conf/parse_key_value.s"
 

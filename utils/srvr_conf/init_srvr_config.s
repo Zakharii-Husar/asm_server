@@ -32,10 +32,13 @@ init_srvr_config:
     test %rax, %rax
     js .config_error
 
-    # Load struct base address into r15
+    # Parse config file and load struct
     lea server_config_struct(%rip), %r15
     lea server_conf_file_B(%rip), %rdi
     call parse_srvr_config
+
+    # Open log files and store FDs in the struct
+    call open_log_files
 
     # Success case
     lea config_load_success_msg(%rip), %rdi
