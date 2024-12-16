@@ -1,6 +1,3 @@
-.section .data
-    winnipeg_timezone: .asciz "-6"
-
 .section .text  
 
 .global adjust_timezone
@@ -13,8 +10,7 @@ adjust_timezone:
     mov %rdi, %r12              # Store UTC timestamp
     
     # Prepare to call str_to_int
-    lea winnipeg_timezone(%rip), %rdi
-    call str_to_int             # Result in %rax
+    mov CONF_TIMEZONE_OFFSET(%r15), %rax
     
     # Convert hours to seconds (multiply by 3600)
     imul $3600, %rax, %rax
