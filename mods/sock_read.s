@@ -1,5 +1,6 @@
 .section .bss
 .lcomm req_route_B, req_route_B_size
+.lcomm req_method_B, req_method_B_size  
 
 .section .data
 
@@ -69,11 +70,18 @@ sock_read:
 
     cmp $0, %rax                            # Check if read was successful
     jl .bad_request                         # Jump if there was an error
-    
+
+    # EXTRACT THE ROUTE
+    # Extract the route
+    lea req_route_B(%rip), %rdi            # Destination buffer for route
+    mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
+    call extract_route                     # Extract the route
 
     # COMPARE THE REQUEST METHOD TO "GET"
     # Extract the method
     mov %r12, %rdi                         # Load source buffer (request buffer)
+    lea req_method_B(%rip), %rsi           # Load destination buffer (method buffer)
+    mov $req_method_B_size, %rdx           # Load destination buffer size
     call extract_method                    # Returns pointer to method in %rax
     mov %rax, %rdi                         # First parameter for str_cmp
     lea .GET_STRING(%rip), %rsi            # Second parameter
@@ -84,11 +92,6 @@ sock_read:
 
 
     # ATTEMPT TO OPEN THE REQUESTED FILE
-
-    # Extract the route
-    lea req_route_B(%rip), %rdi            # Destination buffer for route
-    mov %r12, %rsi                         # The HTTP req buffer to extract route and ext from
-    call extract_route                     # Extract the route
 
     # Build the file path
     mov %r13, %rdi                         # Destination buffer for file path
@@ -196,11 +199,15 @@ sock_read:
     mov %r13, %rsi                             # The HTTP req buffer to extract ext from
     call extract_extension                     # Extract the extension  
 
+    lea req_method_B(%rip), %rdi
+    lea req_route_B(%rip), %rsi
+    mov %r14, %rdx # pass http status code to log_access
+    pop %r14 # restore client IP
+    push %rdx # preserve http status code
+    call log_access
 
     mov %r12, %rax                             # restore file size
-    mov %r14, %rdx                             # restore HTTP status code
-
-    pop %r14
+    pop %rdx  # restore http status code
     pop %r13
     pop %r12
     pop %rbp                                  # restore the caller's base pointer

@@ -1,8 +1,11 @@
 .section .data
-space: .asciz " "
-quote: .asciz "\"
+
+fake_ip: .asciz "127.0.0.1"
+
+spc: .asciz " "
+quote: .asciz "\""
 http_ver: .asciz " HTTP/1.1"
-newline: .asciz "\n"
+break_line: .asciz "\n"
 
 .equ access_log_buffer_size, 1024
 
@@ -16,14 +19,16 @@ log_access:
     # rdi - HTTP method
     # rsi - path
     # rdx - status code (as number)
-    # Note: client IP is available in %r14
+    # Implicit parameters:
+    # r14: client IP
+    # r15: server configuration
     push %rbp
     mov %rsp, %rbp
     
     # Preserve r12 and r13
     push %r12
     push %r13
-    push %rdi # Save only method on stack as we'll use it first
+    push %rdi   # Save only method on stack as we'll use it first
     
     # Store path and status in preserved registers
     mov %rsi, %r12        # path
@@ -31,7 +36,7 @@ log_access:
     
     # Start with empty buffer
     lea access_log_buffer(%rip), %rdi
-    mov $access_log_buffer_size, %rcx
+    mov $access_log_buffer_size, %rsi
     call clear_buffer
     
     # Get timestamp and add it
@@ -41,13 +46,15 @@ log_access:
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
-    
-    # Add space
+
+
+    # Add spc
     lea access_log_buffer(%rip), %rdi
-    lea space(%rip), %rsi
+    lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
+    
     
     # Add quote
     lea access_log_buffer(%rip), %rdi
@@ -64,9 +71,9 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_concat
     
-    # Add space
+    # Add spc
     lea access_log_buffer(%rip), %rdi
-    lea space(%rip), %rsi
+    lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
@@ -85,6 +92,7 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_concat
     
+    
     # Add quote
     lea access_log_buffer(%rip), %rdi
     lea quote(%rip), %rsi
@@ -92,9 +100,9 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_concat
     
-    # Add space
+    # Add spc
     lea access_log_buffer(%rip), %rdi
-    lea space(%rip), %rsi
+    lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
@@ -109,35 +117,39 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_concat
     
-    # Add space
+    # Add spc
     lea access_log_buffer(%rip), %rdi
-    lea space(%rip), %rsi
+    lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
-    
+
     # Add IP (using %r14 which contains the client IP pointer)
     lea access_log_buffer(%rip), %rdi
     mov %r14, %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
-    
-    # Add newline
+
+
+    # Add break_line
     lea access_log_buffer(%rip), %rdi
-    lea newline(%rip), %rsi
+    lea break_line(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat
+
+
     
     # Write to log file
-    mov CONF_ACCESS_LOG_FD_OFFSET(%r15), %rdi
-    lea access_log_buffer(%rip), %rsi
+    lea access_log_buffer(%rip), %rdi
     call str_len
     mov %rax, %rdx
+    lea access_log_buffer(%rip), %rsi
+    mov CONF_ACCESS_LOG_FD_OFFSET(%r15), %rdi
     mov $SYS_write, %rax
     syscall
-    
+
     # Clean up
     pop %r13            # restore preserved registers
     pop %r12
