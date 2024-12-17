@@ -1,12 +1,13 @@
 .section .data
 .dash: .string "-"
 .colon: .string ":"
+.plus: .string "+"
 .time_separator: .string "T"
 .zero_pad: .string "0"
 .open_bracket: .string "["    # Add opening bracket
 .close_bracket: .string "]"   # Add closing bracket
 
- .equ DATE_BUFFER_SIZE, 22
+ .equ DATE_BUFFER_SIZE, 30
 
 .section .bss
 .comm date_buffer, DATE_BUFFER_SIZE
@@ -37,10 +38,11 @@ format_time:
     mov %r8, %r13           # Save minutes
     mov %rcx, %r14          # Save hours
     mov %rdx, %r15          # Save day
+
     push %rsi               # Save month
     push %rdi               # Save year
 
-        # Start with opening bracket
+    # Start with opening bracket
     lea date_buffer(%rip), %rdi
     lea .open_bracket(%rip), %rsi
     xor %rdx, %rdx
@@ -67,7 +69,6 @@ format_time:
     # Format month
     pop %rsi               # Restore month
     mov %rsi, %rdi
-    push %rdi             # Save it again
     cmp $10, %rdi
     jge .skip_month_pad
     # Add leading zero
@@ -76,7 +77,6 @@ format_time:
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
-    pop %rdi
 .skip_month_pad:
     call int_to_str
     
@@ -190,7 +190,30 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_concat
 
-        # Add closing bracket at the end
+
+    pop %r15 # restore server config after using the value stored in r15
+
+    mov CONF_TIMEZONE_OFFSET(%r15), %rax      # Move the value to check into a register
+    cmp $0, %rax        # Compare with 0 (will set SF if %rax is negative)
+    js .skip_appending_plus  
+    
+    lea date_buffer(%rip), %rdi
+    lea .plus(%rip), %rsi
+    xor %rdx, %rdx
+    mov $DATE_BUFFER_SIZE, %rcx
+    call str_concat
+
+    .skip_appending_plus:
+    mov CONF_TIMEZONE_OFFSET(%r15), %rdi
+    call int_to_str
+
+    mov %rax, %rsi
+    lea date_buffer(%rip), %rdi
+    mov $DATE_BUFFER_SIZE, %rcx
+    xor %rdx, %rdx
+    call str_concat
+
+    # Add closing bracket at the end
     lea date_buffer(%rip), %rdi
     lea .close_bracket(%rip), %rsi
     xor %rdx, %rdx
@@ -200,11 +223,8 @@ format_time:
     # Return pointer to formatted string
     lea date_buffer(%rip), %rax
     
-    # Clean up the stack (month value)
-    add $8, %rsp
     
     # Restore registers
-    pop %r15
     pop %r14
     pop %r13
     pop %r12

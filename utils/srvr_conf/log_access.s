@@ -126,7 +126,7 @@ log_access:
 
     # Add IP (using %r14 which contains the client IP pointer)
     lea access_log_buffer(%rip), %rdi
-    mov %r14, %rsi
+    lea fake_ip(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_concat

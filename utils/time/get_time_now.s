@@ -89,10 +89,10 @@ get_time_now:
     mov %r10, %rcx          # hours
     mov %r11, %r8           # minutes
     mov %r12, %r9           # seconds
+    pop %r15
     call format_time
     # format_time returns pointer to formatted string in rax
     # Restore non-volatile registers
-    pop %r15
     pop %r14
     pop %r13
     pop %r12
