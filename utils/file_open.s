@@ -1,6 +1,6 @@
 .section .data
 
-file_open_err_msg:    .asciz "\033[31mFailed to open file! ❌\033[0m\n"
+file_open_err_msg:    .asciz "failed to open file"
 file_open_err_msg_length = . - file_open_err_msg
 
 fstat_err_msg:    .asciz "\033[31mFailed to get file size! ❌\033[0m\n"
@@ -146,6 +146,10 @@ file_open:
 
    # 10. HANDLE ERRORS
     .handle_file_open_error:
+        mov %rax, %rdx # error code
+        lea file_open_err_msg(%rip), %rdi
+        mov $file_open_err_msg_length, %rsi
+        call log_err
         
         lea file_open_err_msg(%rip), %rdi   
         mov $file_open_err_msg_length, %rsi
