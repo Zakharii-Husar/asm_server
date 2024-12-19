@@ -13,6 +13,7 @@
     .equ SYS_sock_sendto, 44
     .equ SYS_exit, 60
     .equ SYS_time, 201
+    .equ SYS_exit_group, 231 # for forceful exit
     # create socket args
     .equ AF_INET, 2 
     .equ SOCK_STREAM, 1
