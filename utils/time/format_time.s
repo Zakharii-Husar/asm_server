@@ -42,6 +42,11 @@ format_time:
     push %rsi               # Save month
     push %rdi               # Save year
 
+    # clear buffer
+    lea date_buffer(%rip), %rdi
+    mov $DATE_BUFFER_SIZE, %rsi
+    call clear_buffer
+
     # Start with opening bracket
     lea date_buffer(%rip), %rdi
     lea .open_bracket(%rip), %rsi
