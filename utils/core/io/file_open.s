@@ -1,6 +1,6 @@
 .section .data
 
-file_open_err_msg:    .asciz "failed to open file"
+file_open_err_msg:    .asciz "failed to open file (at file_open.s)"
 file_open_err_msg_length = . - file_open_err_msg
 
 fstat_err_msg:    .asciz "\033[31mFailed to get file size! ❌\033[0m\n"

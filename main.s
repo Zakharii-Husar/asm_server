@@ -18,6 +18,7 @@ newl: .asciz "\n"
 .include "./constants.s"
 
 .section .text
+# Modules
 .include "./mods/sock_create.s"
 .include "./mods/sock_bind.s"
 .include "./mods/sock_listen.s"
@@ -25,52 +26,58 @@ newl: .asciz "\n"
 .include "./mods/sock_read.s"
 .include "./mods/sock_respond.s"
 .include "./mods/sock_close_conn.s"
-
 .include "./mods/process_fork.s"
 .include "./mods/fork_handle_child.s"
 .include "./mods/fork_handle_parent.s"
-
 .include "./mods/exit_program.s"
 
-.include "./utils/print_info.s"
-.include "./utils/int_to_str.s"
-.include "./utils/extract_client_ip.s"
-.include "./utils/file_open.s"
-.include "./utils/extract_route.s"
-.include "./utils/build_file_path.s"
-.include "./utils/extract_method.s"
-.include "./utils/extract_extension.s"
-.include "./utils/str_len.s"
-.include "./utils/str_cmp.s"
-.include "./utils/str_concat.s"
-.include "./utils/str_find_char.s"
-.include "./utils/str_to_lower.s"
-.include "./utils/str_to_int.s"
-.include "./utils/char_cmp.s"
-.include "./utils/clear_buffer.s"
-.include "./utils/create_type_header.s"
-.include "./utils/create_status_header.s"
-.include "./utils/create_length_header.s"
-.include "./utils/create_server_header.s"
-.include "./utils/time/get_time_now.s"
+# Core utilities
+.include "./utils/core/io/print_info.s"
+.include "./utils/core/io/file_open.s"
+.include "./utils/core/memory/clear_buffer.s"
 
+# Core string operations
+.include "./utils/core/str/str_len.s"
+.include "./utils/core/str/str_cmp.s"
+.include "./utils/core/str/str_concat.s"
+.include "./utils/core/str/str_find_char.s"
+.include "./utils/core/str/str_to_lower.s"
+.include "./utils/core/str/str_to_int.s"
+.include "./utils/core/str/int_to_str.s"
+.include "./utils/core/str/char_cmp.s"
+
+# Server configuration
+.include "./utils/server/config/init_srvr_config.s"
+.include "./utils/server/config/parse_srvr_config.s"
+.include "./utils/server/config/parse_key_value.s"
+.include "./utils/server/config/network/htons.s"
+.include "./utils/server/config/network/ip_to_network.s"
+.include "./utils/server/config/logging/open_log_files.s"
+.include "./utils/server/config/logging/log_access.s"
+.include "./utils/server/config/logging/log_err.s"
+
+# HTTP functionality
+.include "./utils/server/http/headers/create_type_header.s"
+.include "./utils/server/http/headers/create_status_header.s"
+.include "./utils/server/http/headers/create_length_header.s"
+.include "./utils/server/http/headers/create_server_header.s"
+.include "./utils/server/http/request/extract_client_ip.s"
+.include "./utils/server/http/request/extract_route.s"
+.include "./utils/server/http/request/extract_method.s"
+.include "./utils/server/http/request/extract_extension.s"
+
+# Time utilities
+.include "./utils/time/get_time_now.s"
 .include "./utils/time/get_timestamp.s"
 .include "./utils/time/is_leap_year.s"
 .include "./utils/time/get_days_in_month.s"
 .include "./utils/time/format_time.s"
 .include "./utils/time/adjust_timezone.s"
 
-.include "./utils/srvr_conf/init_srvr_config.s"
-.include "./utils/srvr_conf/htons.s"
-.include "./utils/srvr_conf/ip_to_network.s"
-.include "./utils/srvr_conf/open_log_files.s"
-.include "./utils/srvr_conf/parse_srvr_config.s"
-.include "./utils/srvr_conf/parse_key_value.s"
-
-.include "./utils/srvr_conf/log_access.s"
-.include "./utils/srvr_conf/log_err.s"
-
+# Server utilities
+.include "./utils/build_file_path.s"
 .include "./utils/hex_dump.s"
+
 .global _start
 _start:
 
