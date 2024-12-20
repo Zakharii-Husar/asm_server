@@ -1,3 +1,7 @@
+.section .rodata
+overflow_msg: .asciz "MODERATE: buffer overflow detected in str_concat.s"
+overflow_msg_length = . - overflow_msg
+
 # Function: str_concat
 # Input:
 #   %rdi - destination buffer
@@ -39,7 +43,7 @@ str_concat:
     add %rdx, %rax            # Add source length
     inc %rax                  # Add 1 for null terminator
     cmp %r13, %rax           # Compare with max size
-    jg .buffer_overflow
+    jg .handle_buffer_overflow
 
     # Find end of destination string
     mov %r12, %rdi
@@ -56,28 +60,17 @@ str_concat:
     # Add null terminator
     movb $0, (%rdi)
 
+    .exit_str_concat:
     pop %r14
     pop %r13
     pop %r12
     pop %rbp
     ret
 
-.buffer_overflow:
+   .handle_buffer_overflow:
+
     lea overflow_msg(%rip), %rdi
-    xor %rsi, %rsi
-    call print_info
-
-    mov %r13, %rdi
-    call int_to_str
-    mov %rax, %rdi
-    xor %rsi, %rsi
-    call print_info
-    
-    pop %r14
-    pop %r13
-    pop %r12
-    pop %rbp
-    ret
-
-.section .rodata
-overflow_msg: .asciz "Buffer overflow detected in str_concat!\n"
+    mov $overflow_msg_length, %rsi
+    mov %rax, %rdx
+    call log_error
+    jmp .exit_str_concat
