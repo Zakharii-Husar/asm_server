@@ -5,33 +5,32 @@
 #   - Calls exit_program on failure
 
 .section .rodata
-
-.process_fork_msg:    .asciz "\033[35mProcess was forked ✌️\033[0m\n"
-.process_fork_err_msg:    .asciz "\033[31mFailed to fork process! ❌\033[0m\n"
-.process_fork_err_msg_len = . - .process_fork_err_msg
+fork_err_msg: .asciz "CRITICAL: Failed to fork process"
+fork_err_msg_len = . - fork_err_msg
 
 .section .text
-
 .type process_fork, @function
 process_fork:
-push %rbp                    # save the caller's base pointer
-mov %rsp, %rbp               # set the new base pointer (stack frame)
+    push %rbp
+    mov %rsp, %rbp
+
+    mov $SYS_fork, %rax
+    syscall
+    
+    # Check if forking was successful
+    cmp $0, %rax
+    jl .handle_fork_err
 
 
-mov $SYS_fork, %rax          # Fork the process
-syscall
-push %rax                    # preserve the return value
-
-cmp $0, %rax                 # Check if forking was successful
-jl .handle_sock_fork_err
-
-pop %rax
-pop %rbp                     # restore the caller's base pointer
-ret                          # return to the caller
+.exit_process_fork:
+    pop %rbp
+    ret
  
-.handle_sock_fork_err:
- lea .process_fork_err_msg(%rip), %rdi
- mov $.process_fork_err_msg_len, %rsi
- call print_info
- call exit_program
- 
+.handle_fork_err:
+    # Fork failed - this is a critical error
+    push %rax                    # Save error code
+    lea fork_err_msg(%rip), %rdi
+    mov $fork_err_msg_len, %rsi
+    pop %rdx                     # Error code for logging
+    call log_err                 # Log the critical error
+    jmp .exit_process_fork
