@@ -146,14 +146,9 @@ file_open:
 
    # 10. HANDLE ERRORS
     .handle_file_open_error:
-        lea file_open_err_msg(%rip), %rdi
-        mov $file_open_err_msg_length, %rsi
-        mov %rax, %rdx
-        call log_err
-        
-        lea file_open_err_msg(%rip), %rdi   
-        mov $file_open_err_msg_length, %rsi
-        call print_info
+    # no need to log error here, because there are 2 scenarios:
+    # 1. config file failed to open, then it's not gonna have any file to log the error to
+    # 2. 404 has a fallback and will log event with log_access
 
         mov $-1, %rax
         jmp .exit_file_open
