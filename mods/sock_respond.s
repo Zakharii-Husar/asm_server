@@ -15,10 +15,7 @@
 .section .rodata
 
 
-sock_respond_msg:    .asciz "\033[34mResponse was sent to the client 📬\033[0m\n"
-sock_respond_msg_length = . - sock_respond_msg
-
-sock_respond_err_msg:    .asciz "\033[31mFailed to respond to the client! ❌\033[0m\n"
+sock_respond_err_msg:    .asciz "CRITICAL: Failed to respond to the client in sock_respond.s"
 sock_respond_err_msg_length = . - sock_respond_err_msg
 
 # Double CRLF to separate headers from body
@@ -85,6 +82,9 @@ sock_respond:
     mov %r13, %rdi                 # File descriptor
     lea response_header_B(%rip), %rsi  # Pointer to the beginning of the header
     syscall
+    cmp $0, %rax
+    jl .handle_sock_respond_err
+    
 
 
     # SEND THE CONTENT
@@ -93,19 +93,19 @@ sock_respond:
     mov %r12 , %rsi                # Pointer to the content buffer
     mov %r14, %rdx                 # Length of the content
     syscall
+    cmp $0, %rax                               # Compare the return value with 0
+    jl  .handle_sock_respond_err                # Jump to error handling if %rax < 0
 
 
-   cmp $0, %rax                               # Compare the return value with 0
-   jl  .handle_sock_respond_err                # Jump to error handling if %rax < 0
-
+   .exit_sock_respond:
    pop %r14
    pop %r12
-
    pop %rbp                     # restore the caller's base pointer
    ret                          # return to the caller
 
 .handle_sock_respond_err:
- lea sock_respond_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
- mov $sock_respond_err_msg_length, %rsi        # length of the message (from constants.s)
- call print_info
- call exit_program
+    lea sock_respond_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
+    mov $sock_respond_err_msg_length, %rsi        # length of the message (from constants.s)
+    mov %rax, %rdx # error code
+    call log_err
+    jmp .exit_sock_respond
