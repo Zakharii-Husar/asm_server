@@ -7,8 +7,8 @@
 #   %rdx - 1 if character found, 0 if not found
 #   %rax - Address of found character or boundary/null character if not found
 .section .rodata
-null_ptr_msg: .asciz "MODERATE: Null pointer passed to str_find_char in str_find_char.s"
-null_ptr_msg_len = . - null_ptr_msg
+str_find_char_null_ptr_msg: .asciz "ERROR: Null pointer passed to str_find_char\n"
+str_find_char_null_ptr_msg_len = . - str_find_char_null_ptr_msg
 
 .section .text
 
@@ -19,7 +19,7 @@ str_find_char:
 
     # Add null pointer check
     test %rdi, %rdi
-    jz .null_error
+    jz .str_find_char_err
 
 .search_char:
     movb (%rdi), %al           # Load current character
@@ -38,20 +38,20 @@ str_find_char:
 .found_char:
     mov $1, %rdx               # Return 1 if found
     mov %rdi, %rax             # Return address of character
-    jmp .exit_str_find_char
+    jmp .finish
 
 .not_found:
     mov $0, %rdx               # Return 0 if not found
     mov %rdi, %rax            # Return address of boundary/null character
-    jmp .exit_str_find_char
+    jmp .finish
 
-.null_error:
-    lea null_ptr_msg(%rip), %rdi
-    mov $null_ptr_msg_len, %rsi
-    call log_error
+.str_find_char_err:
+    lea str_find_char_null_ptr_msg(%rip), %rdi
+    mov $str_find_char_null_ptr_msg_len, %rsi
+    call log_err
     xor %rdx, %rdx           # Return 0 (not found)
     xor %rax, %rax           # Return null pointer
 
-.exit_str_find_char:
+.finish:
     pop %rbp
     ret
