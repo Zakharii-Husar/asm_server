@@ -5,7 +5,7 @@
 #   - Calls exit_program on failure
 
 .section .rodata
-fork_err_msg: .asciz "CRITICAL: Failed to fork process"
+fork_err_msg: .asciz "CRITICAL: Failed to fork process in process_fork.s"
 fork_err_msg_len = . - fork_err_msg
 
 .section .text
