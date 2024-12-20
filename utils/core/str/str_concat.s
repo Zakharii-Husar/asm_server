@@ -43,7 +43,7 @@ str_concat:
     add %rdx, %rax            # Add source length
     inc %rax                  # Add 1 for null terminator
     cmp %r13, %rax           # Compare with max size
-    jg .handle_buffer_overflow
+    jg .handle_string_b_overflow
 
     # Find end of destination string
     mov %r12, %rdi
@@ -67,7 +67,7 @@ str_concat:
     pop %rbp
     ret
 
-   .handle_buffer_overflow:
+   .handle_string_b_overflow:
 
     lea overflow_msg(%rip), %rdi
     mov $overflow_msg_length, %rsi
