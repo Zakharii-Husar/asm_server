@@ -8,7 +8,8 @@
 
 space_char: .asciz " "
 
-.sock_read_err_msg:    .asciz "\033[31mFailed to read client request! ❌\033[0m\n"
+server_read_err_msg: .asciz "SEVERE: Failed to read any response pages in sock_read.s"
+server_read_err_msg_len = . - server_read_err_msg
 
 .bad_request_path: .asciz "./public/400.html"
 
@@ -170,6 +171,11 @@ sock_read:
     jmp .finish_sock_read
 
 .server_err:
+    lea server_read_err_msg(%rip), %rdi
+    mov $server_read_err_msg_len, %rsi
+    mov %rax, %rdx        # Pass error code
+    call log_err  
+
     # Clear the response_content_buffer before the next attempt
     mov %r14, %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
