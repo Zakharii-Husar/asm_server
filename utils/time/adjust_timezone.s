@@ -1,3 +1,20 @@
+# Adjusts a UTC timestamp by adding the configured timezone offset
+#
+# Parameters:
+#   %rdi - UTC timestamp (seconds since epoch)
+#   CONF_TIMEZONE_OFFSET(%r15) - Timezone offset in ±HHMM format (e.g., +0530, -0800)
+#
+# Returns:
+#   %rax - Adjusted timestamp in local time
+#
+# Error Handling:
+#   - If timezone offset is invalid (outside -1200 to +1400),
+#     logs error and returns original timestamp unchanged
+#
+.section .data
+timezone_err_msg: .asciz "MODERATE: Invalid timezone offset in adjust_timezone.s"
+timezone_err_msg_len = . - timezone_err_msg
+
 .section .text  
 
 .global adjust_timezone
@@ -12,6 +29,12 @@ adjust_timezone:
     
     # Get timezone offset
     mov CONF_TIMEZONE_OFFSET(%r15), %rax
+    
+    # Validate timezone offset
+    cmp $1400, %rax
+    jg .timezone_error
+    cmp $-1200, %rax
+    jl .timezone_error
     
     # Split into hours and minutes
     mov %rax, %r13              # Save original offset
@@ -33,8 +56,16 @@ adjust_timezone:
     add %rax, %r12
     mov %r12, %rax              # Put result in return register
 
+
+.exit_adjust_timezone:
     pop %r13
     pop %r12
     pop %rbp
     ret
-    
+
+.timezone_error:
+    lea timezone_err_msg(%rip), %rdi
+    mov $timezone_err_msg_len, %rsi
+    call log_err
+    mov %r12, %rax    # Return original timestamp on error
+    jmp .exit_adjust_timezone
