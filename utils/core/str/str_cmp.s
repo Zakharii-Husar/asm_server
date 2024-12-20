@@ -5,6 +5,10 @@
 # Output: 
 #   %rax - 1 if strings are equal, 0 if not
 
+.section .rodata
+null_ptr_msg: .asciz "MODERATE: Null pointer passed to str_cmp in str_cmp.s"
+null_ptr_msg_len = . - null_ptr_msg
+
 .section .text
 
 .type str_cmp, @function
@@ -12,6 +16,11 @@ str_cmp:
     push %rbp                   # Save the caller's base pointer
     mov %rsp, %rbp              # Set the new base pointer (stack frame)
 
+    # Add null pointer checks
+    test %rdi, %rdi
+    jz .null_error
+    test %rsi, %rsi
+    jz .null_error
 
    .cmp_loop:
     movb (%rsi), %al            # Load byte from string1
@@ -32,6 +41,13 @@ str_cmp:
 
     .strings_not_equal:
     mov $0, %rax
+    jmp .end_comparison
+
+    .null_error:
+    lea null_ptr_msg(%rip), %rdi
+    mov $null_ptr_msg_len, %rsi
+    call log_err
+    mov $0, %rax               # Return 0 on error
 
     .end_comparison:
     pop %rbp                         # Restore the caller's base pointer
