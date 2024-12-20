@@ -1,3 +1,8 @@
+.section .data
+
+.print_info_error_msg: .asciz "MODERATE: failed to print info"
+.print_info_error_msg_length = . - print_info_error_msg
+
 .section .text
 .globl print_info
 .type print_info, @function
@@ -30,6 +35,15 @@ print_info:
     mov $SYS_stdout, %rdi      # file descriptor (stdout)
     mov $SYS_write, %rax       # syscall number for write
     syscall
-    
+
+    cmp $0, %rax
+    jge .exit_print_info
+
+    lea .print_info_error_msg(%rip), %rdi
+    mov $print_info_error_msg_length, %rsi
+    mov %rax, %rdx
+    call log_error
+
+    .exit_print_info:
     pop %rbp
     ret
