@@ -1,23 +1,21 @@
 .section .data
+.equ sock_addr_in_size, 16
     .addr_in:                      # Just reserve the space, no initialization
-    .space 16                      # 16 bytes for sockaddr_in structure
+    .space sock_addr_in_size      # 16 bytes for sockaddr_in structure
 
 .section .rodata
-
-.sock_bound_msg:    .asciz "\033[32mTCP Sock was bound 🔗\033[0m\n"
-.sock_bound_msg_length = . - .sock_bound_msg
-
-.sock_bind_err_msg:    .asciz "\033[31mFailed to bind TCP Socket ❌\033[0m\n"
+    
+.sock_bind_err_msg:    .asciz "CRITICAL: Failed to bind TCP Socket in sock_bind.s"
 .sock_bind_err_msg_length = . - .sock_bind_err_msg
 
 .section .text
 
 # Function: sock_bind
-# Parameters: 
-#   - %rdi: Socket file descriptor (fd) to bind
+# Implicit Parameters: 
+#   - %r12: Socket file descriptor (fd) to bind
 # Return Values: 
-#   - Returns 0 on success
-#   - Calls exit_program on failure
+#   - %rax: Returns 0 on success
+#   - %rax: Returns -1 on failure
 
 .type sock_bind, @function
 sock_bind:
@@ -36,21 +34,20 @@ sock_bind:
  mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
  mov    $SYS_sock_bind, %rax            # sys_bind
  lea     .addr_in(%rip), %rsi           # pointer to the address structure
- mov    $16, %rdx                       # size of the sockaddr_in structure
+ mov    $sock_addr_in_size, %rdx         # size of the sockaddr_in structure
  syscall                                # make syscall
 
  cmp $0, %rax                           # Compare the return value with 0
  jl  .handle_sock_bind_err               # Jump to error handling if %rax < 0
     
- # lea .sock_bound_msg(%rip), %rsi         # pointer to the message (from constants.s)
- # mov $.sock_bound_msg_length, %rdx       # length of the message (from constants.s)
- # call print_info
-
+.exit_sock_bind:
  pop %rbp                               # restore the caller's base pointer
  ret                                    # return to the caller
 
 .handle_sock_bind_err:
- lea .sock_bind_err_msg(%rip), %rdi      # pointer to the message (from constants.s)
- mov $.sock_bind_err_msg_length, %rsi    # length of the message (from constants.s)
- call print_info
- call exit_program
+ lea sock_bind_err_msg(%rip), %rdi
+ mov $sock_bind_err_msg_length, %rsi
+ mov %rax, %rdx
+ call log_err
+ mov $-1, %rax
+ jmp .exit_sock_bind
