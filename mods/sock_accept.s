@@ -1,7 +1,6 @@
 .section .rodata
 
-.sock_accepted_msg:    .asciz "\033[32mConnection was accepted 🔄\033[0m\n"
-.sock_accept_err_msg:    .asciz "\033[31mFailed to accept connection ❌\033[0m\n"
+.sock_accept_err_msg:    .asciz "CRITICAL: Failed to accept connection in sock_accept.s"
 .sock_accept_err_msg_len = . - .sock_accept_err_msg
 
 .section .data
@@ -19,8 +18,8 @@ connection_info_len:
 # Parameters: 
 #   - %rdi: Socket file descriptor (fd) to accept connections on
 # Return Values: 
-#   - Returns a new socket file descriptor on success
-#   - Calls exit_program on failure
+#   - %rax: Returns a new socket file descriptor on success
+#   - %rax: Returns -1 on failure
 
 .type sock_accept, @function
 sock_accept:
@@ -41,18 +40,14 @@ sock_accept:
  lea connection_info(%rip), %rdi
  call extract_client_ip
  
+ .exit_sock_accept:
  pop %rbp                                      # restore the caller's base pointer
  ret                                           # return to the caller
  
 .handle_sock_accept_err:
- mov %rax, %rdi
- call int_to_str
-
- mov %rax, %rdi
- xor %rsi, %rsi
- call print_info
-
- lea .sock_accept_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
- mov $.sock_accept_err_msg_len, %rsi
- call print_info
- call exit_program
+ lea sock_accept_err_msg(%rip), %rdi
+ mov $sock_accept_err_msg_len, %rsi
+ mov %rax, %rdx
+ call log_err
+ mov $-1, %rax
+ jmp .exit_sock_accept
