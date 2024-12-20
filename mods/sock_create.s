@@ -38,8 +38,9 @@ sock_create:
  ret
 
  .handle_sock_create_err:
- lea sock_create_err_msg(%rip), %rdi
- mov $sock_create_err_msg_length, %rsi
+ lea .sock_create_err_msg(%rip), %rdi
+ mov $.sock_create_err_msg_length, %rsi
  call log_err
  mov $-1, %rax
  jmp .exit_sock_create
+

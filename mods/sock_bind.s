@@ -45,8 +45,8 @@ sock_bind:
  ret                                    # return to the caller
 
 .handle_sock_bind_err:
- lea sock_bind_err_msg(%rip), %rdi
- mov $sock_bind_err_msg_length, %rsi
+ lea .sock_bind_err_msg(%rip), %rdi
+ mov $.sock_bind_err_msg_length, %rsi
  mov %rax, %rdx
  call log_err
  mov $-1, %rax

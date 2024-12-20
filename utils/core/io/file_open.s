@@ -146,9 +146,9 @@ file_open:
 
    # 10. HANDLE ERRORS
     .handle_file_open_error:
-        mov %rax, %rdx # error code
         lea file_open_err_msg(%rip), %rdi
         mov $file_open_err_msg_length, %rsi
+        mov %rax, %rdx
         call log_err
         
         lea file_open_err_msg(%rip), %rdi   

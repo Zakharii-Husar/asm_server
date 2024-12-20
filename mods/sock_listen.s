@@ -34,9 +34,10 @@ sock_listen:
  ret                           # return to the caller
 
 .handle_sock_listen_err:
- lea sock_listen_err_msg(%rip), %rdi
- mov $sock_listen_err_msg_length, %rsi
+ lea .sock_listen_err_msg(%rip), %rdi
+ mov $.sock_listen_err_msg_length, %rsi
  call log_err
  mov $-1, %rax
  jmp .exit_sock_listen
+
  

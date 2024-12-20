@@ -45,8 +45,8 @@ sock_accept:
  ret                                           # return to the caller
  
 .handle_sock_accept_err:
- lea sock_accept_err_msg(%rip), %rdi
- mov $sock_accept_err_msg_len, %rsi
+ lea .sock_accept_err_msg(%rip), %rdi
+ mov $.sock_accept_err_msg_len, %rsi
  mov %rax, %rdx
  call log_err
  mov $-1, %rax

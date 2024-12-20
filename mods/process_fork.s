@@ -34,3 +34,4 @@ process_fork:
     pop %rdx                     # Error code for logging
     call log_err                 # Log the critical error
     jmp .exit_process_fork
+    

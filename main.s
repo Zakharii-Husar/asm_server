@@ -76,13 +76,14 @@ newl: .asciz "\n"
 
 # Server utilities
 .include "./utils/build_file_path.s"
-.include "./utils/hex_dump.s"
 
 .global _start
 _start:
 
+
     # 0. Initialize server config
     call init_srvr_config
+
     # ----------------------------
     # 1. Create Socket
     # ----------------------------
