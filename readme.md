@@ -1,9 +1,10 @@
 ## REGISTERS
 
 ### Callee-Saved Registers:
-- **%rbx** holding TCP Socket File Descriptor.
-- **%r12** hodling Connection FIle Descriptor. 
-- **%r13** after sock_read call it holds either the error code, or the number of bytes of the file to read.
+- **%r12** holding the socket FD;
+- **%r13** hodling Connection FD;
+- **%r14** holding the client's IP after sock_accept call;
+- **%r15** holds all the server's configuration's after parsing configure values (host, port, default directories etc) if parsing server.conf was successful, otherwise hardcoded fallback values;
 
 
 
