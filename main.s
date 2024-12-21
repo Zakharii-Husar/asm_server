@@ -12,7 +12,6 @@
 
 
 .section .data
-
 .include "./constants.s"
 
 .section .text
@@ -77,7 +76,6 @@
 
 .global _start
 _start:
-
     # 0. Initialize server config
     call init_srvr_config
 
