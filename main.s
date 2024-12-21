@@ -13,8 +13,6 @@
 
 .section .data
 
-
-newl: .asciz "\n"
 .include "./constants.s"
 
 .section .text
@@ -55,7 +53,7 @@ newl: .asciz "\n"
 .include "./utils/server/config/logging/open_log_files.s"
 .include "./utils/server/config/logging/log_access.s"
 .include "./utils/server/config/logging/log_err.s"
-
+.include "./utils/server/config/validate_config.s"
 # HTTP functionality
 .include "./utils/server/http/headers/create_type_header.s"
 .include "./utils/server/http/headers/create_status_header.s"
@@ -79,7 +77,6 @@ newl: .asciz "\n"
 
 .global _start
 _start:
-
 
     # 0. Initialize server config
     call init_srvr_config

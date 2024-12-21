@@ -1,7 +1,7 @@
 .section .data
 
 .print_info_error_msg: .asciz "MODERATE: failed to print info in print_info.s"
-.print_info_error_msg_length = . - print_info_error_msg
+.print_info_error_msg_length = . - .print_info_error_msg
 
 .section .text
 .globl print_info
@@ -40,9 +40,9 @@ print_info:
     jge .exit_print_info
 
     lea .print_info_error_msg(%rip), %rdi
-    mov $print_info_error_msg_length, %rsi
+    mov $.print_info_error_msg_length, %rsi
     mov %rax, %rdx
-    call log_error
+    call log_err
 
     .exit_print_info:
     pop %rbp

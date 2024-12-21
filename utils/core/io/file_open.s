@@ -9,6 +9,9 @@ close_err_msg_length = . - close_err_msg
 read_err_msg:    .asciz "CRITICAL: failed to read file in file_open.s"
 read_err_msg_length = . - read_err_msg
 
+buffer_overflow_err_msg: .asciz "CRITICAL: buffer overflow in file_open.s"
+buffer_overflow_err_msg_length = . - buffer_overflow_err_msg
+
 line_break: .asciz "\n"
 
 .equ stat_buffer_size, 100
@@ -162,7 +165,7 @@ file_open:
         lea read_err_msg(%rip), %rdi
         mov $read_err_msg_length, %rsi
         mov %rax, %rdx
-        call log_error
+        call log_err
 
         mov $-1, %rax
         jmp .exit_file_open
@@ -176,7 +179,7 @@ file_open:
         lea fstat_err_msg(%rip), %rdi
         mov $fstat_err_msg_length, %rsi
         mov %rax, %rdx
-        call log_error
+        call log_err
 
         mov $-1, %rax
         jmp .exit_file_open
@@ -190,7 +193,7 @@ file_open:
         lea close_err_msg(%rip), %rdi
         mov $close_err_msg_length, %rsi
         mov %rax, %rdx
-        call log_error
+        call log_err
 
 
         mov $-1, %rax
@@ -203,7 +206,7 @@ file_open:
         lea buffer_overflow_err_msg(%rip), %rdi
         mov $buffer_overflow_err_msg_length, %rsi
         mov %rax, %rdx
-        call log_error
+        call log_err
 
         mov $-1, %rax
         jmp .exit_file_open 
