@@ -14,7 +14,7 @@ buffer_overflow_err_msg_length = . - buffer_overflow_err_msg
 
 line_break: .asciz "\n"
 
-.equ stat_buffer_size, 100
+.equ stat_buffer_size, 144
 
 .section .bss
 .lcomm stat_buffer, stat_buffer_size
