@@ -17,43 +17,52 @@ init_srvr_config:
     push %rbp
     mov %rsp, %rbp
 
+    lea server_config_struct(%rip), %r15
+
+    # Initialize all the server config struct fields to -1
+    # This is to make it easier to check during validation
+    movl $-1, CONF_HOST_OFFSET(%r15)          # Host IP
+    movw $-1, CONF_PORT_OFFSET(%r15)          # Port
+    movq $-1, CONF_BUFFER_SIZE_OFFSET(%r15)   # Buffer size
+    movq $-1, CONF_TIMEZONE_OFFSET(%r15)      # Timezone
+    movq $-1, CONF_MAX_CONN_OFFSET(%r15)      # Max connections
+    movq $-1, CONF_PUBLIC_DIR_OFFSET(%r15)    # Public dir
+    movq $-1, CONF_DEFAULT_FILE_OFFSET(%r15)   # Default file
+    movq $-1, CONF_SERVER_NAME_OFFSET(%r15)    # Server name
+
+    movq $-1, CONF_ERROR_LOG_PATH_OFFSET(%r15) # Error log path
+    movq $-1, CONF_ACCESS_LOG_PATH_OFFSET(%r15) # Access log path
+    movq $-1, CONF_WARNING_LOG_PATH_OFFSET(%r15) # Warning log path
+
     lea server_conf_file_B(%rip), %rdi
     mov $server_conf_file_B_size, %rsi
     call clear_buffer
 
-    # Call file_open with path and buffer
+    # LOAD SERVER CONFIG FILE
     lea server_conf_path(%rip), %rdi
     lea server_conf_file_B(%rip), %rsi
     mov $server_conf_file_B_size, %rdx
     mov $1, %rcx
     call file_open
-
+    
     # Check return value
     test %rax, %rax
-    js .config_error
+    jns .parse_config_file
 
-    # Parse config file and load struct
+    # Skip parsing config file if failed to open config file
+    call open_log_files
+    jmp .exit_init_config
+
+
+    # PARSE SERVER CONFIG FILE
+    .parse_config_file:
+    call open_log_files
     lea server_config_struct(%rip), %r15
     lea server_conf_file_B(%rip), %rdi
     call parse_srvr_config
 
-    # Validate config
-
-    # Open log files and store FDs in the struct
-    call open_log_files
-
-    # Success case
-    lea config_load_success_msg(%rip), %rdi
-    mov $0, %rsi                        # Let print_info calculate length
-    call print_info
-    jmp .exit_init_config
-
-.config_error:
-    lea config_load_err_msg(%rip), %rdi
-    mov $0, %rsi                        # Let print_info calculate length
-    call print_info
-
 .exit_init_config:
+    # Check if config is valid and all fields are set, otherwise fallback to default config
     call validate_config
     pop %rbp
     ret
