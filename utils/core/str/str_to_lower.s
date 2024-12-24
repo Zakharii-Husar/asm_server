@@ -1,11 +1,10 @@
 .section .text
 .globl str_to_lower
 .type str_to_lower, @function
-
+str_to_lower:
 # Function: str_to_lower
 # Input: string pointer in %rdi
 # Output: none (modifies string in place)
-str_to_lower:
     push %rbp
     mov %rsp, %rbp
     push %rdi              # Save original string pointer

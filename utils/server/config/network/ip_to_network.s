@@ -1,7 +1,6 @@
 .section .text
 .globl ip_to_network
 .type ip_to_network, @function
-
 ip_to_network:
     push %rbp
     mov %rsp, %rbp

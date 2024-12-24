@@ -5,7 +5,7 @@
 #   %rax - pointer to the resulting string
 #   %rdx - length of the string
 # Note: The string is stored in a static buffer and is not null-terminated.
-.section .data
+.section .rodata
     .equ string_buffer_size, 21
 
 .section .bss

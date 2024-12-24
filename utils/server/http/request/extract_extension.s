@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 
 default_extension: .asciz ".html"
 
@@ -6,13 +6,11 @@ default_extension: .asciz ".html"
 
 .globl extract_extension
 .type extract_extension, @function
-
+extract_extension:
 # Function: extract_extension
 # Parameters:
 #   %rdi - Pointer to the destination buffer where the file extension will be stored
 #   %rsi - Pointer to the route buffer (string) from which the file extension is to be extracted
-
-extract_extension:
     push %rbp
     mov %rsp, %rbp
 

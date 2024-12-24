@@ -11,7 +11,6 @@ str_find_char_null_ptr_msg: .asciz "ERROR: Null pointer passed to str_find_char\
 str_find_char_null_ptr_msg_len = . - str_find_char_null_ptr_msg
 
 .section .text
-
 .type str_find_char, @function
 str_find_char:
     push %rbp

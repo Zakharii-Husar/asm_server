@@ -10,9 +10,6 @@
 server_header:    .asciz "Server: "
 server_header_length = . - server_header
 
-new_line:    .ascii "\r\n"
-new_line_length = . - new_line
-
 .section .text
 .globl create_server_header
 .type create_server_header, @function
@@ -42,8 +39,8 @@ create_server_header:
 
     mov %r12, %rdi # destination buffer
     mov %r13, %rcx # max buffer size
-    lea new_line(%rip), %rsi
-    mov $new_line_length, %rdx
+    lea CRLF(%rip), %rsi
+    mov $CRLF_length, %rdx
     call str_cat
 
     pop %r13

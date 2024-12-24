@@ -2,7 +2,6 @@
 
 .index_str: .asciz "index"
 .html_ext: .asciz ".html"
-.slash: .asciz "/"
 
 .section .text
 .globl extract_route
@@ -40,7 +39,7 @@ build_file_path:
 
     # 3. Check if route is just "/"
     mov %r13, %rdi
-    lea .slash(%rip), %rsi
+    lea slash_char(%rip), %rsi
     call str_cmp
     cmp $0, %rax
     je .check_extension

@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 # Warning messages for each config key
 host_warn_msg: .asciz "No valid host was provided. Using default 0.0.0.0 in validate_config.s"
 host_warn_msg_len = . - host_warn_msg

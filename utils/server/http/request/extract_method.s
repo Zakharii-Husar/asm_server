@@ -7,6 +7,8 @@
 #   %rdx - destination buffer size
 # Output: void
 # Side effects: writes the method if found to the destination buffer
+.globl extract_method
+.type extract_method, @function
 extract_method:
     push %rbp
     mov %rsp, %rbp

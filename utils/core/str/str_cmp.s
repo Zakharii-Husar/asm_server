@@ -10,7 +10,6 @@ null_ptr_msg: .asciz "MODERATE: Null pointer passed to str_cmp in str_cmp.s"
 null_ptr_msg_len = . - null_ptr_msg
 
 .section .text
-
 .type str_cmp, @function
 str_cmp:
     push %rbp                   # Save the caller's base pointer

@@ -1,7 +1,5 @@
-.section .data
+.section .rodata
 .equ client_ip_B_size, 16
-
-.dot: .asciz "."
 
 .section .bss
 .lcomm client_ip, client_ip_B_size          # Buffer for IPv4 address string
@@ -42,7 +40,7 @@ extract_client_ip:
     call str_cat
 
     mov %r14, %rdi
-    lea .dot(%rip), %rsi
+    lea dot_char(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
     call str_cat
@@ -61,7 +59,7 @@ extract_client_ip:
     call str_cat
 
     mov %r14, %rdi
-    lea .dot(%rip), %rsi
+    lea dot_char(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
     call str_cat
@@ -80,7 +78,7 @@ extract_client_ip:
     call str_cat
 
     mov %r14, %rdi
-    lea .dot(%rip), %rsi
+    lea dot_char(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
     call str_cat

@@ -1,11 +1,10 @@
 .section .text
 .globl str_len
 .type str_len, @function
-
+str_len:
 # Function: str_len
 # Input: string pointer in %rdi
 # Output: length in %rax
-str_len:
     push %rbp
     mov %rsp, %rbp
     

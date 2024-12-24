@@ -1,9 +1,6 @@
-.section .data
+.section .rodata
 content_length:  .ascii "Content-Length: "
-content_length_length = . - content_length
-
-newline:        .ascii "\r\n"
-newline_length = . - newline    
+content_length_length = . - content_length    
 
 .section .text
 
@@ -46,10 +43,10 @@ create_length_header:
     mov $response_header_B_size, %rcx
     call str_cat
     
-    # 4. Add newline
+    # 4. Add CRLF
     mov %r12, %rdi
-    lea newline(%rip), %rsi
-    mov $newline_length, %rdx
+    lea CRLF(%rip), %rsi
+    mov $CRLF_length, %rdx
     mov $response_header_B_size, %rcx
     call str_cat
     

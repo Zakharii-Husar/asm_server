@@ -1,12 +1,5 @@
-.section .data
-
-fake_ip: .asciz "127.0.0.1"
-
-spc: .asciz " "
-quote: .asciz "\""
+.section .rodata
 http_ver: .asciz " HTTP/1.1"
-break_line: .asciz "\n"
-
 .equ access_log_buffer_size, 1024
 
 .section .bss
@@ -48,17 +41,17 @@ log_access:
     call str_cat
 
 
-    # Add spc
+    # Add space_char
     lea access_log_buffer(%rip), %rdi
-    lea spc(%rip), %rsi
+    lea space_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
     
     
-    # Add quote
+    # Add quote_char
     lea access_log_buffer(%rip), %rdi
-    lea quote(%rip), %rsi
+    lea quote_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
@@ -71,9 +64,9 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_cat
     
-    # Add spc
+    # Add space_char
     lea access_log_buffer(%rip), %rdi
-    lea spc(%rip), %rsi
+    lea space_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
@@ -93,16 +86,16 @@ log_access:
     call str_cat
     
     
-    # Add quote
+    # Add quote_char
     lea access_log_buffer(%rip), %rdi
-    lea quote(%rip), %rsi
+    lea quote_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
     
-    # Add spc
+    # Add space_char
     lea access_log_buffer(%rip), %rdi
-    lea spc(%rip), %rsi
+    lea space_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
@@ -117,9 +110,9 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_cat
     
-    # Add spc
+    # Add space_char
     lea access_log_buffer(%rip), %rdi
-    lea spc(%rip), %rsi
+    lea space_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
@@ -132,9 +125,9 @@ log_access:
     call str_cat
 
 
-    # Add break_line
+    # Add newline_char
     lea access_log_buffer(%rip), %rdi
-    lea break_line(%rip), %rsi
+    lea newline_char(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
     call str_cat

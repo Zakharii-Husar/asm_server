@@ -1,13 +1,12 @@
 .section .text
 .globl htons
 .type htons, @function
-
+htons:
 # Function: htons (host to network short)
 # Input:
 #   %rdi - port number in host byte order (e.g., 8080)
 # Output:
 #   %rax - port number in network byte order (e.g., 0x901F)
-htons:
     push %rbp
     mov %rsp, %rbp
 

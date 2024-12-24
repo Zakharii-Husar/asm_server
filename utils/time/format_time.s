@@ -1,11 +1,4 @@
-.section .data
-.dash: .string "-"
-.colon: .string ":"
-.plus: .string "+"
-.time_separator: .string "T"
-.zero_pad: .string "0"
-.open_bracket: .string "["    # Add opening bracket
-.close_bracket: .string "]"   # Add closing bracket
+.section .rodata
 
  .equ DATE_BUFFER_SIZE, 30
 
@@ -66,7 +59,7 @@ format_time:
     
     # Add dash after year
     lea date_buffer(%rip), %rdi
-    lea .dash(%rip), %rsi
+    lea dash_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -78,7 +71,7 @@ format_time:
     jge .skip_month_pad
     # Add leading zero
     lea date_buffer(%rip), %rdi
-    lea .zero_pad(%rip), %rsi
+    lea zero_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -93,7 +86,7 @@ format_time:
     
     # Add dash after month
     lea date_buffer(%rip), %rdi
-    lea .dash(%rip), %rsi
+    lea dash_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -103,7 +96,7 @@ format_time:
     cmp $10, %rdi
     jge .skip_day_pad
     lea date_buffer(%rip), %rdi
-    lea .zero_pad(%rip), %rsi
+    lea zero_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -119,7 +112,7 @@ format_time:
     
     # Add T separator
     lea date_buffer(%rip), %rdi
-    lea .time_separator(%rip), %rsi
+    lea time_separator_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -129,7 +122,7 @@ format_time:
     cmp $10, %rdi
     jge .skip_hour_pad
     lea date_buffer(%rip), %rdi
-    lea .zero_pad(%rip), %rsi
+    lea zero_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -145,7 +138,7 @@ format_time:
     
     # Add colon after hours
     lea date_buffer(%rip), %rdi
-    lea .colon(%rip), %rsi
+    lea semicolon_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -155,7 +148,7 @@ format_time:
     cmp $10, %rdi
     jge .skip_minute_pad
     lea date_buffer(%rip), %rdi
-    lea .zero_pad(%rip), %rsi
+    lea zero_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -171,7 +164,7 @@ format_time:
     
     # Add colon after minutes
     lea date_buffer(%rip), %rdi
-    lea .colon(%rip), %rsi
+    lea semicolon_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -181,7 +174,7 @@ format_time:
     cmp $10, %rdi
     jge .skip_second_pad
     lea date_buffer(%rip), %rdi
-    lea .zero_pad(%rip), %rsi
+    lea zero_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -203,7 +196,7 @@ format_time:
     js .skip_appending_plus  
     
     lea date_buffer(%rip), %rdi
-    lea .plus(%rip), %rsi
+    lea plus_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat

@@ -1,9 +1,6 @@
-.section .data
+.section .rodata
     .equ CONFIG_KEY_SIZE, 20
     .equ CONFIG_VALUE_SIZE, 20
-
-    line_separator: .asciz "\n"
-    eq_sign: .asciz "="
 
 .section .bss
 .lcomm config_key, CONFIG_KEY_SIZE

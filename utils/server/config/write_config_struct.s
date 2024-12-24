@@ -1,7 +1,4 @@
-.section .data
-
-equal_sign: .asciz "="
-n_line: .asciz "\n"
+.section .rodata
 
 timezone_key: .asciz "timezone"
 port_key: .asciz "port"

@@ -11,7 +11,7 @@
 #   - If timezone offset is invalid (outside -1200 to +1400),
 #     logs error and returns original timestamp unchanged
 #
-.section .data
+.section .rodata
 timezone_err_msg: .asciz "MODERATE: Invalid timezone offset in adjust_timezone.s"
 timezone_err_msg_len = . - timezone_err_msg
 

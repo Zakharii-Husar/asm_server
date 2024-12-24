@@ -4,6 +4,8 @@
 #   %rsi - Second character (using lowest byte %sil)
 # Returns:
 #   %rax - 1 if characters are equal, 0 if different
+
+.section .text
 .type char_cmp, @function
 char_cmp:
     push %rbp

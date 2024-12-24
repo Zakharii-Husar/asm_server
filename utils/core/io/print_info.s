@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 
 .print_info_error_msg: .asciz "MODERATE: failed to print info in print_info.s"
 .print_info_error_msg_length = . - .print_info_error_msg

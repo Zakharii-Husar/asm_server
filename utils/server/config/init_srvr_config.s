@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 server_conf_path: .asciz "./conf/server.conf"
 config_load_err_msg: .asciz "\033[31mFailed to load server config! ❌\033[0m\n"
 config_load_success_msg: .asciz "\033[32mServer config loaded successfully! ✅\033[0m\n"

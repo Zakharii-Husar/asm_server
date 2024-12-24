@@ -5,11 +5,11 @@ invalid_digit_msg_len = . - invalid_digit_msg
 .section .text
 .globl str_to_int
 .type str_to_int, @function
-
+str_to_int:
 # Function: str_to_int
 # Input: %rdi - pointer to the string
 # Output: %rax - integer value
-str_to_int:
+
     push %rbp
     mov %rsp, %rbp
     push %rbx

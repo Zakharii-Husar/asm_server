@@ -1,6 +1,23 @@
-    # generic strings
+    # GENERIC CHARACTERS
+    .equ space_ascii, 32  
+
+    dot_char: .asciz "."
+    dash_char: .string "-"
+    plus_char: .string "+"
     newline_char: .asciz "\n"
     space_char: .asciz " "
+    hash_char: .asciz "#"
+    semicolon_char: .asciz ":"
+    open_bracket_char: .string "[" 
+    close_bracket_char: .string "]"  
+    slash_char: .asciz "/"
+    quote_char: .asciz "\""
+    zero_char: .string "0"
+    time_separator_char: .string "T"
+
+    # GENERIC STRINGS
+    CRLF:        .ascii "\r\n"
+    CRLF_length = . - CRLF
     
     # sys_call args
     .equ SYS_read, 0

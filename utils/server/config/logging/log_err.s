@@ -1,9 +1,6 @@
-.section .data
+.section .rodata
 error_prefix_base: .asciz " ERROR"
 error_prefix_base_length = . - error_prefix_base
-hash: .asciz "#"
-nl: .asciz "\n"
-semicolon: .asciz ":"
 
 .equ err_log_B_size, 1024
 
@@ -54,9 +51,9 @@ log_err:
     test %r14, %r14  # Check error code in rdx (saved in r14)
     jz .skip_error_code
     
-    # Add hash symbol since we have an error code
+    # Add hash_char symbol since we have an error code
     lea err_log_B(%rip), %rdi
-    lea hash(%rip), %rsi
+    lea hash_char(%rip), %rsi
     mov $1, %rdx
     mov $err_log_B_size, %rcx
     call str_cat
@@ -77,7 +74,7 @@ log_err:
 
 .skip_error_code:
 
-    lea semicolon(%rip), %rsi
+    lea semicolon_char(%rip), %rsi
     lea err_log_B(%rip), %rdi
     mov $1, %rdx # string length
     mov $err_log_B_size, %rcx
@@ -89,9 +86,9 @@ log_err:
     mov %r13, %rdx # string length
     mov $err_log_B_size, %rcx
     call str_cat
-    # Add nl
+    # Add newline_char
     lea err_log_B(%rip), %rdi
-    lea nl(%rip), %rsi
+    lea newline_char(%rip), %rsi
     mov $1, %rdx # string length
     mov $err_log_B_size, %rcx
     call str_cat

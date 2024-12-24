@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 warn_prefix_base: .asciz " WARN:"
 warn_prefix_base_length = . - warn_prefix_base
 
