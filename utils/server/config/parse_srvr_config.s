@@ -18,7 +18,6 @@ parse_srvr_config:
     push %r13
 
     mov %rdi, %r12              # Buffer pointer
-
 .process_new_line:
 
     # Clear config_key and config_value buffers

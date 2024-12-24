@@ -18,12 +18,6 @@ max_conn_err_len = . - max_conn_err_msg
 public_dir_err_msg: .asciz "MODERATE: Invalid public directory path. Using default ./public in validate_config.s"
 public_dir_err_len = . - public_dir_err_msg
 
-error_log_err_msg: .asciz "MODERATE: Invalid error log path. Using default ./log/error.log in validate_config.s"
-error_log_err_len = . - error_log_err_msg
-
-access_log_err_msg: .asciz "MODERATE: Invalid access log path. Using default ./log/access.log in validate_config.s"
-access_log_err_len = . - access_log_err_msg
-
 default_file_err_msg: .asciz "MODERATE: Invalid default file. Using default index.html in validate_config.s"
 default_file_err_len = . - default_file_err_msg
 
@@ -37,8 +31,6 @@ server_name_err_len = . - server_name_err_msg
 .default_timezone: .quad 0
 .default_max_conn: .quad 100
 .default_public_dir: .asciz "./public"
-.default_error_log: .asciz "./log/error.log"
-.default_access_log: .asciz "./log/access.log"
 .default_file: .asciz "index.html"
 .default_server_name: .asciz "MyASMServer/1.0"
 
@@ -50,13 +42,10 @@ validate_config:
     push %r12
     push %r13
     
-
     # 1. Validate HOST
     mov CONF_HOST_OFFSET(%r15), %eax    # Get the network-formatted IP
-    test %eax, %eax                     # Check if it's 0 (uninitialized)
-    jz .invalid_host  
-    cmp $0, %rax                     # Check if it's 0
-    jl .invalid_host
+    cmp $-1, %eax                       # Check if uninitialized (-1)
+    je .invalid_host                    # Jump if uninitialized
     jmp .check_port
 
 .invalid_host:
@@ -147,7 +136,7 @@ validate_config:
     call str_len
     cmp $0, %rax
     je .invalid_public_dir
-    jmp .check_error_log
+    jmp .check_default_file
 
 .invalid_public_dir:
     lea public_dir_err_msg(%rip), %rdi
@@ -158,44 +147,6 @@ validate_config:
     lea .default_public_dir(%rip), %rsi
     xor %rdx, %rdx
     mov $CONF_PUBLIC_DIR_SIZE, %rcx
-    call str_concat
-
-.check_error_log:
-    # 7. Validate ERROR_LOG_PATH
-    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
-    call str_len
-    cmp $0, %rax
-    je .invalid_error_log
-    jmp .check_access_log
-
-.invalid_error_log:
-    lea error_log_err_msg(%rip), %rdi
-    mov $error_log_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
-    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
-    lea .default_error_log(%rip), %rsi
-    xor %rdx, %rdx
-    mov $CONF_ERROR_LOG_PATH_SIZE, %rcx
-    call str_concat
-
-.check_access_log:
-    # 8. Validate ACCESS_LOG_PATH
-    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
-    call str_len
-    cmp $0, %rax
-    je .invalid_access_log
-    jmp .check_default_file
-
-.invalid_access_log:
-    lea access_log_err_msg(%rip), %rdi
-    mov $access_log_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
-    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
-    lea .default_access_log(%rip), %rsi
-    xor %rdx, %rdx
-    mov $CONF_ACCESS_LOG_PATH_SIZE, %rcx
     call str_concat
 
 .check_default_file:

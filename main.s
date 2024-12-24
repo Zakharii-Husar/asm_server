@@ -51,6 +51,7 @@
 .include "./utils/server/config/network/ip_to_network.s"
 .include "./utils/server/config/logging/open_log_files.s"
 .include "./utils/server/config/logging/log_access.s"
+.include "./utils/server/config/logging/log_warn.s"
 .include "./utils/server/config/logging/log_err.s"
 .include "./utils/server/config/validate_config.s"
 # HTTP functionality

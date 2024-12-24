@@ -1,7 +1,6 @@
 .section .data
 warn_prefix_base: .asciz " WARN:"
 warn_prefix_base_length = . - warn_prefix_base
-nl: .asciz "\n"
 
 .equ warn_log_B_size, 1024
 
@@ -63,7 +62,7 @@ log_warn:
     call str_len
     mov %rax, %rdx
     lea warn_log_B(%rip), %rsi
-    mov CONF_WARN_LOG_FD_OFFSET(%r15), %rdi
+    mov CONF_WARNING_LOG_FD_OFFSET(%r15), %rdi
     mov $SYS_write, %rax
     syscall
 
