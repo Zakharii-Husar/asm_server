@@ -29,14 +29,14 @@ build_file_path:
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rsi  
     xor %rdx, %rdx
     mov $file_path_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # 2. Concat route to destination
     mov %r12, %rdi
     mov %r13, %rsi
     xor %rdx, %rdx
     mov $file_path_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # 3. Check if route is just "/"
     mov %r13, %rdi
@@ -50,7 +50,7 @@ build_file_path:
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rsi  
     xor %rdx, %rdx
     mov $file_path_B_size, %rcx
-    call str_concat
+    call str_cat
 
 .check_extension:
     # 4. Search for dot in the destination buffer
@@ -71,7 +71,7 @@ build_file_path:
     lea .html_ext(%rip), %rsi
     xor %rdx, %rdx
     mov $file_path_B_size, %rcx
-    call str_concat
+    call str_cat
 
 .exit_build_path:
     pop %r13

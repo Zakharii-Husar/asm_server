@@ -40,7 +40,7 @@ extract_method:
     mov %r14, %rdx
 .copy_method:
     mov %r14, %rcx
-    call str_concat
+    call str_cat
 
     # Return pointer to the method buffer
     mov %r13, %rax

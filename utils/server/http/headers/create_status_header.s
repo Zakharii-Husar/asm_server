@@ -20,7 +20,7 @@ server_error_status_length = . - server_error_status
 create_status_header:
     # Input: %rdi = HTTP status code
     #        %rsi = pointer to response buffer
-    # Output: %rax = length of concatenated string (returned from str_concat)
+    # Output: %rax = length of concatenated string (returned from str_cat)
     
     push %rbp
     mov %rsp, %rbp
@@ -51,7 +51,7 @@ create_status_header:
     lea status_ok(%rip), %rsi           # source string
     mov $status_ok_length, %rdx         # length
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     jmp .return_status_header                           # Jump to single return point
 
 .write_not_found:
@@ -59,7 +59,7 @@ create_status_header:
     lea file_not_found_status(%rip), %rsi
     mov $file_not_found_status_length, %rdx
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     jmp .return_status_header                           # Jump to single return point
 
 .write_bad_request:
@@ -67,7 +67,7 @@ create_status_header:
     lea bad_request_status(%rip), %rsi
     mov $bad_request_status_length, %rdx
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     jmp .return_status_header                           # Jump to single return point
 
 .write_method_not_allowed:
@@ -75,7 +75,7 @@ create_status_header:
     lea method_not_allowed_status(%rip), %rsi
     mov $method_not_allowed_status_length, %rdx
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     jmp .return_status_header                           # Jump to single return point
 
 .write_server_error:
@@ -83,7 +83,7 @@ create_status_header:
     lea server_error_status(%rip), %rsi 
     mov $server_error_status_length, %rdx
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     # Falls through to .return_status_header since it's the last one
 
 .return_status_header:                                  # Changed label name from .return

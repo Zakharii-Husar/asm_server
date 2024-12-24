@@ -150,63 +150,63 @@ je .write_ico
 mov %r12, %rdi                      # destination buffer
 lea mime_html(%rip), %rsi           # source string
 mov $mime_html_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_css:
 mov %r12, %rdi                      # destination buffer
 lea mime_css(%rip), %rsi           # source string
 mov $mime_css_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_js:
 mov %r12, %rdi                      # destination buffer
 lea mime_js(%rip), %rsi           # source string
 mov $mime_js_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_jpeg:
 mov %r12, %rdi                      # destination buffer
 lea mime_jpeg(%rip), %rsi           # source string
 mov $mime_jpeg_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_png:
 mov %r12, %rdi                      # destination buffer
 lea mime_png(%rip), %rsi           # source string
 mov $mime_png_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_gif:
 mov %r12, %rdi                      # destination buffer
 lea mime_gif(%rip), %rsi           # source string
 mov $mime_gif_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_webp:
 mov %r12, %rdi                      # destination buffer
 lea mime_webp(%rip), %rsi           # source string
 mov $mime_webp_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_svg:
 mov %r12, %rdi                      # destination buffer
 lea mime_svg(%rip), %rsi           # source string
 mov $mime_svg_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .write_ico:
 mov %r12, %rdi                      # destination buffer
 lea mime_ico(%rip), %rsi           # source string
 mov $mime_ico_length, %rdx         # length
-call str_concat
+call str_cat
 jmp .return
 
 .return:

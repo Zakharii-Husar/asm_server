@@ -1,0 +1,3 @@
+[2024-12-24T17:20:04-1] ERROR:MODERATE: No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2024-12-24T17:20:04-1] ERROR:MODERATE: Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2024-12-24T17:20:04-1] ERROR:MODERATE: Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s

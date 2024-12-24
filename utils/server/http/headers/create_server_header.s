@@ -28,23 +28,23 @@ create_server_header:
 
 
     mov %r12, %rdi                    # destination buffer
-    mov %r13, %rcx                     # move max_size to %rcx for str_concat
+    mov %r13, %rcx                     # move max_size to %rcx for str_cat
     lea server_header(%rip), %rsi
     mov $server_header_length, %rdx
-    call str_concat
+    call str_cat
 
     mov %r12, %rdi                    # destination buffer
-    mov %r13, %rcx                     # move max_size to %rcx for str_concat
+    mov %r13, %rcx                     # move max_size to %rcx for str_cat
     lea CONF_SERVER_NAME_OFFSET(%r15), %rsi      # source string
     xor %rdx, %rdx                     # length
-    call str_concat                    # concatenate the server header
+    call str_cat                    # concatenate the server header
 
 
     mov %r12, %rdi # destination buffer
     mov %r13, %rcx # max buffer size
     lea new_line(%rip), %rsi
     mov $new_line_length, %rdx
-    call str_concat
+    call str_cat
 
     pop %r13
     pop %r12

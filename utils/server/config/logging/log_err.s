@@ -41,14 +41,14 @@ log_err:
     xor %rdx, %rdx
     lea err_log_B(%rip), %rdi
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add base error prefix
     lea err_log_B(%rip), %rdi
     lea error_prefix_base(%rip), %rsi
     mov $error_prefix_base_length, %rdx
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
     
     # Check if error code is provided (negative number)
     test %r14, %r14  # Check error code in rdx (saved in r14)
@@ -59,7 +59,7 @@ log_err:
     lea hash(%rip), %rsi
     mov $1, %rdx
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
     
     # Convert error code to string
     mov %r14, %rdi
@@ -72,7 +72,7 @@ log_err:
     mov %rax, %rsi
     # mov %rdx, %rdx int_to_str returns length in %rdx
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
     
 
 .skip_error_code:
@@ -81,20 +81,20 @@ log_err:
     lea err_log_B(%rip), %rdi
     mov $1, %rdx # string length
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add error description
     lea err_log_B(%rip), %rdi
     mov %r12, %rsi
     mov %r13, %rdx # string length
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
     # Add nl
     lea err_log_B(%rip), %rdi
     lea nl(%rip), %rsi
     mov $1, %rdx # string length
     mov $err_log_B_size, %rcx
-    call str_concat
+    call str_cat
     
     # Write to log file
     lea err_log_B(%rip), %rdi

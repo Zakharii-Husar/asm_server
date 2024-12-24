@@ -39,13 +39,13 @@ extract_client_ip:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # SECOND BYTE
     mov %r12d, %eax               # Use preserved value
@@ -58,13 +58,13 @@ extract_client_ip:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # THIRD BYTE
     mov %r12d, %eax               # Use preserved value
@@ -77,13 +77,13 @@ extract_client_ip:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     mov %r14, %rdi
     lea .dot(%rip), %rsi
     mov $1, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # FOURTH BYTE
     mov %r12d, %eax               # Use preserved value
@@ -95,7 +95,7 @@ extract_client_ip:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $client_ip_B_size, %rcx
-    call str_concat
+    call str_cat
 
     pop %r12                      # Restore %r12
     pop %rbp

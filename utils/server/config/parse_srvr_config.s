@@ -88,7 +88,7 @@ parse_srvr_config:
     mov %r13, %rdx               # address of '='
     sub %r12, %rdx               # calculate length (end - start)
     mov $CONFIG_KEY_SIZE, %rcx
-    call str_concat
+    call str_cat
 
     # 3.5. Find the end of the value
     mov %r13, %rdi
@@ -104,11 +104,11 @@ parse_srvr_config:
     sub %r13, %rdx               # calculate length (end - start)
     dec %rdx                     # subtract 1 to exclude the space
     mov $CONFIG_VALUE_SIZE, %rcx
-    call str_concat
+    call str_cat
 
     lea config_key(%rip), %rdi
     lea config_value(%rip), %rsi
-    call parse_key_value
+    call write_config_struct
 
 
 .skip_current_line:

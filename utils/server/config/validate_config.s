@@ -147,7 +147,7 @@ validate_config:
     lea .default_public_dir(%rip), %rsi
     xor %rdx, %rdx
     mov $CONF_PUBLIC_DIR_SIZE, %rcx
-    call str_concat
+    call str_cat
 
 .check_default_file:
     # 9. Validate DEFAULT_FILE
@@ -166,7 +166,7 @@ validate_config:
     lea .default_file(%rip), %rsi
     xor %rdx, %rdx
     mov $CONF_DEFAULT_FILE_SIZE, %rcx
-    call str_concat
+    call str_cat
 
 .check_server_name:
     # 10. Validate SERVER_NAME
@@ -185,7 +185,7 @@ validate_config:
     lea .default_server_name(%rip), %rsi
     xor %rdx, %rdx
     mov $CONF_SERVER_NAME_SIZE, %rcx
-    call str_concat
+    call str_cat
 
 .validation_complete:
     mov $1, %rax     # Return success

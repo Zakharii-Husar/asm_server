@@ -152,7 +152,7 @@ write_config_struct:
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
     mov $CONF_PUBLIC_DIR_SIZE, %rcx
-    call str_concat
+    call str_cat
 
     jmp .exit_parse_key_value
 
@@ -161,7 +161,7 @@ write_config_struct:
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
     mov $CONF_ERROR_LOG_PATH_SIZE, %rcx
-    call str_concat
+    call str_cat
     jmp .exit_parse_key_value
 
 .handle_max_conn_key:
@@ -181,7 +181,7 @@ write_config_struct:
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
     mov $CONF_SERVER_NAME_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     jmp .exit_parse_key_value
 
@@ -190,7 +190,7 @@ write_config_struct:
     mov %r13, %rsi               # source string
     xor %rdx, %rdx
     mov $CONF_DEFAULT_FILE_SIZE, %rcx
-    call str_concat
+    call str_cat
     jmp .exit_parse_key_value
 
 .handle_access_log_path_key:
@@ -199,7 +199,7 @@ write_config_struct:
     mov %r13, %rsi                # source string
     xor %rdx, %rdx
     mov $CONF_ACCESS_LOG_PATH_SIZE, %rcx
-    call str_concat
+    call str_cat
     jmp .exit_parse_key_value
 
 .handle_warning_log_path_key:
@@ -207,7 +207,7 @@ write_config_struct:
     mov %r13, %rsi                # source string
     xor %rdx, %rdx
     mov $CONF_WARNING_LOG_PATH_SIZE, %rcx
-    call str_concat
+    call str_cat
     jmp .exit_parse_key_value
 
 .exit_parse_key_value:

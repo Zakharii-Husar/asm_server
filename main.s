@@ -36,7 +36,7 @@
 # Core string operations
 .include "./utils/core/str/str_len.s"
 .include "./utils/core/str/str_cmp.s"
-.include "./utils/core/str/str_concat.s"
+.include "./utils/core/str/str_cat.s"
 .include "./utils/core/str/str_find_char.s"
 .include "./utils/core/str/str_to_lower.s"
 .include "./utils/core/str/str_to_int.s"

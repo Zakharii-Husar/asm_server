@@ -70,7 +70,7 @@ sock_respond:
     lea headers_end(%rip), %rsi
     mov $headers_end_length, %rdx
     mov $response_header_B_size, %rcx
-    call str_concat
+    call str_cat
     
     # Get the actual length of the complete header
     lea response_header_B(%rip), %rdi

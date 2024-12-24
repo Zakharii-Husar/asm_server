@@ -52,7 +52,7 @@ format_time:
     lea .open_bracket(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Convert year to string
     pop %rdi # restore year
@@ -62,14 +62,14 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Add dash after year
     lea date_buffer(%rip), %rdi
     lea .dash(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Format month
     pop %rsi               # Restore month
@@ -81,7 +81,7 @@ format_time:
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
 .skip_month_pad:
     call int_to_str
     
@@ -89,14 +89,14 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Add dash after month
     lea date_buffer(%rip), %rdi
     lea .dash(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Format day
     mov %r15, %rdi          # day
@@ -106,7 +106,7 @@ format_time:
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     mov %r15, %rdi
 .skip_day_pad:
     call int_to_str
@@ -115,14 +115,14 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Add T separator
     lea date_buffer(%rip), %rdi
     lea .time_separator(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Format hours
     mov %r14, %rdi          # hours
@@ -132,7 +132,7 @@ format_time:
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     mov %r14, %rdi
 .skip_hour_pad:
     call int_to_str
@@ -141,14 +141,14 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Add colon after hours
     lea date_buffer(%rip), %rdi
     lea .colon(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Format minutes
     mov %r13, %rdi          # minutes
@@ -158,7 +158,7 @@ format_time:
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     mov %r13, %rdi
 .skip_minute_pad:
     call int_to_str
@@ -167,14 +167,14 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Add colon after minutes
     lea date_buffer(%rip), %rdi
     lea .colon(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Format seconds
     mov %r12, %rdi          # seconds
@@ -184,7 +184,7 @@ format_time:
     lea .zero_pad(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     mov %r12, %rdi
 .skip_second_pad:
     call int_to_str
@@ -193,7 +193,7 @@ format_time:
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
 
 
     pop %r15 # restore server config after using the value stored in r15
@@ -206,7 +206,7 @@ format_time:
     lea .plus(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
 
     .skip_appending_plus:
     mov CONF_TIMEZONE_OFFSET(%r15), %rdi
@@ -216,14 +216,14 @@ format_time:
     lea date_buffer(%rip), %rdi
     mov $DATE_BUFFER_SIZE, %rcx
     xor %rdx, %rdx
-    call str_concat
+    call str_cat
 
     # Add closing bracket at the end
     lea date_buffer(%rip), %rdi
     lea .close_bracket(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
-    call str_concat
+    call str_cat
     
     # Return pointer to formatted string
     lea date_buffer(%rip), %rax

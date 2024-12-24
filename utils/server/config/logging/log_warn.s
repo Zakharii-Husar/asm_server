@@ -34,28 +34,28 @@ log_warn:
     xor %rdx, %rdx
     lea warn_log_B(%rip), %rdi
     mov $warn_log_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add warning prefix
     lea warn_log_B(%rip), %rdi
     lea warn_prefix_base(%rip), %rsi
     mov $warn_prefix_base_length, %rdx
     mov $warn_log_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add warning description
     lea warn_log_B(%rip), %rdi
     mov %r12, %rsi
     mov %r13, %rdx
     mov $warn_log_B_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add newline
     lea warn_log_B(%rip), %rdi
     lea nl(%rip), %rsi
     mov $1, %rdx
     mov $warn_log_B_size, %rcx
-    call str_concat
+    call str_cat
     
     # Write to log file
     lea warn_log_B(%rip), %rdi

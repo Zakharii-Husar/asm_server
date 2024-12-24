@@ -1,8 +1,8 @@
 .section .rodata
-overflow_msg: .asciz "MODERATE: buffer overflow detected in str_concat.s"
+overflow_msg: .asciz "MODERATE: buffer overflow detected in str_cat.s"
 overflow_msg_length = . - overflow_msg
 
-# Function: str_concat
+# Function: str_cat
 # Input:
 #   %rdi - destination buffer
 #   %rsi - source string (buffer or asciz)
@@ -12,8 +12,8 @@ overflow_msg_length = . - overflow_msg
 
 .section .text
 
-.type str_concat, @function
-str_concat:
+.type str_cat, @function
+str_cat:
     push %rbp                  
     mov %rsp, %rbp             
     push %r12

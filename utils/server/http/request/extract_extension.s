@@ -39,9 +39,9 @@ extract_extension:
     # Copy extension (including dot) to destination buffer
     mov %r12, %rdi                  # Restore %rdi (destination buffer)
     mov %rax, %rsi                  # %rax now holds the address of the dot
-    xor %rdx, %rdx                  # Let str_concat calculate length
+    xor %rdx, %rdx                  # Let str_cat calculate length
     mov $extension_B_size, %rcx
-    call str_concat                 # Copy from %rsi (dot position) to %rdi (destination buffer)
+    call str_cat                 # Copy from %rsi (dot position) to %rdi (destination buffer)
 
     # Convert the destination buffer to lowercase
     mov %r12, %rdi                  # Destination buffer is already in %rdi
@@ -54,7 +54,7 @@ extract_extension:
     lea default_extension(%rip), %rsi              # Address of default extension string
     xor %rdx, %rdx
     mov $extension_B_size, %rcx
-    call str_concat                 # Copy default extension to %rdi (destination buffer)
+    call str_cat                 # Copy default extension to %rdi (destination buffer)
 
 .exit_extract_extension:
     mov %r12, %rdi

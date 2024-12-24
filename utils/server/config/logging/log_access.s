@@ -45,7 +45,7 @@ log_access:
     lea access_log_buffer(%rip), %rdi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
 
 
     # Add spc
@@ -53,7 +53,7 @@ log_access:
     lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     
     # Add quote
@@ -61,7 +61,7 @@ log_access:
     lea quote(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add method
     pop %rdi
@@ -69,28 +69,28 @@ log_access:
     lea access_log_buffer(%rip), %rdi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add spc
     lea access_log_buffer(%rip), %rdi
     lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add path (using r12)
     lea access_log_buffer(%rip), %rdi
     mov %r12, %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add HTTP version
     lea access_log_buffer(%rip), %rdi
     lea http_ver(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     
     # Add quote
@@ -98,14 +98,14 @@ log_access:
     lea quote(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add spc
     lea access_log_buffer(%rip), %rdi
     lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Convert status code to string and add it (using r13)
     mov %r13, %rdi
@@ -115,21 +115,21 @@ log_access:
     mov %rax, %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
     
     # Add spc
     lea access_log_buffer(%rip), %rdi
     lea spc(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
 
     # Add IP (using %r14 which contains the client IP pointer)
     lea access_log_buffer(%rip), %rdi
     lea fake_ip(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
 
 
     # Add break_line
@@ -137,7 +137,7 @@ log_access:
     lea break_line(%rip), %rsi
     xor %rdx, %rdx # string length
     mov $access_log_buffer_size, %rcx
-    call str_concat
+    call str_cat
 
 
     

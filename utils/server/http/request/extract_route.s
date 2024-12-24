@@ -37,7 +37,7 @@ extract_route:
     mov %rax, %rdx                   # End position
     sub %r13, %rdx                   # Calculate length (end - start)
     mov $req_route_B_size, %rcx
-    call str_concat
+    call str_cat
 
     pop %r13
     pop %r12
