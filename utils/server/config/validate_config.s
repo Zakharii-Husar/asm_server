@@ -1,28 +1,28 @@
 .section .data
-# Error messages for each config key
-host_err_msg: .asciz "MODERATE: No valid host was provided. Using default 0.0.0.0 in validate_config.s"
-host_err_msg_len = . - host_err_msg
+# Warning messages for each config key
+host_warn_msg: .asciz "No valid host was provided. Using default 0.0.0.0 in validate_config.s"
+host_warn_msg_len = . - host_warn_msg
 
-port_err_msg: .asciz "MODERATE: Invalid port (must be between 1-65535). Using default 8080 in validate_config.s"
-port_err_msg_len = . - port_err_msg
+port_warn_msg: .asciz "Invalid port (must be between 1-65535). Using default 8080 in validate_config.s"
+port_warn_msg_len = . - port_warn_msg
 
-buffer_err_msg: .asciz "MODERATE: Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s"
-buffer_err_msg_len = . - buffer_err_msg
+buffer_warn_msg: .asciz "Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s"
+buffer_warn_msg_len = . - buffer_warn_msg
 
-conf_timezone_err_msg: .asciz "MODERATE: Invalid timezone offset (must be between -1200 and +1400). Using default 0 in validate_config.s"
-conf_timezone_err_msg_len = . - conf_timezone_err_msg
+conf_timezone_warn_msg: .asciz "Invalid timezone offset (must be between -1200 and +1400). Using default 0 in validate_config.s"
+conf_timezone_warn_msg_len = . - conf_timezone_warn_msg
 
-max_conn_err_msg: .asciz "MODERATE: Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s"
-max_conn_err_len = . - max_conn_err_msg
+max_conn_warn_msg: .asciz "Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s"
+max_conn_warn_msg_len = . - max_conn_warn_msg
 
-public_dir_err_msg: .asciz "MODERATE: Invalid public directory path. Using default ./public in validate_config.s"
-public_dir_err_len = . - public_dir_err_msg
+public_dir_warn_msg: .asciz "Invalid public directory path. Using default ./public in validate_config.s"
+public_dir_warn_msg_len = . - public_dir_warn_msg
 
-default_file_err_msg: .asciz "MODERATE: Invalid default file. Using default index.html in validate_config.s"
-default_file_err_len = . - default_file_err_msg
+default_file_warn_msg: .asciz "Invalid default file. Using default index.html in validate_config.s"
+default_file_warn_msg_len = . - default_file_warn_msg
 
-server_name_err_msg: .asciz "MODERATE: Invalid server name. Using default MyASMServer/1.0 in validate_config.s"
-server_name_err_len = . - server_name_err_msg
+server_name_warn_msg: .asciz "Invalid server name. Using default MyASMServer/1.0 in validate_config.s"
+server_name_warn_msg_len = . - server_name_warn_msg
 
 # Default values
 .default_port_str: .asciz "8080"
@@ -50,10 +50,9 @@ validate_config:
     jmp .check_port
 
 .invalid_host:
-    lea host_err_msg(%rip), %rdi
-    mov $host_err_msg_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea host_warn_msg(%rip), %rdi
+    mov $host_warn_msg_len, %rsi
+    call log_warn
     # Convert default host to network format
     lea .default_host_str(%rip), %rdi
     call ip_to_network
@@ -69,10 +68,9 @@ validate_config:
     jmp .check_buffer_size
 
 .invalid_port:
-    lea port_err_msg(%rip), %rdi
-    mov $port_err_msg_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea port_warn_msg(%rip), %rdi
+    mov $port_warn_msg_len, %rsi
+    call log_warn
     # Convert default port to network format
     lea .default_port_str(%rip), %rdi
     call str_to_int
@@ -90,10 +88,9 @@ validate_config:
     jmp .check_timezone
 
 .invalid_buffer:
-    lea buffer_err_msg(%rip), %rdi
-    mov $buffer_err_msg_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea buffer_warn_msg(%rip), %rdi
+    mov $buffer_warn_msg_len, %rsi
+    call log_warn
     mov .default_buffer(%rip), %rax
     mov %rax, CONF_BUFFER_SIZE_OFFSET(%r15)
 
@@ -107,10 +104,9 @@ validate_config:
     jmp .check_max_conn
 
 .invalid_timezone:
-    lea conf_timezone_err_msg(%rip), %rdi
-    mov $conf_timezone_err_msg_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea conf_timezone_warn_msg(%rip), %rdi
+    mov $conf_timezone_warn_msg_len, %rsi
+    call log_warn
     mov .default_timezone(%rip), %rax
     mov %rax, CONF_TIMEZONE_OFFSET(%r15)
 
@@ -124,10 +120,9 @@ validate_config:
     jmp .check_public_dir
 
 .invalid_max_conn:
-    lea max_conn_err_msg(%rip), %rdi
-    mov $max_conn_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea max_conn_warn_msg(%rip), %rdi
+    mov $max_conn_warn_msg_len, %rsi
+    call log_warn
     mov .default_max_conn(%rip), %rax
     mov %rax, CONF_MAX_CONN_OFFSET(%r15)
 
@@ -139,10 +134,9 @@ validate_config:
     jmp .check_default_file
 
 .invalid_public_dir:
-    lea public_dir_err_msg(%rip), %rdi
-    mov $public_dir_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea public_dir_warn_msg(%rip), %rdi
+    mov $public_dir_warn_msg_len, %rsi
+    call log_warn
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi
     lea .default_public_dir(%rip), %rsi
     xor %rdx, %rdx
@@ -157,10 +151,9 @@ validate_config:
     jmp .check_server_name
 
 .invalid_default_file:
-    lea default_file_err_msg(%rip), %rdi
-    mov $default_file_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea default_file_warn_msg(%rip), %rdi
+    mov $default_file_warn_msg_len, %rsi
+    call log_warn
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi
     lea .default_file(%rip), %rsi
     xor %rdx, %rdx
@@ -175,10 +168,9 @@ validate_config:
     jmp .validation_complete
 
 .invalid_server_name:
-    lea server_name_err_msg(%rip), %rdi
-    mov $server_name_err_len, %rsi
-    xor %rdx, %rdx
-    call log_err
+    lea server_name_warn_msg(%rip), %rdi
+    mov $server_name_warn_msg_len, %rsi
+    call log_warn
     lea CONF_SERVER_NAME_OFFSET(%r15), %rdi
     lea .default_server_name(%rip), %rsi
     xor %rdx, %rdx

@@ -4,18 +4,18 @@ log_open_file_mode: .long 02                  # O_RDWR
 log_create_file_mode: .long 02102             # O_RDWR | O_CREAT | O_APPEND
 
 # Creation messages (to be logged after files are opened)
-create_access_log_msg: .asciz "MODERATE: Created new access log file in open_log_files.s"
+create_access_log_msg: .asciz "Created new access log file in open_log_files.s"
 create_access_log_len = . - create_access_log_msg
-create_error_log_msg: .asciz "MODERATE: Created new error log file in open_log_files.s"
+create_error_log_msg: .asciz "Created new error log file in open_log_files.s"
 create_error_log_len = . - create_error_log_msg
-create_warning_log_msg: .asciz "MODERATE: Created new warning log file in open_log_files.s"
+create_warning_log_msg: .asciz "Created new warning log file in open_log_files.s"
 create_warning_log_len = . - create_warning_log_msg
 
-.access_log_path_warn_msg: .asciz "MODERATE: Access log file path is not set, using default path in open_log_files.s"
+.access_log_path_warn_msg: .asciz "Access log file path is not set, using default path in open_log_files.s"
 .access_log_path_warn_msg_len = . - .access_log_path_warn_msg
-.error_log_path_warn_msg: .asciz "MODERATE: Error log file path is not set, using default path in open_log_files.s"
+.error_log_path_warn_msg: .asciz "Error log file path is not set, using default path in open_log_files.s"
 .error_log_path_warn_msg_len = . - .error_log_path_warn_msg
-.warning_log_path_warn_msg: .asciz "MODERATE: Warning log file path is not set, using default path in open_log_files.s"
+.warning_log_path_warn_msg: .asciz "Warning log file path is not set, using default path in open_log_files.s"
 .warning_log_path_warn_msg_len = . - .warning_log_path_warn_msg
 
 .default_error_log: .asciz "./log/error.log"

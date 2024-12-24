@@ -1,3 +1,4 @@
-[2024-12-24T15:10:27-600] WARN:MODERATE: Created new warning log file in open_log_files.s
-[2024-12-24T15:10:27-600] WARN:MODERATE: Created new error log file in open_log_files.s
-[2024-12-24T15:10:27-600] WARN:MODERATE: Created new access log file in open_log_files.s
+[2024-12-24T16:13:51-600] WARN:MODERATE: Access log file path is not set, using default path in open_log_files.s
+[2024-12-24T16:13:51-600] WARN:MODERATE: Error log file path is not set, using default path in open_log_files.s
+[2024-12-24T16:13:51-600] WARN:MODERATE: Warning log file path is not set, using default path in open_log_files.s
+[2024-12-24T16:13:51-600] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
