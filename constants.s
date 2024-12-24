@@ -1,3 +1,7 @@
+    # generic strings
+    newline_char: .asciz "\n"
+    space_char: .asciz " "
+    
     # sys_call args
     .equ SYS_read, 0
     .equ SYS_write, 1

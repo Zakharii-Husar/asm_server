@@ -4,9 +4,7 @@
 
 .section .data
 
-.GET_STRING: .asciz "GET"    
-
-space_char: .asciz " "
+.GET_STRING: .asciz "GET"
 
 server_read_err_msg: .asciz "SEVERE: Failed to read any response pages in sock_read.s"
 server_read_err_msg_len = . - server_read_err_msg

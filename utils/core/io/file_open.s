@@ -12,8 +12,6 @@ read_err_msg_length = . - read_err_msg
 buffer_overflow_err_msg: .asciz "CRITICAL: buffer overflow in file_open.s"
 buffer_overflow_err_msg_length = . - buffer_overflow_err_msg
 
-line_break: .asciz "\n"
-
 .equ stat_buffer_size, 144
 
 .section .bss

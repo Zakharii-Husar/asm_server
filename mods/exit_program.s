@@ -1,4 +1,4 @@
-.section .data
+.section .rodata
 exit_err_msg: .asciz "CRITICAL: Failed to exit main process"
 exit_err_len = . - exit_err_msg
 

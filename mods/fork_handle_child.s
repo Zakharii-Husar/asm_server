@@ -1,5 +1,3 @@
-.section .data
-
 .section .bss
 .lcomm req_B, req_B_size                             # For reading user request
 .lcomm file_path_B, file_path_B_size                 # For built file path
