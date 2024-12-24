@@ -52,7 +52,7 @@ log_warn:
 
     # Add newline
     lea warn_log_B(%rip), %rdi
-    lea nl(%rip), %rsi
+    lea newline_char(%rip), %rsi
     mov $1, %rdx
     mov $warn_log_B_size, %rcx
     call str_cat

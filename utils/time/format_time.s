@@ -42,7 +42,7 @@ format_time:
 
     # Start with opening bracket
     lea date_buffer(%rip), %rdi
-    lea .open_bracket(%rip), %rsi
+    lea open_square_bracket_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -213,7 +213,7 @@ format_time:
 
     # Add closing bracket at the end
     lea date_buffer(%rip), %rdi
-    lea .close_bracket(%rip), %rsi
+    lea close_square_bracket_char(%rip), %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
