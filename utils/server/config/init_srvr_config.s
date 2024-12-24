@@ -59,7 +59,7 @@ init_srvr_config:
     call open_log_files
     lea server_config_struct(%rip), %r15
     lea server_conf_file_B(%rip), %rdi
-    call parse_srvr_config
+    call write_config_struct
 
 .exit_init_config:
     # Check if config is valid and all fields are set, otherwise fallback to default config

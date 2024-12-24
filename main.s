@@ -46,7 +46,7 @@
 # Server configuration
 .include "./utils/server/config/init_srvr_config.s"
 .include "./utils/server/config/parse_srvr_config.s"
-.include "./utils/server/config/parse_key_value.s"
+.include "./utils/server/config/write_config_struct.s"
 .include "./utils/server/config/network/htons.s"
 .include "./utils/server/config/network/ip_to_network.s"
 .include "./utils/server/config/logging/open_log_files.s"

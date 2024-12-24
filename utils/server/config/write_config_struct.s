@@ -9,18 +9,18 @@ host_key: .asciz "host"
 localhost_str: .asciz "localhost"
 localhost_ip: .asciz "0.0.0.0"
 public_dir_key: .asciz "public_dir"
-error_log_path_key: .asciz "error_log_path"
 max_conn_key: .asciz "max_conn"
 buffer_size_key: .asciz "buffer_size"
 server_name_key: .asciz "server_name"
 default_file_key: .asciz "default_file"
 access_log_path_key: .asciz "access_log_path"
 warning_log_path_key: .asciz "warning_log_path"
+error_log_path_key: .asciz "error_log_path"
 
 .section .text
 
-.type parse_key_value, @function
-parse_key_value:
+.type write_config_struct, @function
+write_config_struct:
     push %rbp
     mov %rsp, %rbp
     push %r12

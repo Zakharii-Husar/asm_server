@@ -1,6 +1,6 @@
-[2024-12-24T02:30:18-1] WARN:MODERATE: Created new warning log file in open_log_files.s
-[2024-12-24T02:30:18-1] WARN:MODERATE: Created new error log file in open_log_files.s
-[2024-12-24T02:30:18-1] WARN:MODERATE: Created new access log file in open_log_files.s
-[2024-12-24T02:30:18-1] WARN:MODERATE: Access log file path is not set, using default path in open_log_files.s
+[2024-12-24T17:01:54-1] WARN:MODERATE: Access log file path is not set, using default path in open_log_files.s
+[2024-12-24T17:01:54-1] WARN:MODERATE: Error log file path is not set, using default path in open_log_files.s
+[2024-12-24T17:01:54-1] WARN:MODERATE: Warning log file path is not set, using default path in open_log_files.s
+using default path in open_log_files.s
 [2024-12-24T02:30:18-1] WARN:MODERATE: Error log file path is not set, using default path in open_log_files.s
 [2024-12-24T02:30:18-1] WARN:MODERATE: Warning log file path is not set, using default path in open_log_files.s
