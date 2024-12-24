@@ -19,8 +19,13 @@ create_warning_log_len = . - create_warning_log_msg
 .warning_log_path_warn_msg_len = . - .warning_log_path_warn_msg
 
 .default_error_log: .asciz "./log/error.log"
+.default_error_log_len = . - .default_error_log
+
 .default_access_log: .asciz "./log/access.log"
+.default_access_log_len = . - .default_access_log
+
 .default_warning_log: .asciz "./log/warning.log"
+.default_warning_log_len = . - .default_warning_log
 
 .section .text
 .globl open_log_files
@@ -31,32 +36,42 @@ open_log_files:
     push %r12
     push %r13
     push %r14
-    # SAVE LOG FILES INITIAL STATE (-1 OR PATHS)
-    mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %r12
-    mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %r13
-    mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %r14
-
     
+    # Save first bytes of each path
+    movb CONF_WARNING_LOG_PATH_OFFSET(%r15), %r12b
+    movb CONF_ERROR_LOG_PATH_OFFSET(%r15), %r13b
+    movb CONF_ACCESS_LOG_PATH_OFFSET(%r15), %r14b
+
     # CHECK IF LOGS FILE PATHS ARE SET, IF NOT SET THEM TO DEFAULT
-    mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
-    cmpq $0, %rdi
+    lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    cmpb $0, (%rdi)
     jne .check_error_log_path
-    lea .default_warning_log(%rip), %rdi
-    mov %rdi, CONF_WARNING_LOG_PATH_OFFSET(%r15)
+    lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    lea .default_warning_log(%rip), %rsi
+    mov $.default_warning_log_len, %rdx
+    mov $CONF_WARNING_LOG_PATH_SIZE, %rcx
+    call str_cat
+    
 
 .check_error_log_path:
-    mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
-    cmpq $0, %rdi
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    cmpb $0, (%rdi)
     jne .check_access_log_path
-    lea .default_error_log(%rip), %rdi
-    mov %rdi, CONF_ERROR_LOG_PATH_OFFSET(%r15)
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    lea .default_error_log(%rip), %rsi
+    mov $.default_error_log_len, %rdx
+    mov $CONF_ERROR_LOG_PATH_SIZE, %rcx
+    call str_cat
 
 .check_access_log_path:
-    mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
-    cmpq $0, %rdi
+    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    cmpb $0, (%rdi)
     jne .continue_opening_files
-    lea .default_access_log(%rip), %rdi
-    mov %rdi, CONF_ACCESS_LOG_PATH_OFFSET(%r15)
+    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    lea .default_access_log(%rip), %rsi
+    mov $.default_access_log_len, %rdx
+    mov $CONF_ACCESS_LOG_PATH_SIZE, %rcx
+    call str_cat
 
 .continue_opening_files:
     # TRY TO OPEN WARNING LOG FILE
@@ -65,15 +80,13 @@ open_log_files:
     mov log_file_flags(%rip), %rdx
     mov $SYS_open, %rax
     syscall
-
-    
     cmp $0, %rax               # failed to open, create it
     jl .create_warning_log
     mov %rax, CONF_WARNING_LOG_FD_OFFSET(%r15)
     jmp .try_error_log
 
 .create_warning_log:
-    mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
     mov log_create_file_mode(%rip), %rsi
     mov log_file_flags(%rip), %rdx
     mov $SYS_open, %rax
@@ -99,7 +112,7 @@ open_log_files:
     jmp .try_access_log
     # CREATE ERROR LOG FILE
     .create_error_log:
-    mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
     mov log_create_file_mode(%rip), %rsi
     mov log_file_flags(%rip), %rdx
     mov $SYS_open, %rax
@@ -125,7 +138,7 @@ open_log_files:
     jmp .validate_access_log_path
     # CREATE ACCESS LOG FILE
     .create_access_log:
-    mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
     mov log_create_file_mode(%rip), %rsi
     mov log_file_flags(%rip), %rdx
     mov $SYS_open, %rax
@@ -140,22 +153,22 @@ open_log_files:
 
     # LOG DEFAULT PATHS WARNINGS IF NOT SET
     .validate_access_log_path:
-    cmpq $0, %r12
-    jne .validate_error_log_path
+    testb %r14b, %r14b        # Check if access log path was empty
+    jnz .validate_error_log_path
     lea .access_log_path_warn_msg(%rip), %rdi
     mov $.access_log_path_warn_msg_len, %rsi
     call log_warn
 
     .validate_error_log_path:
-    cmpq $0, %r13
-    jne .validate_warning_log_path
+    testb %r13b, %r13b        # Check if error log path was empty
+    jnz .validate_warning_log_path
     lea .error_log_path_warn_msg(%rip), %rdi
     mov $.error_log_path_warn_msg_len, %rsi
     call log_warn
 
     .validate_warning_log_path:
-    cmpq $0, %r14
-    jne .exit_open_log_files
+    testb %r12b, %r12b        # Check if warning log path was empty
+    jnz .exit_open_log_files
     lea .warning_log_path_warn_msg(%rip), %rdi
     mov $.warning_log_path_warn_msg_len, %rsi
     call log_warn
