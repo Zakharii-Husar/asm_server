@@ -29,12 +29,16 @@ write_config_struct:
     # %rdi contains pointer to config_key
     # %rsi contains pointer to config_value
     # Check if key pointer (%rdi) is null
+
+
     test %rdi, %rdi
     jz .exit_parse_key_value
     
     # Check if value pointer (%rsi) is null
     test %rsi, %rsi
     jz .exit_parse_key_value
+
+
     
     # Store parameters only if both are non-null
     mov %rdi, %r12  # store key pointer
@@ -208,9 +212,9 @@ write_config_struct:
     xor %rdx, %rdx
     mov $CONF_WARNING_LOG_PATH_SIZE, %rcx
     call str_cat
-    jmp .exit_parse_key_value
 
 .exit_parse_key_value:
+
     pop %r13
     pop %r12
     pop %rbp

@@ -31,37 +31,41 @@ open_log_files:
     push %r12
     push %r13
     push %r14
-
     # SAVE LOG FILES INITIAL STATE (-1 OR PATHS)
     mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %r12
     mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %r13
     mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %r14
+
     
     # CHECK IF LOGS FILE PATHS ARE SET, IF NOT SET THEM TO DEFAULT
-    cmpq $-1, CONF_WARNING_LOG_PATH_OFFSET(%r15)
+    mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    cmpq $0, %rdi
     jne .check_error_log_path
     lea .default_warning_log(%rip), %rdi
     mov %rdi, CONF_WARNING_LOG_PATH_OFFSET(%r15)
 
 .check_error_log_path:
-    cmpq $-1, CONF_ERROR_LOG_PATH_OFFSET(%r15)
+    mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    cmpq $0, %rdi
     jne .check_access_log_path
     lea .default_error_log(%rip), %rdi
     mov %rdi, CONF_ERROR_LOG_PATH_OFFSET(%r15)
 
 .check_access_log_path:
-    cmpq $-1, CONF_ACCESS_LOG_PATH_OFFSET(%r15)
+    mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    cmpq $0, %rdi
     jne .continue_opening_files
     lea .default_access_log(%rip), %rdi
     mov %rdi, CONF_ACCESS_LOG_PATH_OFFSET(%r15)
 
 .continue_opening_files:
     # TRY TO OPEN WARNING LOG FILE
-    mov CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
     mov log_open_file_mode(%rip), %rsi
     mov log_file_flags(%rip), %rdx
     mov $SYS_open, %rax
     syscall
+
     
     cmp $0, %rax               # failed to open, create it
     jl .create_warning_log
@@ -83,7 +87,7 @@ open_log_files:
 
     # TRY TO OPEN ERROR LOG FILE IF IT EXISTS
     .try_error_log:
-    mov CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
     mov log_file_flags(%rip), %rdx
     mov log_open_file_mode(%rip), %rsi
     mov $SYS_open, %rax
@@ -109,7 +113,7 @@ open_log_files:
 
     # TRY TO OPEN ACCESS LOG FILE IF IT EXISTS
     .try_access_log:
-    mov CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
     mov log_file_flags(%rip), %rdx
     mov log_open_file_mode(%rip), %rsi
     mov $SYS_open, %rax
@@ -136,21 +140,21 @@ open_log_files:
 
     # LOG DEFAULT PATHS WARNINGS IF NOT SET
     .validate_access_log_path:
-    cmpq $-1, %r12
+    cmpq $0, %r12
     jne .validate_error_log_path
     lea .access_log_path_warn_msg(%rip), %rdi
     mov $.access_log_path_warn_msg_len, %rsi
     call log_warn
 
     .validate_error_log_path:
-    cmpq $-1, %r13
+    cmpq $0, %r13
     jne .validate_warning_log_path
     lea .error_log_path_warn_msg(%rip), %rdi
     mov $.error_log_path_warn_msg_len, %rsi
     call log_warn
 
     .validate_warning_log_path:
-    cmpq $-1, %r14
+    cmpq $0, %r14
     jne .exit_open_log_files
     lea .warning_log_path_warn_msg(%rip), %rdi
     mov $.warning_log_path_warn_msg_len, %rsi

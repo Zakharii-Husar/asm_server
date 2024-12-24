@@ -30,6 +30,7 @@ server_name_err_len = . - server_name_err_msg
 .default_buffer: .quad 16777216  # 16MB
 .default_timezone: .quad 0
 .default_max_conn: .quad 100
+
 .default_public_dir: .asciz "./public"
 .default_file: .asciz "index.html"
 .default_server_name: .asciz "MyASMServer/1.0"
@@ -133,8 +134,7 @@ validate_config:
 .check_public_dir:
     # 6. Validate PUBLIC_DIR (check if empty)
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi
-    call str_len
-    cmp $0, %rax
+    cmpb $0, (%rdi)
     je .invalid_public_dir
     jmp .check_default_file
 
@@ -152,8 +152,7 @@ validate_config:
 .check_default_file:
     # 9. Validate DEFAULT_FILE
     lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi
-    call str_len
-    cmp $0, %rax
+    cmpb $0, (%rdi)
     je .invalid_default_file
     jmp .check_server_name
 
@@ -171,8 +170,7 @@ validate_config:
 .check_server_name:
     # 10. Validate SERVER_NAME
     lea CONF_SERVER_NAME_OFFSET(%r15), %rdi
-    call str_len
-    cmp $0, %rax
+    cmpb $0, (%rdi)
     je .invalid_server_name
     jmp .validation_complete
 

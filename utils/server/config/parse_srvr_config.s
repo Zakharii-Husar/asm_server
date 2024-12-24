@@ -16,10 +16,11 @@ parse_srvr_config:
     mov %rsp, %rbp
     push %r12
     push %r13
+    
+    
 
     mov %rdi, %r12              # Buffer pointer
 .process_new_line:
-
     # Clear config_key and config_value buffers
     lea config_key(%rip), %rdi
     mov $CONFIG_KEY_SIZE, %rsi
@@ -28,6 +29,7 @@ parse_srvr_config:
     lea config_value(%rip), %rdi
     mov $CONFIG_VALUE_SIZE, %rsi
     call clear_buffer
+
     
     # STEP 1: Skip spaces
     .skip_spaces:
@@ -105,6 +107,7 @@ parse_srvr_config:
     dec %rdx                     # subtract 1 to exclude the space
     mov $CONFIG_VALUE_SIZE, %rcx
     call str_cat
+    
 
     lea config_key(%rip), %rdi
     lea config_value(%rip), %rsi
@@ -124,6 +127,7 @@ parse_srvr_config:
 
 
 .exit_parse_srvr_config:
+
     pop %r13
     pop %r12
     pop %rbp

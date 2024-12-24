@@ -26,13 +26,7 @@ init_srvr_config:
     movq $-1, CONF_BUFFER_SIZE_OFFSET(%r15)   # Buffer size
     movq $-1, CONF_TIMEZONE_OFFSET(%r15)      # Timezone
     movq $-1, CONF_MAX_CONN_OFFSET(%r15)      # Max connections
-    movq $-1, CONF_PUBLIC_DIR_OFFSET(%r15)    # Public dir
-    movq $-1, CONF_DEFAULT_FILE_OFFSET(%r15)   # Default file
-    movq $-1, CONF_SERVER_NAME_OFFSET(%r15)    # Server name
 
-    movq $-1, CONF_ERROR_LOG_PATH_OFFSET(%r15) # Error log path
-    movq $-1, CONF_ACCESS_LOG_PATH_OFFSET(%r15) # Access log path
-    movq $-1, CONF_WARNING_LOG_PATH_OFFSET(%r15) # Warning log path
 
     lea server_conf_file_B(%rip), %rdi
     mov $server_conf_file_B_size, %rsi
@@ -53,13 +47,13 @@ init_srvr_config:
     call open_log_files
     jmp .exit_init_config
 
-
     # PARSE SERVER CONFIG FILE
     .parse_config_file:
-    call open_log_files
-    lea server_config_struct(%rip), %r15
     lea server_conf_file_B(%rip), %rdi
-    call write_config_struct
+    call parse_srvr_config
+    call open_log_files
+    
+    
 
 .exit_init_config:
     # Check if config is valid and all fields are set, otherwise fallback to default config

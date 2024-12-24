@@ -39,11 +39,6 @@ print_info:
     cmp $0, %rax
     jge .exit_print_info
 
-    lea .print_info_error_msg(%rip), %rdi
-    mov $.print_info_error_msg_length, %rsi
-    mov %rax, %rdx
-    call log_err
-
     .exit_print_info:
     pop %rbp
     ret
