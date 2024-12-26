@@ -27,6 +27,7 @@
 .include "./mods/fork_handle_child.s"
 .include "./mods/fork_handle_parent.s"
 .include "./mods/exit_program.s"
+.include "./mods/signal_handler.s"
 
 # Core utilities
 .include "./utils/core/io/print_info.s"
@@ -77,9 +78,12 @@
 
 .global _start
 _start:
+
+    # Handle signals (like ctrl+c)
+    call signal_handler
+
     # 0. Initialize server config
     call init_srvr_config
-
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

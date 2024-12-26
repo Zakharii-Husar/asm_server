@@ -1,4 +1,5 @@
-[2024-12-24T16:13:51-600] WARN:MODERATE: Access log file path is not set, using default path in open_log_files.s
+[2024-12-25T16:25:38-600] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+s
 [2024-12-24T16:13:51-600] WARN:MODERATE: Error log file path is not set, using default path in open_log_files.s
 [2024-12-24T16:13:51-600] WARN:MODERATE: Warning log file path is not set, using default path in open_log_files.s
 [2024-12-24T16:13:51-600] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s

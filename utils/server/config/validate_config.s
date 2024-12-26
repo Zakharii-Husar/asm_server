@@ -25,7 +25,7 @@ server_name_warn_msg: .asciz "Invalid server name. Using default MyASMServer/1.0
 server_name_warn_msg_len = . - server_name_warn_msg
 
 # Default values
-.default_port_str: .asciz "8080"
+.equ default_port, 8080
 .default_host_str: .asciz "0.0.0.0"
 .default_buffer: .quad 16777216  # 16MB
 .default_timezone: .quad 0
@@ -72,9 +72,7 @@ validate_config:
     mov $port_warn_msg_len, %rsi
     call log_warn
     # Convert default port to network format
-    lea .default_port_str(%rip), %rdi
-    call str_to_int
-    mov %rax, %rdi
+    mov $default_port, %rdi
     call htons
     movw %ax, CONF_PORT_OFFSET(%r15)
 
