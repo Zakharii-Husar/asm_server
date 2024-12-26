@@ -17,6 +17,8 @@ create_warning_log_len = . - create_warning_log_msg
 .error_log_path_warn_msg_len = . - .error_log_path_warn_msg
 .warning_log_path_warn_msg: .asciz "Warning log file path is not set, using default path in open_log_files.s"
 .warning_log_path_warn_msg_len = . - .warning_log_path_warn_msg
+.system_log_path_warn_msg: .asciz "System log file path is not set, using default path in open_log_files.s"
+.system_log_path_warn_msg_len = . - .system_log_path_warn_msg
 
 .default_error_log: .asciz "./log/error.log"
 .default_error_log_len = . - .default_error_log
@@ -41,6 +43,9 @@ open_log_files:
     movb CONF_WARNING_LOG_PATH_OFFSET(%r15), %r12b
     movb CONF_ERROR_LOG_PATH_OFFSET(%r15), %r13b
     movb CONF_ACCESS_LOG_PATH_OFFSET(%r15), %r14b
+    xor %r11, %r11
+    movb CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %r11b
+    push %r11
 
     # CHECK IF LOGS FILE PATHS ARE SET, IF NOT SET THEM TO DEFAULT
     lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
@@ -168,9 +173,17 @@ open_log_files:
 
     .validate_warning_log_path:
     testb %r12b, %r12b        # Check if warning log path was empty
-    jnz .exit_open_log_files
+    jnz .validate_system_log_path
     lea .warning_log_path_warn_msg(%rip), %rdi
     mov $.warning_log_path_warn_msg_len, %rsi
+    call log_warn
+
+    .validate_system_log_path:
+    pop %r11
+    testb %r11b, %r11b        # Check if system log path was empty
+    jnz .exit_open_log_files
+    lea .system_log_path_warn_msg(%rip), %rdi
+    mov $.system_log_path_warn_msg_len, %rsi
     call log_warn
 
     .exit_open_log_files:

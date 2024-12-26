@@ -13,6 +13,7 @@ default_file_key: .asciz "default_file"
 access_log_path_key: .asciz "access_log_path"
 warning_log_path_key: .asciz "warning_log_path"
 error_log_path_key: .asciz "error_log_path"
+system_log_path_key: .asciz "system_log_path"
 
 .section .text
 
@@ -112,6 +113,12 @@ write_config_struct:
     cmp $1, %rax
     je .handle_warning_log_path_key
 
+    mov %r12, %rdi
+    lea system_log_path_key(%rip), %rsi
+    call str_cmp
+    cmp $1, %rax
+    je .handle_system_log_path
+
     jmp .exit_parse_key_value
 
 .handle_timezone_key:
@@ -209,6 +216,15 @@ write_config_struct:
     xor %rdx, %rdx
     mov $CONF_WARNING_LOG_PATH_SIZE, %rcx
     call str_cat
+    jmp .exit_parse_key_value
+
+.handle_system_log_path:
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi  # destination buffer
+    mov %r13, %rsi                # source string
+    xor %rdx, %rdx
+    mov $CONF_SYSTEM_LOG_PATH_SIZE, %rcx
+    call str_cat
+    jmp .exit_parse_key_value
 
 .exit_parse_key_value:
 

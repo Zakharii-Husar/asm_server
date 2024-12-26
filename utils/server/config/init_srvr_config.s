@@ -27,6 +27,34 @@ init_srvr_config:
     movq $-1, CONF_TIMEZONE_OFFSET(%r15)      # Timezone
     movq $-1, CONF_MAX_CONN_OFFSET(%r15)      # Max connections
 
+    # Clear string buffers
+    lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi
+    mov $CONF_PUBLIC_DIR_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_DEFAULT_FILE_OFFSET(%r15), %rdi
+    mov $CONF_DEFAULT_FILE_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_SERVER_NAME_OFFSET(%r15), %rdi
+    mov $CONF_SERVER_NAME_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
+    mov $CONF_ACCESS_LOG_PATH_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
+    mov $CONF_ERROR_LOG_PATH_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
+    mov $CONF_WARNING_LOG_PATH_SIZE, %rsi
+    call clear_buffer
+
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi
+    mov $CONF_SYSTEM_LOG_PATH_SIZE, %rsi
+    call clear_buffer
 
     lea server_conf_file_B(%rip), %rdi
     mov $server_conf_file_B_size, %rsi
