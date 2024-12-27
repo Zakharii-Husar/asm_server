@@ -10,6 +10,8 @@ create_error_log_msg: .asciz "Created new error log file in open_log_files.s"
 create_error_log_len = . - create_error_log_msg
 create_warning_log_msg: .asciz "Created new warning log file in open_log_files.s"
 create_warning_log_len = . - create_warning_log_msg
+create_system_log_msg: .asciz "Created new system log file in open_log_files.s"
+create_system_log_len = . - create_system_log_msg
 
 .access_log_path_warn_msg: .asciz "Access log file path is not set, using default path in open_log_files.s"
 .access_log_path_warn_msg_len = . - .access_log_path_warn_msg
@@ -28,6 +30,9 @@ create_warning_log_len = . - create_warning_log_msg
 
 .default_warning_log: .asciz "./log/warning.log"
 .default_warning_log_len = . - .default_warning_log
+
+.default_system_log: .asciz "./log/system.log"
+.default_system_log_len = . - .default_system_log
 
 .section .text
 .globl open_log_files
@@ -140,7 +145,7 @@ open_log_files:
     jl .create_access_log  # failed to open, create it
     # SAVE NEW ACCESS LOG FILE DESCRIPTOR
     mov %rax, CONF_ACCESS_LOG_FD_OFFSET(%r15)
-    jmp .validate_access_log_path
+    jmp .try_system_log
     # CREATE ACCESS LOG FILE
     .create_access_log:
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
@@ -155,6 +160,33 @@ open_log_files:
     mov $create_access_log_len, %rsi
     call log_warn
 
+    # TRY TO OPEN SYSTEM LOG FILE IF IT EXISTS
+    .try_system_log:
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi
+    mov log_file_flags(%rip), %rdx
+    mov log_open_file_mode(%rip), %rsi
+    mov $SYS_open, %rax
+    syscall
+    cmp $0, %rax
+    jl .create_system_log  # failed to open, create it
+    # SAVE NEW SYSTEM LOG FILE DESCRIPTOR
+    mov %rax, CONF_SYSTEM_LOG_FD_OFFSET(%r15)
+    jmp .validate_access_log_path
+    
+    
+    # CREATE SYSTEM LOG FILE
+    .create_system_log:
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi
+    mov log_create_file_mode(%rip), %rsi
+    mov log_file_flags(%rip), %rdx
+    mov $SYS_open, %rax
+    syscall
+    cmp $0, %rax
+    jl .exit_server # some other error. Exit server
+    mov %rax, CONF_SYSTEM_LOG_FD_OFFSET(%r15)
+    lea create_system_log_msg(%rip), %rdi
+    mov $create_system_log_len, %rsi
+    call log_warn
 
     # LOG DEFAULT PATHS WARNINGS IF NOT SET
     .validate_access_log_path:
@@ -187,6 +219,7 @@ open_log_files:
     call log_warn
 
     .exit_open_log_files:
+
     pop %r14
     pop %r13
     pop %r12
