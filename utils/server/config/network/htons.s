@@ -3,10 +3,14 @@
 .type htons, @function
 htons:
 # Function: htons (host to network short)
-# Input:
-#   %rdi - port number in host byte order (e.g., 8080)
-# Output:
-#   %rax - port number in network byte order (e.g., 0x901F)
+# Parameters:
+#   - %rdi: 16-bit port number in host byte order
+# Return Values:
+#   - %ax: 16-bit port number in network byte order
+# Error Handling:
+#   - None
+# Side Effects:
+#   - None
     push %rbp
     mov %rsp, %rbp
 

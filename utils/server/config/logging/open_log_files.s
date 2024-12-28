@@ -36,6 +36,20 @@ create_system_log_len = . - create_system_log_msg
 
 .section .text
 .globl open_log_files
+# Function: open_log_files
+# Parameters:
+#   - None
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Exits server if critical log files cannot be created
+#   - Logs warnings for missing log paths
+# Side Effects:
+#   - Creates/opens log files
+#   - Sets file descriptors in server config
+#   - Modifies log file paths in server config
 open_log_files:
     push %rbp
     mov %rsp, %rbp

@@ -7,14 +7,23 @@ http_ver: .asciz " HTTP/1.1"
 
 .section .text
 .globl log_access
+.type log_access, @function
+# Parameters:
+#   - %rdi: HTTP method string pointer
+#   - %rsi: request path string pointer
+#   - %rdx: HTTP status code
+# Global Registers:
+#   - %r14: client IP string pointer
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Attempts to write to stderr if log file write fails
+# Side Effects:
+#   - Writes to access log file
+#   - Modifies access_log_buffer
 log_access:
-    # Parameters:
-    # rdi - HTTP method
-    # rsi - path
-    # rdx - status code (as number)
-    # Implicit parameters:
-    # r14: client IP
-    # r15: server configuration
+
     push %rbp
     mov %rsp, %rbp
     

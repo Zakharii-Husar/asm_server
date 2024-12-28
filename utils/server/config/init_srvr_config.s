@@ -20,6 +20,19 @@ server_conf_file_B_size = 4096
 
 .section .text
 .type init_srvr_config, @function
+# Function: init_srvr_config
+# Parameters:
+#   - None
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Logs errors if config file cannot be loaded
+# Side Effects:
+#   - Initializes server_config_struct
+#   - Modifies server_conf_file_B buffer
+#   - Sets up global configuration pointer in %r15
 init_srvr_config:
     push %rbp
     mov %rsp, %rbp

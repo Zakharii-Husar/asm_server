@@ -1,10 +1,3 @@
-# Function: create_type_header
-# Input: 
-#   %rdi - pointer to response buffer
-#   %rsi - file extension
-# Output:
-#   %rax - length of concatenated string
-
 .section .rodata
 
 // Extensions for comparison
@@ -66,7 +59,20 @@ mime_ico:    .asciz "Content-Type: image/x-icon\r\n"
 mime_ico_length = . - mime_ico
 
 .section .text
-
+# Function: create_type_header
+# Parameters:
+#   - %rdi: pointer to response buffer
+#   - %rsi: pointer to file extension string
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - %rax: length of concatenated string
+# Error Handling:
+#   - Uses "application/octet-stream" for unknown extensions
+#   - Truncates if buffer size exceeded
+# Side Effects:
+#   - Modifies response buffer
+#   - Concatenates Content-Type header
 .type create_type_header, @function
 create_type_header:
 push %rbp                          # save the caller's base pointer

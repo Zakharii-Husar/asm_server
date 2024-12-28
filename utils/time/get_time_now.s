@@ -1,5 +1,3 @@
-# Output: rax = pointer to formatted string "YYYY-MM-DD HH:MM:SS"
-
 .section .data
 .include "./utils/time/time_constants.s"
 
@@ -7,6 +5,17 @@
 
 .global get_time_now
 .type get_time_now, @function
+# Function: get_time_now
+# Parameters:
+#   - None
+# Global Registers:
+#   - %r15: server configuration pointer (for timezone)
+# Return Values:
+#   - %rax: pointer to formatted timestamp string
+# Error Handling:
+#   - None (assumes system time is valid)
+# Side Effects:
+#   - Calls format_time which modifies date_buffer
 get_time_now:
     push %rbp
     mov %rsp, %rbp

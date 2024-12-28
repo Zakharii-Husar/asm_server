@@ -1,9 +1,16 @@
 # Function: create_server_header
-# Input: 
-#   %rdi - pointer to response buffer
-#   %rsi - max buffer size
-# Output:
-#   %rax - length of concatenated string
+# Parameters:
+#   - %rdi: pointer to response buffer
+#   - %rsi: max buffer size
+# Global Registers:
+#   - %r15: server configuration pointer (for server name)
+# Return Values:
+#   - %rax: length of concatenated string
+# Error Handling:
+#   - Truncates if buffer size exceeded
+#   - Uses default server name if not configured
+# Side Effects:
+#   - Modifies response buffer
 
 .section .rodata
 

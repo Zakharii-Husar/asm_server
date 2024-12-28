@@ -17,6 +17,19 @@ system_log_path_key: .asciz "system_log_path"
 
 .section .text
 
+# Function: write_config_struct
+# Parameters:
+#   - %rdi: pointer to config key string
+#   - %rsi: pointer to config value string
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Skips invalid key-value pairs
+#   - Validates values before writing
+# Side Effects:
+#   - Modifies server configuration structure fields
 .type write_config_struct, @function
 write_config_struct:
     push %rbp

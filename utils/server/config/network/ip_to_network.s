@@ -1,6 +1,16 @@
 .section .text
 .globl ip_to_network
 .type ip_to_network, @function
+# Function: ip_to_network
+# Parameters:
+#   - %rdi: pointer to IP address string (e.g., "192.168.1.1")
+# Return Values:
+#   - %rax: network byte order integer representation of IP
+# Error Handling:
+#   - Returns -1 if invalid IP format
+#   - Returns -1 if null pointer passed
+# Side Effects:
+#   - None
 ip_to_network:
     push %rbp
     mov %rsp, %rbp

@@ -9,10 +9,15 @@ sys_prefix_base_length = . - sys_prefix_base
 
 .section .text
 .globl log_sys
+.type log_sys, @function
+# Parameters:
+#   - %rdi: pointer to socket event description string
+#   - %rsi: string length
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
 log_sys:
-    # Parameters:
-    # rdi - pointer to socket event description string
-    # rsi - string length
     push %rbp
     mov %rsp, %rbp
     

@@ -37,6 +37,19 @@ server_name_warn_msg_len = . - server_name_warn_msg
 
 .section .text
 .type validate_config, @function
+# Function: validate_config
+# Parameters:
+#   - None
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - %rax: 0 on success, -1 on critical failure
+# Error Handling:
+#   - Logs warnings for invalid values and sets defaults
+#   - Returns -1 for critical configuration errors
+# Side Effects:
+#   - Modifies server configuration structure
+#   - Writes to log files for warnings
 validate_config:
     push %rbp
     mov %rsp, %rbp

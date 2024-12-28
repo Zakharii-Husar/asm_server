@@ -6,10 +6,17 @@
 
 .section .text
 # Function: extract_client_ip
-# Arguments:
-#   %rdi: pointer to sockaddr buffer
-# Global Variables:
-#   %r14: pointer to client_ip buffer (where output will be stored)
+# Parameters:
+#   - None
+# Global Registers:
+#   - %r13: connection file descriptor
+#   - %r14: client IP string buffer pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Returns empty string if extraction fails
+# Side Effects:
+#   - Modifies client IP buffer pointed to by %r14
 .type extract_client_ip, @function
 extract_client_ip:
     push %rbp

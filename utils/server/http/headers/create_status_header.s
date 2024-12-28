@@ -17,11 +17,17 @@ server_error_status_length = . - server_error_status
 .section .text
 .globl create_status_header
 .type create_status_header, @function
+# Function: create_status_header
+# Parameters:
+#   - %rdi: HTTP status code
+#   - %rsi: pointer to response buffer
+# Return Values:
+#   - %rax: length of concatenated string
+# Error Handling:
+#   - Defaults to 500 Internal Server Error for unknown status codes
+# Side Effects:
+#   - Modifies response buffer
 create_status_header:
-    # Input: %rdi = HTTP status code
-    #        %rsi = pointer to response buffer
-    # Output: %rax = length of concatenated string (returned from str_cat)
-    
     push %rbp
     mov %rsp, %rbp
     push %r12

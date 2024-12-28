@@ -19,23 +19,27 @@ server_read_err_msg_len = . - server_read_err_msg
 
 
 .section .text
-
+.type sock_read, @function
 # Function: sock_read
 # Parameters:
-# - %rdi > %r12: Pointer to the request_buffer;
-# - %rsi > %r13: Pointer to the file_path_buffer;
-# - %rdx > push: Pointer to the extension_buffer;
-# - %rcx > %r14: Pointer to the response_content_B;
-# Implicit parameters:
-# - %r13 Connection file descriptor;
+#   - %rdi: pointer to request buffer
+#   - %rsi: pointer to file path buffer
+#   - %rdx: pointer to extension buffer
+#   - %rcx: pointer to response content buffer
+# Global Registers:
+#   - %r13: connection file descriptor
+#   - %r14: client IP string pointer
+#   - %r15: server configuration pointer
 # Return Values:
-#   - %rax: Actual file size (size of the opened file)
+#   - %rax: actual file size
 #   - %rdx: HTTP status code
-# Side effects:
-#   - Extracts the route and route extension into buffers
-#   - Opens requested file into buffer
-
-.type sock_read, @function
+# Error Handling:
+#   - Returns appropriate HTTP status codes (400, 404, 405, 500)
+#   - Loads error pages for each error case
+# Side Effects:
+#   - Modifies request buffers (route, method)
+#   - Opens and reads files into response buffer
+#   - Calls logging functions
 sock_read:
     push %rbp                               # save the caller's base pointer
     mov %rsp, %rbp                          # set the new base pointer (stack frame)

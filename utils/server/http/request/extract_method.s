@@ -1,12 +1,14 @@
 .section .text
 
 # Function: extract_method
-# Input: 
-#   %rdi - pointer to the request buffer (source)
-#   %rsi - pointer to the request method buffer (destination)
-#   %rdx - destination buffer size
-# Output: void
-# Side effects: writes the method if found to the destination buffer
+# Parameters:
+#   - %rdi: pointer to HTTP request buffer
+# Return Values:
+#   - %rax: pointer to extracted method string
+# Error Handling:
+#   - Returns pointer to "UNKNOWN" if no valid method found
+# Side Effects:
+#   - Modifies method_buffer
 .globl extract_method
 .type extract_method, @function
 extract_method:

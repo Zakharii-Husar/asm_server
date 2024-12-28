@@ -155,6 +155,7 @@ file_open:
     jmp .exit_file_open
 
     .handle_read_error:
+        mov %rax, %r8 # save error code
         # Close file
         mov $SYS_close, %rax
         mov %r10, %rdi
@@ -162,7 +163,7 @@ file_open:
 
         lea read_err_msg(%rip), %rdi
         mov $read_err_msg_length, %rsi
-        mov %rax, %rdx
+        mov %r8, %rdx
         call log_err
 
         mov $-1, %rax

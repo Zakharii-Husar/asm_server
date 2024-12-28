@@ -9,8 +9,13 @@ default_extension: .asciz ".html"
 extract_extension:
 # Function: extract_extension
 # Parameters:
-#   %rdi - Pointer to the destination buffer where the file extension will be stored
-#   %rsi - Pointer to the route buffer (string) from which the file extension is to be extracted
+#   - %rdi: pointer to file path
+# Return Values:
+#   - %rax: pointer to extracted extension string
+# Error Handling:
+#   - Returns pointer to empty string if no extension found
+# Side Effects:
+#   - Modifies extension_buffer
     push %rbp
     mov %rsp, %rbp
 

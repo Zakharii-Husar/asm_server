@@ -3,17 +3,17 @@ content_length:  .ascii "Content-Length: "
 content_length_length = . - content_length    
 
 .section .text
-
-# Creates a Content-Length header with the specified length value
-#
-# Parameters:
-#   %rdi - pointer to response header buffer (destination)
-#   %rsi - content length value (integer)
-#
-# Returns:
-#   None - modifies buffer in place
-#
 .type create_length_header, @function
+# Function: create_length_header
+# Parameters:
+#   - %rdi: content length value
+#   - %rsi: pointer to response buffer
+# Return Values:
+#   - %rax: length of concatenated string
+# Error Handling:
+#   - Truncates if buffer size exceeded
+# Side Effects:
+#   - Modifies response buffer
 create_length_header:
     push %rbp
     mov %rsp, %rbp

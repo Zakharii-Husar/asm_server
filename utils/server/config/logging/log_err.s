@@ -9,11 +9,22 @@ error_prefix_base_length = . - error_prefix_base
 
 .section .text
 .globl log_err
+# Function: log_err
+# Parameters:
+#   - %rdi: pointer to error description string
+#   - %rsi: error string length
+#   - %rdx: error code
+# Global Registers:
+#   - %r15: server configuration pointer (for log file paths)
+# Return Values:
+#   - None
+# Error Handling:
+#   - Attempts to write to stderr if log file write fails
+# Side Effects:
+#   - Writes to error log file
+#   - Writes to stderr if logging fails
+#   - Modifies err_log_B buffer
 log_err:
-    # Parameters:
-    # rdi - pointer to error description string
-    # rsi - optional negative error code
-    # rdx - error code
     push %rbp
     mov %rsp, %rbp
     

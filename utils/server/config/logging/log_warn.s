@@ -9,10 +9,23 @@ warn_prefix_base_length = . - warn_prefix_base
 
 .section .text
 .globl log_warn
+.type log_warn, @function
+# Function: log_warn
+# Parameters:
+#   - %rdi: pointer to warning message string
+#   - %rsi: string length
+# Global Registers:
+#   - %r15: server configuration pointer (for log paths)
+# Return Values:
+#   - None
+# Error Handling:
+#   - Attempts to write to stderr if log file write fails
+#   - Skips logging if warning log file descriptor is invalid
+# Side Effects:
+#   - Writes to warning log file
+#   - Modifies warn_log_B buffer
+#   - Calls get_time_now for timestamp
 log_warn:
-    # Parameters:
-    # rdi - pointer to warning description string
-    # rsi - string length
     push %rbp
     mov %rsp, %rbp
     

@@ -9,14 +9,21 @@
 .global format_time
 .type format_time, @function
 
+# Function: format_time
+# Parameters:
+#   - %rdi: year
+#   - %rsi: month
+#   - %rdx: day
+#   - %rcx: hours
+#   - %r8:  minutes
+#   - %r9:  seconds
+# Return Values:
+#   - %rax: pointer to formatted date string "[YYYY-MM-DD HH:MM:SS]"
+# Error Handling:
+#   - None (assumes valid input)
+# Side Effects:
+#   - Writes to date_buffer
 format_time:
-    # Input registers:
-    # rdi = year
-    # rsi = month
-    # rdx = day
-    # rcx = hours
-    # r8 = minutes
-    # r9 = seconds
     
     push %rbp
     mov %rsp, %rbp

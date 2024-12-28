@@ -8,6 +8,19 @@
 
 .section .text
 .type parse_srvr_config, @function
+# Function: parse_srvr_config
+# Parameters:
+#   - %rdi: pointer to configuration file buffer
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Skips invalid lines
+#   - Skips comments and empty lines
+# Side Effects:
+#   - Modifies config_key and config_value buffers
+#   - Calls write_config_struct to update server configuration
 parse_srvr_config:
     push %rbp
     mov %rsp, %rbp

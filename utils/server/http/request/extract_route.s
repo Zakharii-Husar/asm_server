@@ -1,11 +1,18 @@
 .section .text
 .globl extract_route
 .type extract_route, @function
+# Function: extract_route
+# Parameters:
+#   - %rdi: pointer to HTTP request buffer
+# Global Registers:
+#   - %r15: server configuration pointer
+# Return Values:
+#   - %rax: pointer to extracted route string
+# Error Handling:
+#   - Returns pointer to "/" if no valid route found
+# Side Effects:
+#   - Modifies route_buffer
 extract_route:
-    # Input: 
-    #   %rdi - pointer to the destination buffer
-    #   %rsi - pointer to the request_content_buffer
-    # Output: none
     push %rbp
     mov %rsp, %rbp
     push %r12

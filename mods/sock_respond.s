@@ -23,6 +23,24 @@ headers_end:    .ascii "\r\n"
 headers_end_length = . - headers_end
 
 .section .text
+# Function: sock_respond
+# Parameters:
+#   - %rdi: file path pointer
+#   - %rsi: HTTP status code
+# Global Registers:
+#   - %r12: socket file descriptor
+#   - %r13: connection file descriptor
+#   - %r14: content size
+#   - %r15: server configuration pointer
+# Return Values:
+#   - None
+# Error Handling:
+#   - Logs errors if file operations fail
+#   - Sends appropriate HTTP status codes
+# Side Effects:
+#   - Writes to socket
+#   - Modifies response buffers
+#   - Calls logging functions
 
 .type sock_respond, @function
 sock_respond:
