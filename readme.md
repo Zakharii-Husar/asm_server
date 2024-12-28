@@ -1,10 +1,37 @@
+# ASM Server
+
+A lightweight HTTP server written entirely in x86_64 assembly language for Linux systems.
+
+## Overview
+
+This project implements a fully functional HTTP server in assembly language, capable of:
+- Serving static files
+- Handling concurrent connections through process forking
+- Configurable settings via server.conf
+- Comprehensive logging system
+- Graceful shutdown handling
+
+## Features
+
+- **Pure Assembly**: Written entirely in x86_64 assembly language
+- **Configuration**: Customizable through server.conf file
+- **Logging System**: Separate logs for access, errors, warnings, and system events
+- **Static File Serving**: Serves files from configured public directory
+- **Process Management**: Uses forking for handling concurrent connections
+- **Error Pages**: Custom error pages for 400, 404, 405, and 500 responses
+- **Signal Handling**: Graceful shutdown on SIGINT (Ctrl+C)
+
+## Configuration
+
+The server can be configured through `server.conf`:
+
 ## REGISTERS
 
 ### Callee-Saved Registers:
 - **%r12** holding the socket FD;
-- **%r13** hodling Connection FD;
+- **%r13** holding Connection FD;
 - **%r14** holding the client's IP after sock_accept call;
-- **%r15** holds all the server's configuration's after parsing configure values (host, port, default directories etc) if parsing server.conf was successful, otherwise hardcoded fallback values;
+- **%r15** holds all the server's configuration after parsing configure values (host, port, default directories etc) if parsing server.conf was successful, otherwise hardcoded fallback values;
 
 
 
@@ -62,19 +89,19 @@ Side effects: handling incoming connections.
 Here we get the control over connection handling. It runs a loop and does following:
 
  1. Takes the earlier created and bound socket.
- 2. Block (wait) until client tries to onnect.
+ 2. Block (wait) until client tries to connect.
  3. When a client connects, create a new socket for communication with that client.
  4. Return the file descriptor for the new socket, which will be used to send/receive data to/from that specific client.
 
 Syscall parameters for accepting a connection:
 
- 1. **%rdi**:  the listening socket file descriptor (in **%rbx** since socket creation).
- 2. **rsi**: A pointer to a struct sockaddr where the client address will be stored (in my case I don't care about it so passing zero).
+ 1. **%rdi**:  the listening socket file descriptor (in **%r12** since socket creation).
+ 2. **%rsi**: A pointer to a struct sockaddr where the client address will be stored (in my case I don't care about it so passing zero).
  3. **%rdx**: a pointer to a length of the address. Since I'm not providing an address in this example, this is also NULL
 
-When connection is accepted its file descriptor is saved in **%rdi**.
+When connection is accepted its file descriptor is saved in **%r13**.
 
-The new socket file descriptor (now in **%rdi**) is the one I'll use to send and receive data with this client, such as responding to HTTP requests. The original listening socket (in **%rbx**) remains open for further connections.
+The new socket file descriptor (in **%r13**) is the one I'll use to send and receive data with this client, such as responding to HTTP requests. The original listening socket (in **%r12**) remains open for further connections.
 
 It's possible to use syscalls like **read** and **write** on this new socket to interact with the client.
 
@@ -111,8 +138,8 @@ Side effects: Sending HTTP response to the client.
 
 System call sendto(44) takes following parameters:
 
-1. **%rdi** connection FD.
-2. **%%rsi** address to the response.
+1. **%rdi** connection FD (copied from **%r13**).
+2. **%rsi** address to the response.
 3. **%rdx** data length.
 4. **%r10** flags(type int): 0 (by default) do nothing, MSG_DONTWAIT, MSG_CONFIRM. 
 
@@ -126,44 +153,62 @@ Side effects: Closing connection for parent and child.
 
 The syscall for closing the connection takes 1 argument in **%rdi**: the connection File Descriptor.
 
-## UTILS
+## Configuration, Validation & Logging System
+The server has robust configuration, validation and logging system with fallbacks to default values.
 
-### 1. print_info
+### Configuration & Validation flow
+- Configuration file is parsed.
+- Log files are opened based on config paths or created if files or paths are missing.
+- If something was missing it's reported to warning log.
+- Configuration values are validated.
+- If something was missing it's reported to warning log.
 
-Parameters:
-- **%rsi** holds pointer to the string.
-- **%rdx** holds length of the string.
-Return value: void.
-Side effects: making a system call to write to stdout.
+### Configuration **File**
+The server uses a configuration file located at `./conf/server.conf`. Each setting follows the format: KEY=VALUE.
 
-Placed logic for printig any information to the terminal (status updates, errors etc). **%rax** and **%rdi** registers had to be pushed on stack before executing the function's code and popped back after the syscall to prevent register clobbering (otherwise the function was interfering with the Socket functions which were using the same registers while printing status updates about socket creation, binding etc).
+### Configuration **Parsing**
+All configuration values are initialized in the `server_init` function
+with 0s for strings and -1 for numbers.
+The server parses the configuration file upon startup. Found values rewrite 0s or -1 .If some values are missing, the parser skips them.
 
-### 2. int_to_string
-Parameters:
-- **%rdi** accepting an integer to convert to string.
-- 
-Return values: 
-- **%rax** points to the first string character in the buffer.
-- **%rdx** contains the string length.
+### Configuration **Validation**
+The server validates provided config values in the global struct. If some values are missing(or even if the whole file is missing), the server falls back to default values.
 
-Side effects: none.
+### Logging **System**
+The server uses a logging system to record access, error, warning, and system events. Logs are stored in the `./logs` directory.
 
-To convert an integer to string i had to do the following:
- - Iterate through each digit in the number;
- - Convert it from ASCII number to string encoding;
- - Push the newly converted digit to a buffer;
- - Add zero character to the buffer to indicate the end of the string;
+### Error **Pages**
+The server uses custom error pages for 400, 404, 405, and 500 responses.
 
-Iterating through a number was achieved by dividing dividend (the input number) by 10, which will cause the reminder(the number after the digit) to be the last digit of dividend and quotient (the result of the division) to be all the digits of the dividend except of reminder.
-This is set up in a loop **jnz** starts it all over until quotient is zero. 
+### Graceful **Shutdown**
+The server handles graceful shutdown on SIGINT (Ctrl+C)
+by preventing exiting immediately and instead waiting for all the connections and files to be closed.
 
-The only problem with that algorithm is that every iteration it always returns the last (least sagnificant) digit from the number. And if i push it directly to the buffer the whole number will be reversed. So Instead I'm writing from left to right in the buffer: loading buffer's effective address, then adding  buffer's length to buffer pointer to move the pointer in the end of the buffer. First character that will be written in the buffer is the string terminator(since technically it's in the end of the string): ``movb $0, (%rsi)``. After that, inside of a loop I decrement buffer pointer to move it backwards and start writing digits.
+## Supported File Formats
 
-The way each character is converted inside of this loop is by **addb** instruction which takes the reminder value from **%dl** (which is lower part of **%rdx**)  and adds '0' to it (because in ASCII it represents 48 in decimal, could use either '0' or 48) for each digit. Since offset between a digit as integer and digit as a character for each digit is 48 in ASCII, for example:
-digit 0 will be '0' as ASCII character and 48 as ASCII Value (Decimal), and digit 1 will be '1' as ASCII Character and 49 as ASCII Value (Decimal) and so on.
+The server supports serving the following file types with appropriate MIME types:
 
-Then converted character is getting moved to the buffer: ``movb %dl, (%rsi)`` (**%rsi** holds current buffer position). After that we check if qutient is zero and either exit loop or decrement current buffer position by 1 byte and increment the string length counter.
+### Web Documents
+- HTML (`.html`) - `text/html`
+- CSS (`.css`) - `text/css`
+- JavaScript (`.js`) - `text/javascript`
 
-### 3. file_open
+### Images
+- JPEG (`.jpg`, `.jpeg`) - `image/jpeg`
+- PNG (`.png`) - `image/png`
+- GIF (`.gif`) - `image/gif`
+- WebP (`.webp`) - `image/webp`
+- SVG (`.svg`) - `image/svg+xml`
+- ICO (`.ico`) - `image/x-icon`
 
+All other file types will be served as `application/octet-stream` by default.
 
+## Security
+
+### Preventing Buffer Overflows
+The server uses size checks everywhere (functions like str_cat).
+If the size of the string is greater than the buffer, the function will truncate the string and writes entry to the error log.
+
+### Preventing Directory Traversal
+The server checks for directory traversal in the file path.
+If the path contains "..\" or "../" or ".." or "%", the server will not serve the file and writes entry to the error log.
