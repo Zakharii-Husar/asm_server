@@ -1,4 +1,6 @@
-[2024-12-27T18:52:18-600] ERROR#4:CRITICAL: Failed to accept connection in sock_accept.s
-str_cat.s
-17:25:08-600] ERROR#199970:MODERATE: buffer overflow detected in str_cat.s
-
+[2024-12-27T20:15:51-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-27T20:22:04-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-27T20:24:06-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-27T20:31:24-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-27T20:33:56-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-27T20:34:28-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s

@@ -1,6 +1,6 @@
 .section .data
 log_file_flags: .long 0644                    # File permissions (rw-r--r--)
-log_open_file_mode: .long 02                  # O_RDWR
+log_open_file_mode: .long 02002               # O_RDWR | O_APPEND
 log_create_file_mode: .long 02102             # O_RDWR | O_CREAT | O_APPEND
 
 # Creation messages (to be logged after files are opened)
@@ -22,17 +22,17 @@ create_system_log_len = . - create_system_log_msg
 .system_log_path_warn_msg: .asciz "System log file path is not set, using default path in open_log_files.s"
 .system_log_path_warn_msg_len = . - .system_log_path_warn_msg
 
-.default_error_log: .asciz "./log/error.log"
-.default_error_log_len = . - .default_error_log
+.default_error_log_path: .asciz "./log/error.log"
+.default_error_log_path_len = . - .default_error_log_path
 
-.default_access_log: .asciz "./log/access.log"
-.default_access_log_len = . - .default_access_log
+.default_access_log_path: .asciz "./log/access.log"
+.default_access_log_path_len = . - .default_access_log_path
 
-.default_warning_log: .asciz "./log/warning.log"
-.default_warning_log_len = . - .default_warning_log
+.default_warning_log_path: .asciz "./log/warning.log"
+.default_warning_log_path_len = . - .default_warning_log_path
 
-.default_system_log: .asciz "./log/system.log"
-.default_system_log_len = . - .default_system_log
+.default_system_log_path: .asciz "./log/system.log"
+.default_system_log_path_len = . - .default_system_log_path
 
 .section .text
 .globl open_log_files
@@ -57,8 +57,8 @@ open_log_files:
     cmpb $0, (%rdi)
     jne .check_error_log_path
     lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
-    lea .default_warning_log(%rip), %rsi
-    mov $.default_warning_log_len, %rdx
+    lea .default_warning_log_path(%rip), %rsi
+    mov $.default_warning_log_path_len, %rdx
     mov $CONF_WARNING_LOG_PATH_SIZE, %rcx
     call str_cat
     
@@ -68,22 +68,32 @@ open_log_files:
     cmpb $0, (%rdi)
     jne .check_access_log_path
     lea CONF_ERROR_LOG_PATH_OFFSET(%r15), %rdi
-    lea .default_error_log(%rip), %rsi
-    mov $.default_error_log_len, %rdx
+    lea .default_error_log_path(%rip), %rsi
+    mov $.default_error_log_path_len, %rdx
     mov $CONF_ERROR_LOG_PATH_SIZE, %rcx
     call str_cat
 
 .check_access_log_path:
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
     cmpb $0, (%rdi)
-    jne .continue_opening_files
+    jne .check_system_log_path
     lea CONF_ACCESS_LOG_PATH_OFFSET(%r15), %rdi
-    lea .default_access_log(%rip), %rsi
-    mov $.default_access_log_len, %rdx
+    lea .default_access_log_path(%rip), %rsi
+    mov $.default_access_log_path_len, %rdx
     mov $CONF_ACCESS_LOG_PATH_SIZE, %rcx
     call str_cat
 
-.continue_opening_files:
+.check_system_log_path:
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi
+    cmpb $0, (%rdi)
+    jne .try_warning_log
+    lea CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %rdi
+    lea .default_system_log_path(%rip), %rsi
+    mov $.default_system_log_path_len, %rdx
+    mov $CONF_SYSTEM_LOG_PATH_SIZE, %rcx
+    call str_cat
+
+.try_warning_log:
     # TRY TO OPEN WARNING LOG FILE
     lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
     mov log_open_file_mode(%rip), %rsi

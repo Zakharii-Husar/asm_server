@@ -25,39 +25,43 @@
 
 .type sock_close_conn, @function
 sock_close_conn:
+    push %rbp
+    mov %rsp, %rbp
+    mov %rdi, %r8
 
-push %rbp                                           # save the caller's base pointer
-mov %rsp, %rbp                                      # set the new base pointer (stack frame)
-mov %rdi, %r8                                      # save the  input parameter
+    # Check if connection FD is valid
+    cmp $0, %r13
+    jle .exit_sock_close
 
-mov    %r13, %rdi                                   # connection file descriptor
-mov    $SYS_close, %rax                             # sys_close (system call number for closing a file descriptor: 3)
-syscall                                             # close the connection
+    mov %r13, %rdi
+    mov $SYS_close, %rax
+    syscall
+    
+    # Only check for errors if we're not shutting down
+    movq server_shutdown_flag(%rip), %r9
+    test %r9, %r9
+    jnz .exit_sock_close
+    
+    cmp $0, %rax
+    jl .handle_close_conn_error
 
- cmp $0, %r8                                       # 0 for parent process, 1 for child
- 
- je .handle_sock_close_parent
- #  handle_sock_close_child:
-  cmp $0, %rax                                      # Compare the return value with 0
- jl  handle_sock_close_child_err                    # Jump to error handling if %rax < 0
+.exit_sock_close:
+    pop %rbp
+    ret
 
-
- .handle_sock_close_parent:
- cmp $0, %rax                                       # Compare the return value with 0
- jl  .handle_sock_close_parent_err                   # Jump to error handling if %rax < 0
-
-
-pop %rbp                                             # restore the caller's base pointer
-ret                                                  # return to the caller
+.handle_close_conn_error:
+    cmp $0, %r8
+    je .handle_sock_close_parent_err
+    jmp handle_sock_close_child_err
 
 .handle_sock_close_parent_err:
- lea .sock_close_parent_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
- mov $.sock_close_parent_err_msg_length, %rsi         # length of the message (from constants.s)
- call print_info
- call exit_program
+    lea .sock_close_parent_err_msg(%rip), %rdi
+    mov $.sock_close_parent_err_msg_length, %rsi
+    call print_info
+    call exit_program
 
- handle_sock_close_child_err:
- lea .sock_close_child_err_msg(%rip), %rdi            # pointer to the message (from constants.s)
- mov $.sock_close_child_err_msg_length, %rsi          # length of the message (from constants.s)
- call print_info
- call exit_program
+handle_sock_close_child_err:
+    lea .sock_close_child_err_msg(%rip), %rdi
+    mov $.sock_close_child_err_msg_length, %rsi
+    call print_info
+    call exit_program

@@ -76,6 +76,11 @@ sock_respond:
     lea response_header_B(%rip), %rdi
     call str_len              # Get the total length of headers
 
+    # check if the server is shutting down
+    movq server_shutdown_flag(%rip), %r8
+    test %r8, %r8
+    jnz .exit_sock_respond
+
     # SEND THE HEADER
     mov %rax, %rdx                 # Length of the entire header
     mov $SYS_write, %rax           # syscall number for write
@@ -85,7 +90,10 @@ sock_respond:
     cmp $0, %rax
     jl .handle_sock_respond_err
     
-
+    # check if the server is shutting down
+    movq server_shutdown_flag(%rip), %r8
+    test %r8, %r8
+    jnz .exit_sock_respond
 
     # SEND THE CONTENT
     mov $SYS_write, %rax           # syscall number for write
