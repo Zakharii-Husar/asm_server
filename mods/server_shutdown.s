@@ -28,6 +28,27 @@ server_shutdown:
     mov $SYS_close, %rax
     syscall
 
+    # Close log files
+    # Close warning log
+    mov CONF_WARNING_LOG_FD_OFFSET(%r15), %rdi
+    mov $SYS_close, %rax
+    syscall
+
+    # Close error log
+    mov CONF_ERROR_LOG_FD_OFFSET(%r15), %rdi
+    mov $SYS_close, %rax
+    syscall
+
+    # Close access log
+    mov CONF_ACCESS_LOG_FD_OFFSET(%r15), %rdi
+    mov $SYS_close, %rax
+    syscall
+
+    # Close system log
+    mov CONF_SYSTEM_LOG_FD_OFFSET(%r15), %rdi
+    mov $SYS_close, %rax
+    syscall
+
     # Restore registers
     pop %rbp
 
