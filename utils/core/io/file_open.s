@@ -12,6 +12,9 @@ read_err_msg_length = . - read_err_msg
 buffer_overflow_err_msg: .asciz "CRITICAL: buffer overflow in file_open.s"
 buffer_overflow_err_msg_length = . - buffer_overflow_err_msg
 
+directory_traversal_err_msg: .asciz "CRITICAL: directory traversal in file_open.s"
+directory_traversal_err_msg_length = . - directory_traversal_err_msg
+
 .equ stat_buffer_size, 144
 
 .section .bss
@@ -53,10 +56,14 @@ file_open:
 
     # 2. SAVE PARAMETERS
     mov %rsi, %rbx      # response buffer
-    mov $0, %r9        # Initialize return file size
     mov %rcx, %r12     # save null termination flag
     mov %rdi, %r13     # save file path
     mov %rdx, %r14     # save buffer size
+
+    # file path is already in %rdi
+    call validate_file_path
+    cmp $0, %rax
+    je .handle_directory_traversal
 
     # 3. CLEAR THE BUFFERS
     lea stat_buffer(%rip), %rdi
@@ -68,6 +75,7 @@ file_open:
     call clear_buffer
     
     # 4. OPEN THE FILE
+    mov $0, %r9                        # Initialize return file size
     mov %r13, %rdi                     # file path
     mov $SYS_open, %rax                # sys_open
     mov $0, %rsi                       # flags = O_RDONLY
@@ -209,3 +217,12 @@ file_open:
 
         mov $-1, %rax
         jmp .exit_file_open 
+
+        .handle_directory_traversal:
+        lea directory_traversal_err_msg(%rip), %rdi
+        mov $directory_traversal_err_msg_length, %rsi
+        mov $-2, %rdx
+        call log_err
+
+        mov $-1, %rax
+        jmp .exit_file_open  

@@ -35,6 +35,7 @@
 .include "./utils/core/io/print_info.s"
 .include "./utils/core/io/file_open.s"
 .include "./utils/core/memory/clear_buffer.s"
+.include "./utils/core/validation/validate_file_path.s"
 
 # Core string operations
 .include "./utils/core/str/str_len.s"
@@ -45,6 +46,7 @@
 .include "./utils/core/str/str_to_int.s"
 .include "./utils/core/str/int_to_str.s"
 .include "./utils/core/str/char_cmp.s"
+.include "./utils/core/str/str_contains.s"
 
 # Server configuration
 .include "./utils/server/config/init_srvr_config.s"

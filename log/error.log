@@ -4,3 +4,77 @@
 [2024-12-27T20:31:24-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
 [2024-12-27T20:33:56-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
 [2024-12-27T20:34:28-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T02:08:18-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T02:08:33-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:03-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:04-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:04-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:16-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:22:01-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:22:01-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:22:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:22:01-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:22:01-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:22:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:22:02-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:22:02-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:22:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
+[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
+[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
