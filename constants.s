@@ -10,10 +10,10 @@
     semicolon_char: .asciz ":"
     open_square_bracket_char: .string "[" 
     close_square_bracket_char: .string "]"  
-    slash_char: .asciz "/"
-    quote_char: .asciz "\""
     zero_char: .string "0"
     time_separator_char: .string "T"
+    slash_char: .asciz "/"
+    quote_char: .asciz "\""
 
     # GENERIC STRINGS
     CRLF:        .ascii "\r\n"
@@ -22,10 +22,12 @@
     # sys_call args
     .equ SYS_read, 0
     .equ SYS_write, 1
+    .equ SYS_stdout, 1
     .equ SYS_open, 2
     .equ SYS_close, 3
     .equ SYS_fstat, 5
-    .equ SYS_stdout, 1
+    .equ SYS_rt_sigaction, 13
+    .equ SYS_rt_sigreturn, 15
     .equ SYS_sock_create, 41
     .equ SYS_sock_bind, 49
     .equ SYS_sock_accept, 43

@@ -1,43 +1,50 @@
-.section .data
-sigaction:
-    .quad handle_sigint     # sa_handler
-    .quad 0                 # sa_flags
-    .quad 0                 # sa_restorer
-    .fill 128,1,0           # sa_mask
-
-.section .rodata
-shutdown_msg: .asciz "Server shutting down gracefully...\n"
-shutdown_msg_len = . - shutdown_msg
-
-# Constants
+# Add syscall definitions at the top
 .equ SYS_rt_sigaction, 13
-.equ SIGINT, 2
-.equ SYS_close, 3
-.equ SYS_exit, 60
+.equ SYS_rt_sigreturn, 15
+.equ SA_RESTORER, 0x04000000
+
+.section .data
+.align 8
+.global server_shutdown_flag    
+server_shutdown_flag:
+    .quad 0                    
+
+# Signal handler setup structure with proper flags and restorer
+sigaction:
+    .quad handle_sigint        # sa_handler
+    .quad SA_RESTORER         # sa_flags
+    .quad sigreturn           # sa_restorer
+    .quad 0                   # sa_mask[0]
+    .fill 15,8,0             # rest of sa_mask
+
+debug_msg: .asciz "Signal caught!\n"
+debug_msg_len = . - debug_msg
 
 .section .text
 .global signal_handler
-.type signal_handler, @function
 signal_handler:
-    push %rbp
-    mov %rsp, %rbp
-
-    mov $SYS_rt_sigaction, %rax   # sigaction syscall
-    mov $SIGINT, %rdi             # SIGINT signal
-    lea sigaction(%rip), %rsi     # new handler
-    xor %rdx, %rdx                # old handler (NULL)
-    mov $8, %r10                  # sigsetsize
+    # Register SIGINT handler with proper restorer
+    mov $SYS_rt_sigaction, %rax
+    mov $2, %rdi               # SIGINT
+    lea sigaction(%rip), %rsi  # new action
+    xor %rdx, %rdx            # old action (NULL)
+    mov $8, %r10              # sigsetsize
     syscall
-
-    pop %rbp
     ret
 
 handle_sigint:
-    # Close the socket using sock_close_conn
-    xor %rdi, %rdi       # 0 for parent process
-    call sock_close_conn
+    # Write debug message first
+    mov $1, %rax              # sys_write
+    mov $2, %rdi              # stderr
+    lea debug_msg(%rip), %rsi
+    mov $debug_msg_len, %rdx
+    syscall
 
-    # Exit program using exit_program
-    xor %rdi, %rdi       # 0 for parent process
-    call exit_program
+    # Set shutdown flag
+    movq $1, server_shutdown_flag(%rip)
+    ret
+
+sigreturn:
+    mov $SYS_rt_sigreturn, %rax
+    syscall
     

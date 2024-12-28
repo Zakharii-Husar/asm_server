@@ -1,5 +1,5 @@
 .section .rodata
-sys_prefix_base: .asciz " SYSTEM"
+sys_prefix_base: .asciz " SYSTEM: "
 sys_prefix_base_length = . - sys_prefix_base
 
 .equ sys_log_B_size, 1024
@@ -38,15 +38,8 @@ log_sys:
 
     # Add socket prefix
     lea sys_log_B(%rip), %rdi
-    lea socket_prefix_base(%rip), %rsi
-    mov $socket_prefix_base_length, %rdx
-    mov $sys_log_B_size, %rcx
-    call str_cat
-    
-    # Add semicolon separator
-    lea sys_log_B(%rip), %rdi
-    lea semicolon_char(%rip), %rsi
-    mov $1, %rdx
+    lea sys_prefix_base(%rip), %rsi
+    mov $sys_prefix_base_length, %rdx
     mov $sys_log_B_size, %rcx
     call str_cat
 
@@ -73,8 +66,13 @@ log_sys:
     mov $SYS_write, %rax
     syscall
 
+    lea sys_log_B(%rip), %rdi
+    xor %rsi, %rsi
+    call print_info
+
     # Clean up
     pop %r13
     pop %r12
     pop %rbp
     ret
+    

@@ -12,6 +12,7 @@
 
 
 .section .data
+
 .include "./constants.s"
 
 .section .text
@@ -28,6 +29,7 @@
 .include "./mods/fork_handle_parent.s"
 .include "./mods/exit_program.s"
 .include "./mods/signal_handler.s"
+.include "./mods/server_shutdown.s"
 
 # Core utilities
 .include "./utils/core/io/print_info.s"
@@ -54,6 +56,7 @@
 .include "./utils/server/config/logging/log_access.s"
 .include "./utils/server/config/logging/log_warn.s"
 .include "./utils/server/config/logging/log_err.s"
+.include "./utils/server/config/logging/log_sys.s"
 .include "./utils/server/config/validate_config.s"
 # HTTP functionality
 .include "./utils/server/http/headers/create_type_header.s"
@@ -78,10 +81,8 @@
 
 .global _start
 _start:
-
-    # Handle signals (like ctrl+c)
+    # 0. Call signal handler to listen for Ctrl+C
     call signal_handler
-
     # 0. Initialize server config
     call init_srvr_config
     # ----------------------------
@@ -100,6 +101,9 @@ _start:
 
     # Main server loop (parent process will jump here after forking)
 .main_loop:
+    movq server_shutdown_flag(%rip), %rax
+    test %rax, %rax
+    jnz .initiate_shutdown
     # ----------------------------
     # 4. Accept connection (blocking call)
     # ----------------------------
@@ -123,3 +127,5 @@ _start:
     call fork_handle_parent
 
 jmp .main_loop
+    .initiate_shutdown:
+        call server_shutdown

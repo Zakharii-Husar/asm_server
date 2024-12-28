@@ -1,1 +1,4 @@
-[2024-12-25T23:17:03-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-27T18:52:18-600] ERROR#4:CRITICAL: Failed to accept connection in sock_accept.s
+str_cat.s
+17:25:08-600] ERROR#199970:MODERATE: buffer overflow detected in str_cat.s
+
