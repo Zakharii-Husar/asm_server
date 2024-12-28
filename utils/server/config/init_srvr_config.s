@@ -3,6 +3,9 @@
 server_start_msg: .asciz "Server started"
 server_start_msg_len = . - server_start_msg
 
+configuration_msg: .asciz "Configuration loaded"
+configuration_msg_len = . - configuration_msg
+
 server_conf_path: .asciz "./conf/server.conf"
 config_load_err_msg: .asciz "\033[31mFailed to load server config! ❌\033[0m\n"
 config_load_success_msg: .asciz "\033[32mServer config loaded successfully! ✅\033[0m\n"
@@ -93,5 +96,11 @@ init_srvr_config:
     lea server_start_msg(%rip), %rdi
     mov $server_start_msg_len, %rsi
     call log_sys
+
+    lea configuration_msg(%rip), %rdi
+    mov $configuration_msg_len, %rsi
+    call log_sys
+
     pop %rbp
     ret
+    

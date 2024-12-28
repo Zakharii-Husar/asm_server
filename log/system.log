@@ -1,1 +1,6 @@
-
+[2024-12-27T19:50:53-600] SYSTEM: Server started
+[2024-12-27T19:50:53-600] SYSTEM: Configuration loaded
+[2024-12-27T19:50:53-600] SYSTEM: TCP socket created
+[2024-12-27T19:50:53-600] SYSTEM: TCP socket bound
+[2024-12-27T19:50:53-600] SYSTEM: TCP socket listening
+[2024-12-27T19:50:54-600] SYSTEM: Shutting down server...

@@ -1,5 +1,8 @@
 .section .rodata
 
+.sock_listen_msg:    .asciz "TCP socket listening"
+.sock_listen_msg_length = . - .sock_listen_msg
+
 .sock_listen_err_msg:    .asciz "CRITICAL: Socket failed to listen in sock_listen.s"
 .sock_listen_err_msg_length = . - .sock_listen_err_msg
 
@@ -28,6 +31,9 @@ sock_listen:
  cmp $0, %rax                               # Compare the return value with 0
  jl  .handle_sock_listen_err                # Jump to error handling if %rax < 0
 
+ lea .sock_listen_msg(%rip), %rdi
+ mov $.sock_listen_msg_length, %rsi
+ call log_sys
 
 .exit_sock_listen:
  pop %rbp                     # restore the caller's base pointer

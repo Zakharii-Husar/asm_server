@@ -4,7 +4,10 @@
     .space sock_addr_in_size      # 16 bytes for sockaddr_in structure
 
 .section .rodata
-    
+
+.sock_bind_msg:    .asciz "TCP socket bound"
+.sock_bind_msg_length = . - .sock_bind_msg
+
 .sock_bind_err_msg:    .asciz "CRITICAL: Failed to bind TCP Socket in sock_bind.s"
 .sock_bind_err_msg_length = . - .sock_bind_err_msg
 
@@ -40,6 +43,10 @@ sock_bind:
  cmp $0, %rax                           # Compare the return value with 0
  jl  .handle_sock_bind_err               # Jump to error handling if %rax < 0
     
+ lea .sock_bind_msg(%rip), %rdi
+ mov $.sock_bind_msg_length, %rsi
+ call log_sys
+
 .exit_sock_bind:
  pop %rbp                               # restore the caller's base pointer
  ret                                    # return to the caller

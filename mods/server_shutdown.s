@@ -34,3 +34,4 @@ server_shutdown:
     # Exit with success code
     xor %rdi, %rdi        # exit code 0
     call exit_program
+    

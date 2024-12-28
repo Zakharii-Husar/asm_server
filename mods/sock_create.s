@@ -3,6 +3,9 @@
 .sock_create_err_msg:    .asciz "CRITICAL: Failed to create TCP socket in sock_create.s"
 .sock_create_err_msg_length = . - .sock_create_err_msg  
 
+.sock_create_msg:    .asciz "TCP socket created"
+.sock_create_msg_length = . - .sock_create_msg  
+
 .section .text
 # Function: sock_create
 # Parameters:
@@ -28,6 +31,10 @@ sock_create:
  cmp $0, %rax                                # Compare the return value with 0
  jl  .handle_sock_create_err                 # Jump to error handling if %rax < 0
  mov %rax, %r12                              # save socket fd to %r12
+
+ lea .sock_create_msg(%rip), %rdi
+ mov $.sock_create_msg_length, %rsi
+ call log_sys
 
  pop %rbp                              # restore the caller's base pointer
  ret                                   # return to the caller
