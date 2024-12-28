@@ -45,6 +45,11 @@ sock_accept:
  ret                                           # return to the caller
  
 .handle_sock_accept_err:
+# check if the server is shutting down
+    movq server_shutdown_flag(%rip), %r8
+    test %r8, %r8
+    jnz .exit_sock_accept
+# if not, log the error
  lea .sock_accept_err_msg(%rip), %rdi
  mov $.sock_accept_err_msg_len, %rsi
  mov %rax, %rdx
