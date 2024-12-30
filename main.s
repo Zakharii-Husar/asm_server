@@ -13,6 +13,8 @@
 
 .section .data
 
+test_traversal: .asciz "/etc/passwd%"
+
 .include "./constants.s"
 
 .section .text
@@ -87,6 +89,8 @@ _start:
     call signal_handler
     # 0. Initialize server config
     call init_srvr_config
+
+
     # ----------------------------
     # 1. Create Socket
     # ----------------------------

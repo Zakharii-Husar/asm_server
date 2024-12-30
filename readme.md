@@ -212,3 +212,8 @@ If the size of the string is greater than the buffer, the function will truncate
 ### Preventing Directory Traversal
 The server checks for directory traversal in the file path.
 If the path contains "..\" or "../" or ".." or "%", the server will not serve the file and writes entry to the error log.
+
+### HTTP Request Validation
+The server validates the HTTP request.
+Only GET requests are supported.
+If the request is not valid, the server will serve 405 error page.

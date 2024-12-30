@@ -3,3 +3,52 @@
 [2024-12-27T20:15:41-600] WARN:Warning log file path is not set, using default path in open_log_files.s
 [2024-12-27T20:15:41-600] WARN:System log file path is not set, using default path in open_log_files.s
 [2024-12-27T20:15:41-600] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Access log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:37:53-1] WARN:Error log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:37:53-1] WARN:Warning log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:37:53-1] WARN:System log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:37:53-1] WARN:No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Invalid public directory path. Using default ./public in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Invalid default file. Using default index.html in validate_config.s
+[2024-12-28T18:37:53-1] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Access log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:39:33-1] WARN:Error log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:39:33-1] WARN:Warning log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:39:33-1] WARN:System log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:39:33-1] WARN:No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Invalid public directory path. Using default ./public in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Invalid default file. Using default index.html in validate_config.s
+[2024-12-28T18:39:33-1] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Access log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:40:31-1] WARN:Error log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:40:31-1] WARN:Warning log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:40:31-1] WARN:System log file path is not set, using default path in open_log_files.s
+[2024-12-28T18:40:31-1] WARN:No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Invalid public directory path. Using default ./public in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Invalid default file. Using default index.html in validate_config.s
+[2024-12-28T18:40:31-1] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
+[2024-12-28T14:49:19-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:20-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:20-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:21-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:21-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:21-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:26-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:26-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:26-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:56-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:56-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:49:56-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:50:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:50:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:50:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:52:14-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s

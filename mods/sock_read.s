@@ -119,6 +119,7 @@ sock_read:
 # HANDLE ERRORS
 
 .file_not_found:
+
     mov %r14, %rdi                             # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear (not %rsi)
     call clear_buffer
@@ -138,6 +139,7 @@ sock_read:
 
 .bad_request:
     # Clear the response_content_buffer before the next attempt
+
     mov %r14, %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer

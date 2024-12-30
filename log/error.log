@@ -1,80 +1,84 @@
-[2024-12-27T20:15:51-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
-[2024-12-27T20:22:04-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
-[2024-12-27T20:24:06-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
-[2024-12-27T20:31:24-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
-[2024-12-27T20:33:56-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
-[2024-12-27T20:34:28-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
-[2024-12-28T02:08:18-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
-[2024-12-28T02:08:33-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
-[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:02-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:03-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:04-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:04-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:10:09-600] ERROR#6777263:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:14:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:16-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:22-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:18:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:25-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:25-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:26-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:26-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:21:31-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:21:31-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:21:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:22:01-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:22:01-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:22:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:22:01-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:22:01-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:22:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:22:02-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:22:02-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:22:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
-[2024-12-28T02:23:02-600] ERROR#:ERROR: Path validation failed for: 
-[2024-12-28T02:23:02-600] ERROR#9:./public/sfs%.html
-[2024-12-28T02:23:02-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:37-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:37-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:37-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:38-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:38-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:38-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:43-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:43-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:39:43-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:08-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:08-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:08-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:09-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:09-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:09-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:14-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:14-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:14-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:45-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:45-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:41:45-600] ERROR#1:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:09-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:09-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:09-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:10-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:10-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:10-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:45-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:45-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:45:46-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:46:46-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:46:46-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:46:46-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:57:14-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:57:14-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T14:57:14-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:01:49-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:02:16-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T15:05:07-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:05:41-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:09:25-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T15:09:46-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T15:10:15-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T15:11:23-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:12:49-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-28T15:13:27-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-28T15:14:12-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:14:12-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:16:32-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:17:13-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:17:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:17:52-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:18:31-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:19:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:19:26-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:19:50-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:20:18-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:21:07-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:50:46-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:51:05-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:51:20-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:51:25-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:51:28-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:51:35-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T15:57:47-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T15:57:57-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:02:34-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+ ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:27:11-600] ERROR:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:29:13-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:32:57-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:36:12-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T16:36:55-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T16:37:01-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T16:38:11-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T21:44:33-600] ERROR#98:[2024-12-29T22:11:54-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T22:15:04-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T22:15:16-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-29T22:56:08-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T22:58:19-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T23:17:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s

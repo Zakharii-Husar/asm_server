@@ -1,5 +1,8 @@
 .section .data
 
+test_msg: .asciz "test"
+test_msg_length = . - test_msg
+
 fstat_err_msg:    .asciz "CRITICAL: failed to get fstat in file_open.s"
 fstat_err_msg_length = . - fstat_err_msg
 

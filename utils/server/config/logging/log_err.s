@@ -1,14 +1,15 @@
 .section .rodata
 error_prefix_base: .asciz " ERROR"
 error_prefix_base_length = . - error_prefix_base
-
 .equ err_log_B_size, 1024
+
 
 .section .bss
 .lcomm err_log_B, err_log_B_size   # Buffer for constructing error log entry
 
 .section .text
 .globl log_err
+.type log_err, @function
 # Function: log_err
 # Parameters:
 #   - %rdi: pointer to error description string
@@ -116,7 +117,6 @@ log_err:
     lea err_log_B(%rip), %rdi
     xor %rsi, %rsi
     call print_info 
-    
 
     # Clean up
     pop %r14

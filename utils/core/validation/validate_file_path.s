@@ -28,29 +28,29 @@ validate_file_path:
     je .invalid_path
     
     # 2. Check for "../" sequence
-    mov %r12, %rdi              # Main string is already in %r12
-    lea dotdot_slash(%rip), %rsi    # Load effective address of "../"
+    mov %r12, %rdi              
+    lea dotdot_slash(%rip), %rsi    
     call str_contains
     cmp $1, %rax
     je .invalid_path
     
     # 3. Check for "..\" sequence
-    mov %r12, %rdi              # Main string is already in %r12
-    lea dotdot_backslash(%rip), %rsi    # Load effective address of "..\"
+    mov %r12, %rdi              
+    lea dotdot_backslash(%rip), %rsi    
     call str_contains
     cmp $1, %rax
     je .invalid_path
     
     # 4. Check for ".." at end of path
-    mov %r12, %rdi              # Main string is already in %r12
-    lea dotdot_end(%rip), %rsi      # Load effective address of ".."
+    mov %r12, %rdi              
+    lea dotdot_end(%rip), %rsi      
     call str_contains
     cmp $1, %rax
     je .invalid_path
     
     # 5. Check for percent encoding (URL encoding)
-    mov %r12, %rdi              # Main string is already in %r12
-    lea percent(%rip), %rsi         # Load effective address of "%"
+    mov %r12, %rdi              
+    lea percent(%rip), %rsi         
     call str_contains
     cmp $1, %rax
     je .invalid_path
@@ -61,7 +61,6 @@ validate_file_path:
     
 .invalid_path:
     mov $0, %rax
-    
 .validation_done:
     pop %r12
     pop %rbp
