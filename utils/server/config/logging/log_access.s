@@ -66,7 +66,8 @@ log_access:
     call str_cat
     
     # Add method
-    pop %rdi
+    pop %rdi                   # restore method pointer, stack is now misaligned
+    sub $8, %rsp               # align stack to 16-byte boundary
     mov %rdi, %rsi
     lea access_log_buffer(%rip), %rdi
     xor %rdx, %rdx # string length
@@ -156,5 +157,5 @@ log_access:
     pop %r13            # restore preserved registers
     pop %r12
     
-    pop %rbp
+    leave                 # restore stack frame
     ret

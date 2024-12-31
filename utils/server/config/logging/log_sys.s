@@ -20,7 +20,7 @@ sys_prefix_base_length = . - sys_prefix_base
 log_sys:
     push %rbp
     mov %rsp, %rbp
-    
+    sub $8, %rsp               # align stack to 16-byte boundary
     # Preserve registers
     push %r12
     push %r13
@@ -78,6 +78,6 @@ log_sys:
     # Clean up
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret
     

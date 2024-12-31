@@ -7,40 +7,40 @@
 .section .text
 .type fork_handle_child, @function
 fork_handle_child:
-push %rbp                    # save the caller's base pointer
-mov %rsp, %rbp               # set the new base pointer (stack frame)
+    push %rbp                    # save the caller's base pointer
+    mov %rsp, %rbp              # set the new base pointer (stack frame)
+    sub $8, %rsp                # align stack to 16-byte boundary
 
-lea req_B(%rip), %rdi
-mov $req_B_size, %rsi
-call clear_buffer
+    lea req_B(%rip), %rdi
+    mov $req_B_size, %rsi
+    call clear_buffer
 
-lea file_path_B(%rip), %rdi
-mov $file_path_B_size, %rsi
-call clear_buffer
+    lea file_path_B(%rip), %rdi
+    mov $file_path_B_size, %rsi
+    call clear_buffer
 
-lea extension_B(%rip), %rdi
-mov $extension_B_size, %rsi
-call clear_buffer   
+    lea extension_B(%rip), %rdi
+    mov $extension_B_size, %rsi
+    call clear_buffer   
 
-# child_process: 
-lea req_B(%rip), %rdi                # 1st param: request buffer
-lea file_path_B(%rip), %rsi          # 2nd param: route buffer
-lea extension_B(%rip), %rdx          # 3rd param: extension buffer
-lea response_content_B(%rip), %rcx   # 4th param: response buffer
-call sock_read                       # Returns: %rax=content size, %rdx=status code
-
-
-# Prepare parameters for sock_respond (directly use return values from sock_read)
-lea response_content_B(%rip), %rdi        # 1st param: response content buffer
-mov %rax, %rsi                            # 2nd param: content size
-# mov %rdx, %rdx                          # 3rd param: status code (already in correct register)
-lea extension_B(%rip), %rcx               # 4th param: file extension
-call sock_respond
+    # child_process: 
+    lea req_B(%rip), %rdi                # 1st param: request buffer
+    lea file_path_B(%rip), %rsi          # 2nd param: route buffer
+    lea extension_B(%rip), %rdx          # 3rd param: extension buffer
+    lea response_content_B(%rip), %rcx   # 4th param: response buffer
+    call sock_read                       # Returns: %rax=content size, %rdx=status code
 
 
-mov $1, %rdi                 # passing 1 to indicate child process on sock_close
-call sock_close_conn         # Close the connection for the child
-call exit_program            # Exit the child process
+    # Prepare parameters for sock_respond (directly use return values from sock_read)
+    lea response_content_B(%rip), %rdi        # 1st param: response content buffer
+    mov %rax, %rsi                            # 2nd param: content size
+    # mov %rdx, %rdx                          # 3rd param: status code (already in correct register)
+    lea extension_B(%rip), %rcx               # 4th param: file extension
+    call sock_respond
 
-pop %rbp
-ret
+
+    mov $1, %rdi                # passing 1 to indicate child process on sock_close
+    call sock_close_conn        # Close the connection for the child
+    call exit_program           # Exit the child process
+
+    # No need for stack cleanup or ret since exit_program never returns

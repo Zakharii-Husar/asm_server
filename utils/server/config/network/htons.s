@@ -13,7 +13,7 @@ htons:
 #   - None
     push %rbp
     mov %rsp, %rbp
-
+    sub $8, %rsp               # align stack to 16-byte boundary
     # Convert to network byte order (swap bytes)
     mov %di, %ax              # Move port number to ax (16-bit)
     rol $8, %ax               # Rotate left by 8 bits (instead of xchg)
@@ -21,6 +21,6 @@ htons:
     # Zero-extend ax to rax for return value
     movzx %ax, %rax
     
-    pop %rbp
+    leave                     # restore stack frame
     ret
     

@@ -10,11 +10,12 @@
 .type fork_handle_parent, @function
 fork_handle_parent:
     push %rbp                    # save the caller's base pointer
-    mov %rsp, %rbp               # set the new base pointer (stack frame)
+    mov %rsp, %rbp              # set the new base pointer (stack frame)
+    sub $8, %rsp                # align stack to 16-byte boundary
 
     mov $0, %rdi                # passing 0 to indicate parent process on sock_close
-    call sock_close_conn         # Close the connection for the parent
+    call sock_close_conn        # Close the connection for the parent
 
-    pop %rbp                     # restore the caller's base pointer
-    ret                           # return to the caller
+    leave                       # restore stack frame (equivalent to: mov %rbp, %rsp; pop %rbp)
+    ret                        # return to the caller
     

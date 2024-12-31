@@ -43,11 +43,12 @@ server_read_err_msg_len = . - server_read_err_msg
 sock_read:
     push %rbp                               # save the caller's base pointer
     mov %rsp, %rbp                          # set the new base pointer (stack frame)
+    sub $8, %rsp                            # align stack to 16-byte boundary
 
     push %r12
     push %r13
     push %r14
-    push %rdx # extension buffer
+    push %rdx                               # extension buffer
 
     mov %r13, %r8                           # Preserve Connection FD    
     mov %rdi, %r12                          # request buffer
@@ -220,7 +221,8 @@ sock_read:
     pop %rdx  # restore http status code
     pop %r13
     pop %r12
-    pop %rbp                                  # restore the caller's base pointer
+    
+    leave                                   # restore stack frame (mov %rbp, %rsp; pop %rbp)
     ret
 
 

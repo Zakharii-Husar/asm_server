@@ -44,15 +44,16 @@ headers_end_length = . - headers_end
 
 .type sock_respond, @function
 sock_respond:
- push %rbp                           # save the caller's base pointer
- mov %rsp, %rbp                      # set the new base pointer (stack frame)
+    push %rbp                           # save the caller's base pointer
+    mov %rsp, %rbp                      # set the new base pointer (stack frame)
+    sub $8, %rsp                        # align stack to 16-byte boundary
 
- push %r12
- push %r14
- push %rcx
+    push %r12
+    push %r14
+    push %rcx
 
- mov %rdi, %r12 # response content buffer
- mov %rsi, %r14 # content size
+    mov %rdi, %r12                      # response content buffer
+    mov %rsi, %r14                      # content size
 
     push %rdx
     lea response_header_B(%rip), %rdi
@@ -124,15 +125,15 @@ sock_respond:
 
 
    .exit_sock_respond:
-   pop %r14
-   pop %r12
-   pop %rbp                     # restore the caller's base pointer
-   ret                          # return to the caller
+    pop %r14
+    pop %r12
+    leave                               # restore stack frame
+    ret                                 # return to the caller
 
 .handle_sock_respond_err:
-    lea sock_respond_err_msg(%rip), %rdi           # pointer to the message (from constants.s)
-    mov $sock_respond_err_msg_length, %rsi        # length of the message (from constants.s)
-    mov %rax, %rdx # error code
+    lea sock_respond_err_msg(%rip), %rdi
+    mov $sock_respond_err_msg_length, %rsi
+    mov %rax, %rdx                      # error code
     call log_err
     jmp .exit_sock_respond
     

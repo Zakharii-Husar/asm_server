@@ -20,30 +20,31 @@
 
 .type sock_listen, @function
 sock_listen:
- push %rbp                    # save the caller's base pointer
- mov %rsp, %rbp               # set the new base pointer (stack frame)
+    push %rbp                    # save the caller's base pointer
+    mov %rsp, %rbp              # set the new base pointer (stack frame)
+    sub $8, %rsp                # align stack to 16-byte boundary
 
- mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
- mov    $SYS_sock_listen, %rax
- lea CONF_MAX_CONN_OFFSET(%r15), %rsi
- syscall
+    mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
+    mov $SYS_sock_listen, %rax
+    lea CONF_MAX_CONN_OFFSET(%r15), %rsi
+    syscall
 
- cmp $0, %rax                               # Compare the return value with 0
- jl  .handle_sock_listen_err                # Jump to error handling if %rax < 0
+    cmp $0, %rax                          # Compare the return value with 0
+    jl  .handle_sock_listen_err           # Jump to error handling if %rax < 0
 
- lea .sock_listen_msg(%rip), %rdi
- mov $.sock_listen_msg_length, %rsi
- call log_sys
+    lea .sock_listen_msg(%rip), %rdi
+    mov $.sock_listen_msg_length, %rsi
+    call log_sys
 
 .exit_sock_listen:
- pop %rbp                     # restore the caller's base pointer
- ret                           # return to the caller
+    leave                                 # restore stack frame
+    ret                                  # return to the caller
 
 .handle_sock_listen_err:
- lea .sock_listen_err_msg(%rip), %rdi
- mov $.sock_listen_err_msg_length, %rsi
- call log_err
- mov $-1, %rax
- jmp .exit_sock_listen
+    lea .sock_listen_err_msg(%rip), %rdi
+    mov $.sock_listen_err_msg_length, %rsi
+    call log_err
+    mov $-1, %rax
+    jmp .exit_sock_listen
 
  

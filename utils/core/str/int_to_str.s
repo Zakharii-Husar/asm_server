@@ -14,26 +14,27 @@
 .section .text
 .type int_to_str, @function
 int_to_str:
-    # Proper stack frame setup
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp            # align stack for function calls
     
-    # Save important registers we'll need later
-    pushq %rbx
-    pushq %rdi        # Save original input number
+    push %r12              # will be used later
+    push %r13              # preserve original number
     
+    mov %rdi, %r13        # preserve original number
+
     # Clear buffer
     lea string_buffer(%rip), %rdi
     mov $string_buffer_size, %rsi
     call clear_buffer
     
     # Restore original number
-    popq %rdi
+    mov %r13, %rdi
     
-    # Rest of your conversion logic
+    # Rest of conversion logic
     lea string_buffer(%rip), %rsi
     addq $21, %rsi             # Move to end of buffer
-    movq $10, %rbx             # Divisor (base 10)
+    movq $10, %r12             # Divisor (base 10)
     xor %rcx, %rcx             # Reset length counter
     
     # Check if number is negative
@@ -53,7 +54,7 @@ int_to_str:
     decq %rsi                  
     incq %rcx                  
     xor %rdx, %rdx             
-    divq %rbx                  
+    divq %r12                  
     
     addb $'0', %dl            
     movb %dl, (%rsi)          
@@ -73,7 +74,7 @@ int_to_str:
     decq %rsi                  
     incq %rcx                  
     xor %rdx, %rdx             
-    divq %rbx                  
+    divq %r12                  
     
     addb $'0', %dl            
     movb %dl, (%rsi)          
@@ -84,11 +85,7 @@ int_to_str:
     movq %rsi, %rax           
     movq %rcx, %rdx           
     
-    # Add null termination
-    # will uncomment later
-    # movb $0, (%rsi, %rcx, 1)  # Add null byte at end of string
-    
-    # Proper stack frame cleanup
-    pop %rbx
-    pop %rbp
+    pop %r13
+    pop %r12
+    leave
     ret

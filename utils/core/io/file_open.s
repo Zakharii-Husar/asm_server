@@ -52,6 +52,8 @@ file_open:
     # 1. SAVE REGISTERS
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp              # align stack to 16-byte boundary
+    
     push %rbx
     push %r12
     push %r13
@@ -148,12 +150,11 @@ file_open:
     jne .exit_file_open
     inc %rax                        # Include null terminator in size if requested
     .exit_file_open:
-        # Restore registers
         pop %r14
         pop %r13
         pop %r12
         pop %rbx
-        pop %rbp
+        leave                # restore stack frame (mov %rbp, %rsp; pop %rbp)
         ret
         
     # HANDLE ERRORS

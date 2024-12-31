@@ -28,7 +28,7 @@ warn_prefix_base_length = . - warn_prefix_base
 log_warn:
     push %rbp
     mov %rsp, %rbp
-    
+    sub $8, %rsp               # align stack to 16-byte boundar
     # Preserve registers
     push %r12
     push %r13
@@ -86,5 +86,6 @@ log_warn:
     # Clean up
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret
+    

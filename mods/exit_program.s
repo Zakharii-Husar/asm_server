@@ -9,7 +9,11 @@ kill_child_err_msg_len = . - kill_child_err_msg
 
 .type exit_program, @function
 exit_program:
-    mov %rdi, %r8          # Save process type flag
+    push %rbp              # Preserve base pointer
+    mov %rsp, %rbp        # Set up new stack frame
+    sub $8, %rsp          # Align stack to 16-byte boundary
+    
+    mov %rdi, %r8         # Save process type flag
     mov $SYS_exit, %rax
     xor %rdi, %rdi        # return code 0
     syscall

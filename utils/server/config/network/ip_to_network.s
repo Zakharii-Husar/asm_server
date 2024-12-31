@@ -69,7 +69,7 @@ done_parsing:
     .exit_str_len:
     pop %r12
     pop %rbx
-    pop %rbp
+    leave                     # restore stack frame
     ret
 
 invalid_input:

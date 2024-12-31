@@ -82,3 +82,121 @@
 [2024-12-29T22:56:08-600] ERROR#2:CRITICAL: directory traversal in file_open.s
 [2024-12-29T22:58:19-600] ERROR#2:CRITICAL: directory traversal in file_open.s
 [2024-12-29T23:17:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-29T23:59:44-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T00:49:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:00:43-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:35:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:40:09-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:25-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:26-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:31-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T01:45:32-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:29:11-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:11-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:11-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:11-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:11-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:12-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:12-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:12-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:17-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:17-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:17-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:48-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:48-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:29:48-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:30:23-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-30T14:30:49-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-30T14:31:18-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:18-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:18-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:25-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:25-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:25-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:31:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:32:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:32:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:32:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:37:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:37:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:37:55-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:43-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:43-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:43-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:44-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:44-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:39:44-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:34-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:34-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:34-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:34-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:34-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:35-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:35-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:35-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:40-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:40-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:46:40-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:47:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:47:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:47:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:48:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:48:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:48:10-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:19-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:20-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:21-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:21-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:21-600] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2024-12-30T14:51:52-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2024-12-30T14:53:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:06-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:07-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T14:53:07-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:12:59-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:12:59-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:12:59-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:01-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:06-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:06-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:06-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:13:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:14:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:14:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:14:36-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:39-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:39-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:39-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:39-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:39-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:18:40-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:29:43-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:29:43-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2024-12-30T17:29:44-600] ERROR#2:CRITICAL: directory traversal in file_open.s

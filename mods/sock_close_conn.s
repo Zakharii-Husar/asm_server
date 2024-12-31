@@ -27,7 +27,9 @@
 sock_close_conn:
     push %rbp
     mov %rsp, %rbp
-    mov %rdi, %r8
+    sub $8, %rsp              # align stack to 16-byte boundary
+    
+    mov %rdi, %r8            # save process type flag
 
     # Check if connection FD is valid
     cmp $0, %r13
@@ -46,22 +48,22 @@ sock_close_conn:
     jl .handle_close_conn_error
 
 .exit_sock_close:
-    pop %rbp
+    leave                    # restore stack frame
     ret
 
 .handle_close_conn_error:
     cmp $0, %r8
     je .handle_sock_close_parent_err
-    jmp handle_sock_close_child_err
+
+.handle_sock_close_child_err:
+    lea .sock_close_child_err_msg(%rip), %rdi
+    mov $.sock_close_child_err_msg_length, %rsi
+    call print_info
+    call exit_program       # no need to clean up stack as this never returns
 
 .handle_sock_close_parent_err:
     lea .sock_close_parent_err_msg(%rip), %rdi
     mov $.sock_close_parent_err_msg_length, %rsi
     call print_info
-    call exit_program
+    call exit_program       # no need to clean up stack as this never returns
 
-handle_sock_close_child_err:
-    lea .sock_close_child_err_msg(%rip), %rdi
-    mov $.sock_close_child_err_msg_length, %rsi
-    call print_info
-    call exit_program

@@ -55,7 +55,7 @@ validate_config:
     mov %rsp, %rbp
     push %r12
     push %r13
-    
+    sub $8, %rsp               # align stack to 16-byte boundary
     # 1. Validate HOST
     mov CONF_HOST_OFFSET(%r15), %eax    # Get the network-formatted IP
     cmp $-1, %eax                       # Check if uninitialized (-1)
@@ -193,5 +193,5 @@ validate_config:
 
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret

@@ -18,8 +18,12 @@ sigaction:
     .fill 15,8,0             # rest of sa_mask
 
 .section .text
-.global signal_handler
+.type signal_handler, @function
 signal_handler:
+    push %rbp
+    mov %rsp, %rbp
+    sub $8, %rsp              # align stack to 16-byte boundary
+
     # Register SIGINT handler with proper restorer
     mov $SYS_rt_sigaction, %rax
     mov $2, %rdi               # SIGINT
@@ -27,6 +31,8 @@ signal_handler:
     xor %rdx, %rdx            # old action (NULL)
     mov $8, %r10              # sigsetsize
     syscall
+
+    leave                     # restore stack frame
     ret
 
 handle_sigint:

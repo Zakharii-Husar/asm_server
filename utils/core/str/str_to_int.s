@@ -93,6 +93,6 @@ str_to_int:
 
 .exit_str_to_int:
     pop %rbx
-    pop %rbp
+    leave                     # restore stack frame
     ret
     

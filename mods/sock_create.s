@@ -18,36 +18,32 @@
 .type sock_create, @function
 
 sock_create:
- push %rbp                    # save the caller's base pointer
- mov %rsp, %rbp               # set the new base pointer (stack frame)
- 
+    push %rbp                    # save the caller's base pointer
+    mov %rsp, %rbp              # set the new base pointer (stack frame)
+    sub $8, %rsp                # align stack to 16-byte boundary
 
- mov $SYS_sock_create, %rax
- mov $AF_INET, %rdi
- mov $SOCK_STREAM, %rsi
- mov $SOCK_PROTOCOL, %rdx
- syscall
+    mov $SYS_sock_create, %rax
+    mov $AF_INET, %rdi
+    mov $SOCK_STREAM, %rsi
+    mov $SOCK_PROTOCOL, %rdx
+    syscall
 
- cmp $0, %rax                                # Compare the return value with 0
- jl  .handle_sock_create_err                 # Jump to error handling if %rax < 0
- mov %rax, %r12                              # save socket fd to %r12
+    cmp $0, %rax                # Compare the return value with 0
+    jl  .handle_sock_create_err # Jump to error handling if %rax < 0
+    mov %rax, %r12              # save socket fd to %r12
 
- lea .sock_create_msg(%rip), %rdi
- mov $.sock_create_msg_length, %rsi
- call log_sys
+    lea .sock_create_msg(%rip), %rdi
+    mov $.sock_create_msg_length, %rsi
+    call log_sys
 
- pop %rbp                              # restore the caller's base pointer
- ret                                   # return to the caller
+    leave                       # restore stack frame
+    ret                        # return to the caller
 
-
-.exit_sock_create:
- pop %rbp
- ret
-
- .handle_sock_create_err:
- lea .sock_create_err_msg(%rip), %rdi
- mov $.sock_create_err_msg_length, %rsi
- call log_err
- mov $-1, %rax
- jmp .exit_sock_create
+.handle_sock_create_err:
+    lea .sock_create_err_msg(%rip), %rdi
+    mov $.sock_create_err_msg_length, %rsi
+    call log_err
+    mov $-1, %rax
+    leave                      # restore stack frame
+    ret                       # return to the caller
 

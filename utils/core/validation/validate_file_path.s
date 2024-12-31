@@ -63,5 +63,5 @@ validate_file_path:
     mov $0, %rax
 .validation_done:
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret

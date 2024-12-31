@@ -7,7 +7,7 @@ str_len:
 # Output: length in %rax
     push %rbp
     mov %rsp, %rbp
-    
+    sub $8, %rsp              # align stack to 16-byte boundary
     xor %rax, %rax           # Initialize counter to 0
     
 .str_len_loop:
@@ -18,6 +18,6 @@ str_len:
     jmp .str_len_loop                # Repeat
 
 .done:
-    pop %rbp
+    leave                     # restore stack frame
     ret 
     

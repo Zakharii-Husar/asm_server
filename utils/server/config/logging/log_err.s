@@ -28,7 +28,6 @@ error_prefix_base_length = . - error_prefix_base
 log_err:
     push %rbp
     mov %rsp, %rbp
-    
     # Preserve registers
     push %r12
     push %r13
@@ -122,6 +121,6 @@ log_err:
     pop %r14
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret
     

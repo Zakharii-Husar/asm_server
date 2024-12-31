@@ -22,39 +22,40 @@
 
 .type sock_bind, @function
 sock_bind:
- push %rbp                              # save the caller's base pointer
- mov %rsp, %rbp                         # set the new base pointer (stack frame)
+    push %rbp                              # save the caller's base pointer
+    mov %rsp, %rbp                         # set the new base pointer (stack frame)
+    sub $8, %rsp                          # align stack to 16-byte boundary
  
- # Initialize the struct before binding
- lea .addr_in(%rip), %rax               # Get pointer to struct
- movw $2, (%rax)                        # AF_INET
- movl CONF_PORT_OFFSET(%r15), %edx      # Get port from config into 32-bit register
- movw %dx, 2(%rax)                      # Store lower 16 bits into struct
- movl CONF_HOST_OFFSET(%r15), %edx      # Get host IP from config
- movl %edx, 4(%rax)                     # Store IP address into struct
- movq $0, 8(%rax)                       # Padding
+    # Initialize the struct before binding
+    lea .addr_in(%rip), %rax              # Get pointer to struct
+    movw $2, (%rax)                       # AF_INET
+    movl CONF_PORT_OFFSET(%r15), %edx     # Get port from config into 32-bit register
+    movw %dx, 2(%rax)                     # Store lower 16 bits into struct
+    movl CONF_HOST_OFFSET(%r15), %edx     # Get host IP from config
+    movl %edx, 4(%rax)                    # Store IP address into struct
+    movq $0, 8(%rax)                      # Padding
  
- mov %r12, %rdi                         # move socket fd into %rdi (1st arg for bind)
- mov    $SYS_sock_bind, %rax            # sys_bind
- lea     .addr_in(%rip), %rsi           # pointer to the address structure
- mov    $sock_addr_in_size, %rdx         # size of the sockaddr_in structure
- syscall                                # make syscall
+    mov %r12, %rdi                        # move socket fd into %rdi (1st arg for bind)
+    mov $SYS_sock_bind, %rax              # sys_bind
+    lea .addr_in(%rip), %rsi              # pointer to the address structure
+    mov $sock_addr_in_size, %rdx          # size of the sockaddr_in structure
+    syscall                               # make syscall
 
- cmp $0, %rax                           # Compare the return value with 0
- jl  .handle_sock_bind_err               # Jump to error handling if %rax < 0
+    cmp $0, %rax                          # Compare the return value with 0
+    jl  .handle_sock_bind_err             # Jump to error handling if %rax < 0
     
- lea .sock_bind_msg(%rip), %rdi
- mov $.sock_bind_msg_length, %rsi
- call log_sys
+    lea .sock_bind_msg(%rip), %rdi
+    mov $.sock_bind_msg_length, %rsi
+    call log_sys
 
 .exit_sock_bind:
- pop %rbp                               # restore the caller's base pointer
- ret                                    # return to the caller
+    leave                                 # restore stack frame
+    ret                                   # return to the caller
 
 .handle_sock_bind_err:
- lea .sock_bind_err_msg(%rip), %rdi
- mov $.sock_bind_err_msg_length, %rsi
- mov %rax, %rdx
- call log_err
- mov $-1, %rax
- jmp .exit_sock_bind
+    lea .sock_bind_err_msg(%rip), %rdi
+    mov $.sock_bind_err_msg_length, %rsi
+    mov %rax, %rdx
+    call log_err
+    mov $-1, %rax
+    jmp .exit_sock_bind

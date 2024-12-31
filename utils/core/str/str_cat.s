@@ -60,15 +60,14 @@ str_cat:
     # Add null terminator
     movb $0, (%rdi)
 
-    .exit_str_cat:
+.exit_str_cat:
     pop %r14
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret
 
-   .handle_str_cat_overflow:
-
+.handle_str_cat_overflow:
     lea overflow_msg(%rip), %rdi
     mov $overflow_msg_length, %rsi
     mov %rax, %rdx

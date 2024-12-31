@@ -53,7 +53,7 @@ create_system_log_len = . - create_system_log_msg
 open_log_files:
     push %rbp
     mov %rsp, %rbp
-    
+    sub $8, %rsp               # align stack to 16-byte boundary
     push %r12
     push %r13
     push %r14
@@ -236,6 +236,7 @@ open_log_files:
 
     .validate_system_log_path:
     pop %r11
+    add $8, %rsp               # align stack to 16-byte boundary
     testb %r11b, %r11b        # Check if system log path was empty
     jnz .exit_open_log_files
     lea .system_log_path_warn_msg(%rip), %rdi
@@ -247,7 +248,7 @@ open_log_files:
     pop %r14
     pop %r13
     pop %r12
-    pop %rbp
+    leave                     # restore stack frame
     ret
 
     .exit_server:

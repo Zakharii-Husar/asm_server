@@ -28,5 +28,6 @@ str_to_lower:
 
 .to_lower_done:
     pop %rdi               # Restore original string pointer
-    pop %rbp
+    leave                  # restore stack frame
     ret 
+    

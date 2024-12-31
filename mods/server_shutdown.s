@@ -6,9 +6,9 @@ shutdown_msg_len = . - shutdown_msg
 .global server_shutdown
 .type server_shutdown, @function
 server_shutdown:
-    # Save registers
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Log shutdown message
     lea shutdown_msg(%rip), %rdi
@@ -49,10 +49,7 @@ server_shutdown:
     mov $SYS_close, %rax
     syscall
 
-    # Restore registers
-    pop %rbp
-
-    # Exit with success code
+    # No need to restore stack since exit_program never returns
     xor %rdi, %rdi        # exit code 0
     call exit_program
     

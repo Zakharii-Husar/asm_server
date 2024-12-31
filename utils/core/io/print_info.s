@@ -16,29 +16,25 @@
 print_info:
     push %rbp
     mov %rsp, %rbp 
+    push %r12
 
-    mov %rsi, %rdx           # prepare rdx for string length  during  syscall
-    mov %rdi, %rsi           # prepare rsi for string pointer during syscall
+    mov %rdi, %r12 # save string pointer
+    mov %rsi, %rdx # save string length
     test %rdx, %rdx
     jnz .write_to_stdout
 
     # Calculate string length if unknown
-    push %rsi                  # preserve string pointer
     call str_len               # %rdi already contains the string pointer, so str_len will return length in %rax
     mov %rax, %rdx             # length returned by str_len
-    pop %rsi                   # restore string pointer
 
     .write_to_stdout:
     # Set up parameters for write syscall
     # rdx already contains the string length
-    # rsi already contains the string pointer
+    mov %r12, %rsi           # prepare rsi for string pointer during syscall
     mov $SYS_stdout, %rdi      # file descriptor (stdout)
     mov $SYS_write, %rax       # syscall number for write
     syscall
 
-    cmp $0, %rax
-    jge .exit_print_info
-
-    .exit_print_info:
+    pop %r12
     pop %rbp
     ret

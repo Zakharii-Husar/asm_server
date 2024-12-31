@@ -36,7 +36,7 @@ server_conf_file_B_size = 4096
 init_srvr_config:
     push %rbp
     mov %rsp, %rbp
-
+    sub $8, %rsp               # align stack to 16-byte boundary
     lea server_config_struct(%rip), %r15
 
     # Initialize all the server config struct fields to -1
@@ -114,6 +114,6 @@ init_srvr_config:
     mov $configuration_msg_len, %rsi
     call log_sys
 
-    pop %rbp
+    leave                     # restore stack frame
     ret
     

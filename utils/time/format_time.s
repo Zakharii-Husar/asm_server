@@ -1,5 +1,7 @@
 .section .rodata
 
+format_time_msg: .asciz " - Format time: %s\n"
+
  .equ DATE_BUFFER_SIZE, 30
 
 .section .bss
@@ -225,6 +227,9 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
     
+    lea format_time_msg(%rip), %rdi
+    call check_stack
+
     # Return pointer to formatted string
     lea date_buffer(%rip), %rax
     

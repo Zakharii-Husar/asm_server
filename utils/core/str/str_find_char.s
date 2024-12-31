@@ -15,7 +15,7 @@ str_find_char_null_ptr_msg_len = . - str_find_char_null_ptr_msg
 str_find_char:
     push %rbp
     mov %rsp, %rbp
-
+    sub $8, %rsp               # align stack to 16-byte boundary
     # Add null pointer check
     test %rdi, %rdi
     jz .str_find_char_err
@@ -52,5 +52,6 @@ str_find_char:
     xor %rax, %rax           # Return null pointer
 
 .finish:
-    pop %rbp
+    leave                     # restore stack frame
     ret
+    

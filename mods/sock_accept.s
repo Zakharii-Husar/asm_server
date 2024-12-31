@@ -23,36 +23,37 @@ connection_info_len:
 
 .type sock_accept, @function
 sock_accept:
- push %rbp                                    # save the caller's base pointer
- mov %rsp, %rbp                               # set the new base pointer (stack frame)
+    push %rbp                                    # save the caller's base pointer
+    mov %rsp, %rbp                              # set the new base pointer (stack frame)
+    sub $8, %rsp                                # align stack to 16-byte boundary
  
- mov %r12, %rdi                               # move socket fd into %rdi (1st arg for accept)
- lea connection_info(%rip), %rsi              # store client info in connection_info structure
- lea connection_info_len(%rip), %rdx          # size of sockaddr_in  
- mov $SYS_sock_accept, %rax
- syscall                                      # make syscall
+    mov %r12, %rdi                              # move socket fd into %rdi (1st arg for accept)
+    lea connection_info(%rip), %rsi             # store client info in connection_info structure
+    lea connection_info_len(%rip), %rdx         # size of sockaddr_in  
+    mov $SYS_sock_accept, %rax
+    syscall                                     # make syscall
 
- cmp $0, %rax                                 # Compare the return value with 0
- jl  .handle_sock_accept_err                  # Jump to error handling if %rax < 0
+    cmp $0, %rax                               # Compare the return value with 0
+    jl  .handle_sock_accept_err                # Jump to error handling if %rax < 0
 
- mov    %rax, %r13                            # save the new connection file descriptor in r13
+    mov %rax, %r13                             # save the new connection file descriptor in r13
 
- lea connection_info(%rip), %rdi
- call extract_client_ip
+    lea connection_info(%rip), %rdi
+    call extract_client_ip
  
- .exit_sock_accept:
- pop %rbp                                      # restore the caller's base pointer
- ret                                           # return to the caller
+.exit_sock_accept:
+    leave                                      # restore stack frame
+    ret                                        # return to the caller
  
 .handle_sock_accept_err:
-# check if the server is shutting down
+    # check if the server is shutting down
     movq server_shutdown_flag(%rip), %r8
     test %r8, %r8
     jnz .exit_sock_accept
-# if not, log the error
- lea .sock_accept_err_msg(%rip), %rdi
- mov $.sock_accept_err_msg_len, %rsi
- mov %rax, %rdx
- call log_err
- mov $-1, %rax
- jmp .exit_sock_accept
+    # if not, log the error
+    lea .sock_accept_err_msg(%rip), %rdi
+    mov $.sock_accept_err_msg_len, %rsi
+    mov %rax, %rdx
+    call log_err
+    mov $-1, %rax
+    jmp .exit_sock_accept

@@ -10,20 +10,21 @@
 char_cmp:
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Extract lower bytes from the registers to compare characters
-    mov %dil, %al    # First char into al (lower byte of rax)
-    cmp %sil, %al    # Compare with second char
+    mov %dil, %al            # First char into al (lower byte of rax)
+    cmp %sil, %al            # Compare with second char
     
     # Set return value based on comparison
     je .chars_equal
-    mov $0, %rax     # Characters not equal, return 0
+    mov $0, %rax             # Characters not equal, return 0
     jmp .exit_char_cmp
 
 .chars_equal:
-    mov $1, %rax     # Characters equal, return 1
+    mov $1, %rax             # Characters equal, return 1
 
 .exit_char_cmp:
-    pop %rbp
+    leave                    # restore stack frame
     ret
     
