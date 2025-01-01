@@ -1,7 +1,4 @@
 .section .rodata
-
-format_time_msg: .asciz " - Format time: %s\n"
-
  .equ DATE_BUFFER_SIZE, 30
 
 .section .bss
@@ -33,16 +30,17 @@ format_time:
     push %r12
     push %r13
     push %r14
-    push %r15
+    sub $24, %rsp
     
     # Save parameters as specified
     mov %r9, %r12           # Save seconds
     mov %r8, %r13           # Save minutes
     mov %rcx, %r14          # Save hours
-    mov %rdx, %r15          # Save day
 
-    push %rsi               # Save month
-    push %rdi               # Save year
+    mov %rdx, -8(%rbp) # save day
+    mov %rsi, -16(%rbp) # save month
+    mov %rdi, -24(%rbp) # save year
+
 
     # clear buffer
     lea date_buffer(%rip), %rdi
@@ -57,7 +55,7 @@ format_time:
     call str_cat
     
     # Convert year to string
-    pop %rdi # restore year
+    mov -24(%rbp), %rdi # year
     call int_to_str
     
     lea date_buffer(%rip), %rdi
@@ -74,8 +72,7 @@ format_time:
     call str_cat
     
     # Format month
-    pop %rsi               # Restore month
-    mov %rsi, %rdi
+    mov -16(%rbp), %rdi # month
     cmp $10, %rdi
     jge .skip_month_pad
     # Add leading zero
@@ -101,7 +98,7 @@ format_time:
     call str_cat
     
     # Format day
-    mov %r15, %rdi          # day
+    mov -8(%rbp), %rdi          # day
     cmp $10, %rdi
     jge .skip_day_pad
     lea date_buffer(%rip), %rdi
@@ -109,7 +106,7 @@ format_time:
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
-    mov %r15, %rdi
+    mov -8(%rbp), %rdi
 .skip_day_pad:
     call int_to_str
     
@@ -198,8 +195,6 @@ format_time:
     call str_cat
 
 
-    pop %r15 # restore server config after using the value stored in r15
-
     mov CONF_TIMEZONE_OFFSET(%r15), %rax      # Move the value to check into a register
     cmp $0, %rax        # Compare with 0 (will set SF if %rax is negative)
     js .skip_appending_plus  
@@ -227,14 +222,11 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
     
-    lea format_time_msg(%rip), %rdi
-    call check_stack
-
     # Return pointer to formatted string
     lea date_buffer(%rip), %rax
-    
-    
+
     # Restore registers
+    add $24, %rsp
     pop %r14
     pop %r13
     pop %r12
