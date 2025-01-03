@@ -17,17 +17,16 @@ ip_to_network:
     push %rbx
     push %r12
     
+    mov %rdi, %r12        # Store IP string pointer in r12
+    
     # Add string length check at the start
-    push %rdi           # Save input pointer
-    test %rdi, %rdi
+    test %r12, %r12
     jz invalid_input
     call str_len
     cmp $0, %rax
     jle invalid_input   # If length <= 0, return error
-    pop %rdi           # Restore input pointer
     
     xor %rax, %rax        # Initialize result to 0
-    mov %rdi, %r12        # Store IP string pointer in r12
     xor %rbx, %rbx        # Current octet value
     mov $24, %ecx         # Start with highest byte (shift position)
 
