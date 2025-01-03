@@ -18,12 +18,22 @@ str_cat:
     mov %rsp, %rbp             
     push %r12
     push %r13
+
     push %r14
+    sub $8, %rsp
+
+
+    
 
     # Save input parameters
     mov %rdi, %r12            # Destination buffer
     mov %rsi, %r14            # Source string
     mov %rcx, %r13            # Max buffer size
+
+    # Clear buffer
+    # destination buffer is already in %rdi
+    mov %rcx, %rsi
+    call clear_buffer
 
     # Get source length if not provided
     test %rdx, %rdx
@@ -32,6 +42,7 @@ str_cat:
     mov %r14, %rdi
     call str_len
     mov %rax, %rdx
+    
 
 .use_provided_length:
     # Simple bounds check:
@@ -44,11 +55,13 @@ str_cat:
     inc %rax                  # Add 1 for null terminator
     cmp %r13, %rax           # Compare with max size
     jg .handle_str_cat_overflow
+    
 
     # Find end of destination string
     mov %r12, %rdi
     call str_len
     add %rax, %r12           # Point to end of string
+    
 
     # Do the concatenation
     mov %r12, %rdi           # Destination = end of current content
@@ -61,6 +74,8 @@ str_cat:
     movb $0, (%rdi)
 
 .exit_str_cat:
+
+    add $8, %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -68,6 +83,7 @@ str_cat:
     ret
 
 .handle_str_cat_overflow:
+
     lea overflow_msg(%rip), %rdi
     mov $overflow_msg_length, %rsi
     mov %rax, %rdx
