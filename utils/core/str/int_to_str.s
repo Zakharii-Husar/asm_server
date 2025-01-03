@@ -4,7 +4,7 @@
 # Output:
 #   %rax - pointer to the resulting string
 #   %rdx - length of the string
-# Note: The string is stored in a static buffer and is not null-terminated.
+# Note: The string is stored in a static buffer and is null-terminated.
 .section .rodata
     .equ string_buffer_size, 21
 
@@ -16,7 +16,6 @@
 int_to_str:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp            # align stack for function calls
     
     push %r12              # will be used later
     push %r13              # preserve original number
@@ -82,9 +81,11 @@ int_to_str:
     jnz .loop                 
 
 .exit_int_to_str:
-    movq %rsi, %rax           
-    movq %rcx, %rdx           
-    
+    movq %rsi, %rax           # Get pointer to start of string
+    incq %rcx                 # Increment length to include null terminator
+    movb $0, (%rax, %rcx)    # Add null terminator at position rax + rcx
+    movq %rcx, %rdx           # Store length
+
     pop %r13
     pop %r12
     leave
