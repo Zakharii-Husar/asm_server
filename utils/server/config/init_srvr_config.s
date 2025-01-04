@@ -36,9 +36,8 @@ server_conf_file_B_size = 4096
 init_srvr_config:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp               # align stack to 16-byte boundary
     lea server_config_struct(%rip), %r15
-
+    
     # Initialize all the server config struct fields to -1
     # This is to make it easier to check during validation
     movl $-1, CONF_HOST_OFFSET(%r15)          # Host IP
@@ -46,7 +45,7 @@ init_srvr_config:
     movq $-1, CONF_BUFFER_SIZE_OFFSET(%r15)   # Buffer size
     movq $-1, CONF_TIMEZONE_OFFSET(%r15)      # Timezone
     movq $-1, CONF_MAX_CONN_OFFSET(%r15)      # Max connections
-
+    
     # Clear string buffers
     lea CONF_PUBLIC_DIR_OFFSET(%r15), %rdi
     mov $CONF_PUBLIC_DIR_SIZE, %rsi
@@ -79,6 +78,7 @@ init_srvr_config:
     lea server_conf_file_B(%rip), %rdi
     mov $server_conf_file_B_size, %rsi
     call clear_buffer
+    
 
     # LOAD SERVER CONFIG FILE
     lea server_conf_path(%rip), %rdi
@@ -86,6 +86,8 @@ init_srvr_config:
     mov $server_conf_file_B_size, %rdx
     mov $1, %rcx
     call file_open
+    
+    
     
     # Check return value
     test %rax, %rax
@@ -102,17 +104,19 @@ init_srvr_config:
     call open_log_files
     
     
-
 .exit_init_config:
     # Check if config is valid and all fields are set, otherwise fallback to default config
     call validate_config
     lea server_start_msg(%rip), %rdi
     mov $server_start_msg_len, %rsi
     call log_sys
+    
 
     lea configuration_msg(%rip), %rdi
     mov $configuration_msg_len, %rsi
     call log_sys
+    
+    
 
     leave                     # restore stack frame
     ret

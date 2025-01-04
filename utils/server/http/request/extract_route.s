@@ -15,9 +15,10 @@
 extract_route:
     push %rbp
     mov %rsp, %rbp
+    # Preserve non-volatile registers
     push %r12
     push %r13
-    
+    # Save arguments
     mov %rdi, %r12                   # Save request_route_buffer
     
     # Find first space using str_find_char
@@ -44,5 +45,5 @@ extract_route:
 
     pop %r13
     pop %r12
-    pop %rbp    
+    leave
     ret

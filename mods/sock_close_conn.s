@@ -27,7 +27,6 @@
 sock_close_conn:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
     
     mov %rdi, %r8            # save process type flag
 

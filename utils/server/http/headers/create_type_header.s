@@ -77,8 +77,10 @@ mime_ico_length = . - mime_ico
 create_type_header:
 push %rbp                          # save the caller's base pointer
 mov %rsp, %rbp                     # set the new base pointer (stack frame)
+# Preserve non-volatile registers
 push %r12
 push %r13
+# Save arguments
 mov %rdi, %r12           # Save buffer pointer
 mov %rsi, %r13           # Save extension pointer
 
@@ -218,5 +220,5 @@ jmp .return
 .return:
 pop %r13
 pop %r12
-pop %rbp
+leave
 ret

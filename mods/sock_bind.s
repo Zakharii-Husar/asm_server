@@ -24,8 +24,7 @@
 sock_bind:
     push %rbp                              # save the caller's base pointer
     mov %rsp, %rbp                         # set the new base pointer (stack frame)
-    sub $8, %rsp                          # align stack to 16-byte boundary
- 
+   
     # Initialize the struct before binding
     lea .addr_in(%rip), %rax              # Get pointer to struct
     movw $2, (%rax)                       # AF_INET

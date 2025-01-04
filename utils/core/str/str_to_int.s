@@ -12,7 +12,6 @@ str_to_int:
 
     push %rbp
     mov %rsp, %rbp
-    push %rbx
     xor %rax, %rax          # Clear rax for result
     xor %rcx, %rcx          # Clear rcx for sign (0 = positive, 1 = negative)
 
@@ -32,7 +31,7 @@ str_to_int:
     jb .invalid_input
     cmpb $'9', %al
     ja .invalid_input
-    jmp .parse_digits       # No sign, start parsing immediately
+    jmp .convert_loop       # No sign, start parsing immediately
 
 .handle_negative:
     inc %rdi                # Move past the negative sign
@@ -56,11 +55,8 @@ str_to_int:
     cmpb $'9', %al
     ja .invalid_input
     
-.parse_digits:
-    xor %rax, %rax          # Clear rax for result
-    mov $10, %rbx           # Base 10 for conversion
-
 .convert_loop:
+    xor %rax, %rax          # Clear rax for result
     movb (%rdi), %dl        # Load next character
     cmpb $0, %dl            # Check for null terminator
     je .apply_sign
@@ -92,7 +88,6 @@ str_to_int:
     neg %rax                # Negate result if negative
 
 .exit_str_to_int:
-    pop %rbx
     leave                     # restore stack frame
     ret
     

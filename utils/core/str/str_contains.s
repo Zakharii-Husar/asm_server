@@ -1,7 +1,6 @@
 .section .text
 .globl str_contains
 .type str_contains, @function
-
 str_contains:
     # Parameters:
     # %rdi - pointer to the main string
@@ -12,6 +11,8 @@ str_contains:
     
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp
+
     push %rbx
     push %r12
     push %r13
@@ -58,5 +59,6 @@ str_contains:
     pop %r13
     pop %r12
     pop %rbx
+    add $8, %rsp
     pop %rbp
     ret

@@ -25,7 +25,6 @@ connection_info_len:
 sock_accept:
     push %rbp                                    # save the caller's base pointer
     mov %rsp, %rbp                              # set the new base pointer (stack frame)
-    sub $8, %rsp                                # align stack to 16-byte boundary
  
     mov %r12, %rdi                              # move socket fd into %rdi (1st arg for accept)
     lea connection_info(%rip), %rsi             # store client info in connection_info structure

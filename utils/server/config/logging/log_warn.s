@@ -28,18 +28,21 @@ warn_prefix_base_length = . - warn_prefix_base
 log_warn:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp               # align stack to 16-byte boundar
     # Preserve registers
     push %r12
     push %r13
     
+    
     mov %rdi, %r12   # Save description pointer
     mov %rsi, %r13   # Save length
+    
     
     # Start with empty buffer
     lea warn_log_B(%rip), %rdi
     mov $warn_log_B_size, %rsi
     call clear_buffer
+    
+    
     
     # Get timestamp and add it
     call get_time_now
@@ -49,6 +52,7 @@ log_warn:
     mov $warn_log_B_size, %rcx
     call str_cat
 
+
     # Add warning prefix
     lea warn_log_B(%rip), %rdi
     lea warn_prefix_base(%rip), %rsi
@@ -56,6 +60,7 @@ log_warn:
     mov $warn_log_B_size, %rcx
     call str_cat
 
+    
     # Add warning description
     lea warn_log_B(%rip), %rdi
     mov %r12, %rsi
@@ -63,12 +68,15 @@ log_warn:
     mov $warn_log_B_size, %rcx
     call str_cat
 
+    
+
     # Add newline
     lea warn_log_B(%rip), %rdi
     lea newline_char(%rip), %rsi
     mov $1, %rdx
     mov $warn_log_B_size, %rcx
     call str_cat
+    
     
     # Write to log file
     lea warn_log_B(%rip), %rdi

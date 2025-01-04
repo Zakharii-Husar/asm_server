@@ -23,16 +23,16 @@
 # Side Effects:
 #   - Writes to date_buffer
 format_time:
-    
     push %rbp
     mov %rsp, %rbp
+    # Allocate space for local variables
+    sub $40, %rsp
     # Save non-volatile registers
     push %r12
     push %r13
     push %r14
-    sub $24, %rsp
     
-    # Save parameters as specified
+    # Save parameters
     mov %r9, %r12           # Save seconds
     mov %r8, %r13           # Save minutes
     mov %rcx, %r14          # Save hours
@@ -42,10 +42,12 @@ format_time:
     mov %rdi, -24(%rbp) # save year
 
 
+
     # clear buffer
     lea date_buffer(%rip), %rdi
     mov $DATE_BUFFER_SIZE, %rsi
     call clear_buffer
+    
 
     # Start with opening bracket
     lea date_buffer(%rip), %rdi
@@ -54,12 +56,12 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
     
+    
     # Convert year to string
     mov -24(%rbp), %rdi # year
     call int_to_str
-    
-    lea date_buffer(%rip), %rdi
     mov %rax, %rsi
+    lea date_buffer(%rip), %rdi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
@@ -82,13 +84,14 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
 .skip_month_pad:
+    mov -16(%rbp), %rdi # month
     call int_to_str
-    
     lea date_buffer(%rip), %rdi
     mov %rax, %rsi
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
+    
     
     # Add dash after month
     lea date_buffer(%rip), %rdi
@@ -142,6 +145,7 @@ format_time:
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
     
+    
     # Add colon after hours
     lea date_buffer(%rip), %rdi
     lea semicolon_char(%rip), %rsi
@@ -167,6 +171,7 @@ format_time:
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
+    
     
     # Add colon after minutes
     lea date_buffer(%rip), %rdi
@@ -221,15 +226,18 @@ format_time:
     xor %rdx, %rdx
     mov $DATE_BUFFER_SIZE, %rcx
     call str_cat
-    
+
     # Return pointer to formatted string
+    
+    
     lea date_buffer(%rip), %rax
+    
 
     # Restore registers
-    add $24, %rsp
     pop %r14
     pop %r13
     pop %r12
-    pop %rbp
+    add $40, %rsp
+    leave
     ret
     

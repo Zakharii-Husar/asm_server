@@ -7,7 +7,6 @@ str_to_lower:
 # Output: none (modifies string in place)
     push %rbp
     mov %rsp, %rbp
-    push %rdi              # Save original string pointer
     
 .to_lower_loop:
     movb (%rdi), %al       # Load current character into %al
@@ -27,7 +26,6 @@ str_to_lower:
     jmp .to_lower_loop     # Repeat for next character
 
 .to_lower_done:
-    pop %rdi               # Restore original string pointer
     leave                  # restore stack frame
     ret 
     

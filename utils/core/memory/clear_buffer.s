@@ -4,7 +4,6 @@
 clear_buffer:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Parameters:
     # %rdi - buffer address

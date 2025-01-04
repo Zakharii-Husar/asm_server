@@ -16,6 +16,7 @@
 print_info:
     push %rbp
     mov %rsp, %rbp 
+    sub $8, %rsp
     push %r12
 
     mov %rdi, %r12 # save string pointer
@@ -36,5 +37,7 @@ print_info:
     syscall
 
     pop %r12
-    pop %rbp
+    add $8, %rsp
+    leave
     ret
+    

@@ -30,6 +30,7 @@ server_error_status_length = . - server_error_status
 create_status_header:
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp
     push %r12
     
     mov %rsi, %r12     # Save buffer pointer
@@ -92,8 +93,9 @@ create_status_header:
     call str_cat
     # Falls through to .return_status_header since it's the last one
 
-.return_status_header:                                  # Changed label name from .return
+.return_status_header:     
     pop %r12
-    pop %rbp
+    add $8, %rsp
+    leave
     ret
     

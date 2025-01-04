@@ -8,7 +8,6 @@ sys_prefix_base_length = . - sys_prefix_base
 .lcomm sys_log_B, sys_log_B_size   # Buffer for constructing socket log entry
 
 .section .text
-.globl log_sys
 .type log_sys, @function
 # Parameters:
 #   - %rdi: pointer to socket event description string
@@ -20,10 +19,10 @@ sys_prefix_base_length = . - sys_prefix_base
 log_sys:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp               # align stack to 16-byte boundary
     # Preserve registers
     push %r12
     push %r13
+    
     
     mov %rdi, %r12   # Save description pointer
     mov %rsi, %r13   # Save length
@@ -32,6 +31,7 @@ log_sys:
     lea sys_log_B(%rip), %rdi
     mov $sys_log_B_size, %rsi
     call clear_buffer
+    
     
     # Get timestamp and add it
     call get_time_now
@@ -54,6 +54,7 @@ log_sys:
     mov %r13, %rdx        # Length
     mov $sys_log_B_size, %rcx
     call str_cat
+    
 
     # Add newline
     lea sys_log_B(%rip), %rdi
@@ -70,6 +71,8 @@ log_sys:
     mov CONF_SYSTEM_LOG_FD_OFFSET(%r15), %rdi
     mov $SYS_write, %rax
     syscall
+    
+    
 
     lea sys_log_B(%rip), %rdi
     xor %rsi, %rsi

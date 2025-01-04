@@ -53,7 +53,7 @@ create_system_log_len = . - create_system_log_msg
 open_log_files:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp               # align stack to 16-byte boundary
+    sub $8, %rsp                # allocate space for local var and maintain alignment
     push %r12
     push %r13
     push %r14
@@ -62,9 +62,8 @@ open_log_files:
     movb CONF_WARNING_LOG_PATH_OFFSET(%r15), %r12b
     movb CONF_ERROR_LOG_PATH_OFFSET(%r15), %r13b
     movb CONF_ACCESS_LOG_PATH_OFFSET(%r15), %r14b
-    xor %r11, %r11
-    movb CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %r11b
-    push %r11
+    movb CONF_SYSTEM_LOG_PATH_OFFSET(%r15), %al
+    movb %al, -8(%rbp)         # store system log path first byte in local var
 
     # CHECK IF LOGS FILE PATHS ARE SET, IF NOT SET THEM TO DEFAULT
     lea CONF_WARNING_LOG_PATH_OFFSET(%r15), %rdi
@@ -235,20 +234,19 @@ open_log_files:
     call log_warn
 
     .validate_system_log_path:
-    pop %r11
-    add $8, %rsp               # align stack to 16-byte boundary
-    testb %r11b, %r11b        # Check if system log path was empty
+    movb -8(%rbp), %al         # load saved system log path byte
+    testb %al, %al             # Check if system log path was empty
     jnz .exit_open_log_files
     lea .system_log_path_warn_msg(%rip), %rdi
     mov $.system_log_path_warn_msg_len, %rsi
     call log_warn
 
     .exit_open_log_files:
-
     pop %r14
     pop %r13
     pop %r12
-    leave                     # restore stack frame
+    add $8, %rsp               # deallocate local var space
+    leave                      # restore stack frame
     ret
 
     .exit_server:

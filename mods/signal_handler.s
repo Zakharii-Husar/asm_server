@@ -22,7 +22,6 @@ sigaction:
 signal_handler:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Register SIGINT handler with proper restorer
     mov $SYS_rt_sigaction, %rax
@@ -38,6 +37,7 @@ signal_handler:
 handle_sigint:
     # Set shutdown flag
     movq $1, server_shutdown_flag(%rip)
+    leave
     ret
 
 sigreturn:

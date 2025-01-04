@@ -21,6 +21,7 @@
 extract_client_ip:
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp
     push %r12                       # Save %r12 since we'll use it
 
     # Clear the client_ip buffer before use
@@ -103,5 +104,6 @@ extract_client_ip:
     call str_cat
 
     pop %r12                      # Restore %r12
-    pop %rbp
+    add $8, %rsp
+    leave
     ret

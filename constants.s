@@ -2,16 +2,16 @@
     .equ space_ascii, 32  
 
     dot_char: .asciz "."
-    dash_char: .string "-"
-    plus_char: .string "+"
+    dash_char: .asciz "-"
+    plus_char: .asciz "+"
     newline_char: .asciz "\n"
     space_char: .asciz " "
     hash_char: .asciz "#"
     semicolon_char: .asciz ":"
-    open_square_bracket_char: .string "[" 
-    close_square_bracket_char: .string "]"  
-    zero_char: .string "0"
-    time_separator_char: .string "T"
+    open_square_bracket_char: .asciz "[" 
+    close_square_bracket_char: .asciz "]"  
+    zero_char: .asciz "0"
+    time_separator_char: .asciz "T"
     slash_char: .asciz "/"
     quote_char: .asciz "\""
 

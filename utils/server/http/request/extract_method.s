@@ -14,10 +14,13 @@
 extract_method:
     push %rbp
     mov %rsp, %rbp
+    # Align stack to 16-byte boundary
+    sub $8, %rsp
+    # Preserve non-volatile registers
     push %r12
     push %r13
     push %r14
-
+    # Save arguments
     mov %rdi, %r12                   # Save the source pointer
     mov %rsi, %r13                   # Save the destination pointer
     mov %rdx, %r14                   # Save the destination buffer size
@@ -48,10 +51,11 @@ extract_method:
 
     # Return pointer to the method buffer
     mov %r13, %rax
-
+    
     pop %r14
     pop %r13
     pop %r12
-    pop %rbp
+    add $8, %rsp
+    leave
     ret
     

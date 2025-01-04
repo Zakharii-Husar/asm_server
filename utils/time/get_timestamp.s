@@ -17,7 +17,7 @@ get_timestamp:
 
     # Load the actual time value into %rax to return it
     mov UTC_stamp(%rip), %rax
-
-    mov %rbp, %rsp
-    pop %rbp
+    
+    leave
     ret
+    

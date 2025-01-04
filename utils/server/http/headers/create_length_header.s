@@ -17,10 +17,10 @@ content_length_length = . - content_length
 create_length_header:
     push %rbp
     mov %rsp, %rbp
-    
     # Save parameters
     push %r12
     push %r13
+
     mov %rdi, %r12   # response_header_buffer
     mov %rsi, %r13   # content length
     
@@ -52,6 +52,6 @@ create_length_header:
     
     pop %r13
     pop %r12
-    pop %rbp
+    leave
     ret
     

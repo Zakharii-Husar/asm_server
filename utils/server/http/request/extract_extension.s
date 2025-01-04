@@ -6,7 +6,6 @@ default_extension: .asciz ".html"
 
 .globl extract_extension
 .type extract_extension, @function
-extract_extension:
 # Function: extract_extension
 # Parameters:
 #   - %rdi: pointer to file path
@@ -16,12 +15,13 @@ extract_extension:
 #   - Returns pointer to empty string if no extension found
 # Side Effects:
 #   - Modifies extension_buffer
+extract_extension:
     push %rbp
     mov %rsp, %rbp
-
+    # Preserve non-volatile registers
     push %r12
     push %r13
-
+    # Save arguments
     mov %rdi, %r12 # Destination buffer
     mov %rsi, %r13 # Route buffer
 
@@ -60,8 +60,8 @@ extract_extension:
     call str_cat                 # Copy default extension to %rdi (destination buffer)
 
 .exit_extract_extension:
-    mov %r12, %rdi
     pop %r13
     pop %r12
-    pop %rbp
+    leave
     ret
+    

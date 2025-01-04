@@ -9,7 +9,7 @@
 # Parameters:
 #   - None
 # Global Registers:
-#   - %r15: server configuration pointer (for timezone)
+#   - -16(%rbp): server configuration pointer (for timezone)
 # Return Values:
 #   - %rax: pointer to formatted timestamp string
 # Error Handling:
@@ -19,12 +19,14 @@
 get_time_now:
     push %rbp
     mov %rsp, %rbp
+    # Allocate space for local variables
+    sub $16, %rsp
     # Save non-volatile registers
     push %rbx
     push %r12
     push %r13
     push %r14
-    push %r15
+    
 
     call get_timestamp
     mov %rax, %rdi
@@ -62,20 +64,20 @@ get_time_now:
     call get_days_in_month    # Get array of days per month for this year
     mov %rax, %rbx           # Pointer to days_per_month array
     xor %rcx, %rcx           # Month index (0-based)
-    mov %rdi, %r15           # Save original days for calculations
+    mov %rdi, -16(%rbp)           # Save original days for calculations
 .month_loop:
     cmp $11, %rcx            # Check if we've gone through all months (0-11)
     jg .found_month          # If we've checked all months, exit
     movzb (%rbx, %rcx), %rdx # Get days in current month
-    cmp %r15, %rdx           # Compare with remaining days
+    cmp -16(%rbp), %rdx           # Compare with remaining days
     jg .found_month          # If days in month > remaining days, we found our month
-    sub %rdx, %r15           # Subtract days of this month
+    sub %rdx, -16(%rbp)           # Subtract days of this month
     inc %rcx                 # Move to next month
     jmp .month_loop
 .found_month:
-    inc %rcx                 # Adjust month to 1-based index
+    inc %ecx                 # Adjust month to 1-based index (explicitly using 32-bit register)
     mov %rcx, %r14           # Save month in r14
-    inc %r15                 # Adjust day to 1-based index
+    incl -16(%rbp)           # Adjust day to 1-based index (explicitly using 32-bit memory operation)
 
     # STEP 5: CALCULATE HOURS, MINUTES, SECONDS
     mov %r12, %rax           # Load remaining seconds into rax
@@ -94,17 +96,25 @@ get_time_now:
     # Call format_time with all parameters
     mov %r13, %rdi          # year
     mov %r14, %rsi          # month
-    mov %r15, %rdx          # day
+    mov -16(%rbp), %rdx          # day
     mov %r10, %rcx          # hours
     mov %r11, %r8           # minutes
     mov %r12, %r9           # seconds
-    pop %r15
+    
+    
     call format_time
+
+    mov %rax, %rdi
+    xor %rsi, %rsi
+    call print_info
+    
+    
     # format_time returns pointer to formatted string in rax
     # Restore non-volatile registers
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
-    pop %rbp
+    add $16, %rsp       # Deallocate local vars
+    leave
     ret

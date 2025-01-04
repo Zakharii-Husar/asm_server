@@ -8,7 +8,6 @@
 .section .text
 .globl validate_file_path
 .type validate_file_path, @function
-
 validate_file_path:
     # Parameter:
     # %rdi - file path to validate
@@ -18,6 +17,7 @@ validate_file_path:
     
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp
     push %r12
     
     mov %rdi, %r12      # Save path pointer
@@ -63,5 +63,7 @@ validate_file_path:
     mov $0, %rax
 .validation_done:
     pop %r12
+    add $8, %rsp
     leave                     # restore stack frame
     ret
+    

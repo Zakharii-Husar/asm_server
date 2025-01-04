@@ -26,11 +26,12 @@ log_access:
 
     push %rbp
     mov %rsp, %rbp
-    
-    # Preserve r12 and r13
+    sub $16, %rsp        # Allocate 16 bytes to maintain stack alignment
+    # First preserve non-volatile registers
     push %r12
     push %r13
-    push %rdi   # Save only method on stack as we'll use it first
+    
+    mov %rdi, -8(%rbp)   # Store method pointer in local variable
     
     # Store path and status in preserved registers
     mov %rsi, %r12        # path
@@ -65,12 +66,10 @@ log_access:
     mov $access_log_buffer_size, %rcx
     call str_cat
     
-    # Add method
-    pop %rdi                   # restore method pointer, stack is now misaligned
-    sub $8, %rsp               # align stack to 16-byte boundary
-    mov %rdi, %rsi
+    # Add method (using local variable instead of pop)
+    mov -8(%rbp), %rsi    # Load method pointer from local variable
     lea access_log_buffer(%rip), %rdi
-    xor %rdx, %rdx # string length
+    xor %rdx, %rdx        # string length
     mov $access_log_buffer_size, %rcx
     call str_cat
     
@@ -153,9 +152,9 @@ log_access:
     mov $SYS_write, %rax
     syscall
 
-    # Clean up
+    # Clean up in reverse order
     pop %r13            # restore preserved registers
     pop %r12
-    
-    leave                 # restore stack frame
+    add $16, %rsp        # Deallocate local variables
+    leave              # restore stack frame
     ret

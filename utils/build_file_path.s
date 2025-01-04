@@ -75,5 +75,6 @@ build_file_path:
 .exit_build_path:
     pop %r13
     pop %r12
-    pop %rbp
+    leave
     ret
+    

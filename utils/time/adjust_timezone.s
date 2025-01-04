@@ -22,9 +22,10 @@ timezone_err_msg_len = . - timezone_err_msg
 adjust_timezone:
     push %rbp
     mov %rsp, %rbp
+    # Preserve non-volatile registers
     push %r12
     push %r13
-
+    # Save arguments
     mov %rdi, %r12              # Store UTC timestamp
     
     # Get timezone offset
@@ -60,7 +61,7 @@ adjust_timezone:
 .exit_adjust_timezone:
     pop %r13
     pop %r12
-    pop %rbp
+    leave
     ret
 
 .timezone_error:

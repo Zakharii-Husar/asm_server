@@ -10,7 +10,6 @@
 char_cmp:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Extract lower bytes from the registers to compare characters
     mov %dil, %al            # First char into al (lower byte of rax)

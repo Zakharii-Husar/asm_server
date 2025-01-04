@@ -52,6 +52,6 @@ create_server_header:
 
     pop %r13
     pop %r12
-    pop %rbp
+    leave
     ret
     

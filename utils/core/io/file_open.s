@@ -52,7 +52,6 @@ file_open:
     # 1. SAVE REGISTERS
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
     
     push %rbx
     push %r12
@@ -172,7 +171,7 @@ file_open:
         mov $SYS_close, %rax
         mov %r10, %rdi
         syscall
-
+        
         lea read_err_msg(%rip), %rdi
         mov $read_err_msg_length, %rsi
         mov %r8, %rdx
@@ -223,6 +222,7 @@ file_open:
         jmp .exit_file_open 
 
         .handle_directory_traversal:
+
         lea directory_traversal_err_msg(%rip), %rdi
         mov $directory_traversal_err_msg_length, %rsi
         mov $-2, %rdx

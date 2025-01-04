@@ -9,6 +9,7 @@
 get_days_in_month:
     push %rbp
     mov %rsp, %rbp
+
     mov %rdi, %rdi
     call is_leap_year
     test %rax, %rax
@@ -20,5 +21,6 @@ get_days_in_month:
     lea days_per_month(%rip), %rax
 
 .get_days_in_month_end:
-    pop %rbp
+    leave
     ret
+    

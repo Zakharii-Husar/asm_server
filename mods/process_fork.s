@@ -13,7 +13,6 @@ fork_err_msg_len = . - fork_err_msg
 process_fork:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
 
     mov $SYS_fork, %rax
     syscall

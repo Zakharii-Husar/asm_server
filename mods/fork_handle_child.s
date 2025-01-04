@@ -9,7 +9,6 @@
 fork_handle_child:
     push %rbp                    # save the caller's base pointer
     mov %rsp, %rbp              # set the new base pointer (stack frame)
-    sub $8, %rsp                # align stack to 16-byte boundary
 
     lea req_B(%rip), %rdi
     mov $req_B_size, %rsi

@@ -1,11 +1,3 @@
-# Parameters:
-# - %rdi: response content buffer
-# - %rsi: content size
-# - %rdx: status code
-# - %rcx: file extension
-# Implicit parameters:
-# - %r13 Connection file descriptor;
-
 .section .data
     .equ response_header_B_size, 1024
 
@@ -25,8 +17,10 @@ headers_end_length = . - headers_end
 .section .text
 # Function: sock_respond
 # Parameters:
-#   - %rdi: file path pointer
-#   - %rsi: HTTP status code
+# - %rdi: response content buffer
+# - %rsi: content size
+# - %rdx: status code
+# - %rcx: file extension
 # Global Registers:
 #   - %r12: socket file descriptor
 #   - %r13: connection file descriptor
@@ -44,27 +38,27 @@ headers_end_length = . - headers_end
 
 .type sock_respond, @function
 sock_respond:
-    push %rbp                           # save the caller's base pointer
-    mov %rsp, %rbp                      # set the new base pointer (stack frame)
-    sub $8, %rsp                        # align stack to 16-byte boundary
+    push %rbp                # -8 bytes, rsp is 16-byte aligned
+    mov %rsp, %rbp
+    sub $16, %rsp          # space for two 8-byte local variables
 
-    push %r12
-    push %r14
-    push %rcx
+    push %r12               # -8 bytes
+    push %r14               # -8 bytes
 
     mov %rdi, %r12                      # response content buffer
     mov %rsi, %r14                      # content size
-
-    push %rdx
+    mov %rdx, -8(%rbp)                 # status code
+    mov %rcx, -16(%rbp)                 # file extension
+    
+    
     lea response_header_B(%rip), %rdi
     mov $response_header_B_size, %rsi
     call clear_buffer
-    pop %rdx       
     
      
 
     # ADD HTTP STATUS LINE TO RESPONSE HEADER
-    mov %rdx, %rdi                    # Move status code to first parameter
+    mov -8(%rbp), %rdi                    # Move status code to first parameter
     lea response_header_B(%rip), %rsi  # Add this line: pass buffer pointer as second parameter
     call create_status_header         # Returns ptr in %rax, len in %rdx
 
@@ -73,10 +67,9 @@ sock_respond:
     mov %r14, %rsi # content size
     call create_length_header
 
-    pop %rcx
     # ADD CONTENT-TYPE HEADER TO RESPONSE HEADER
     lea response_header_B(%rip), %rdi       # destination buffer
-    mov %rcx, %rsi                          # file extension buffer pointer
+    mov -16(%rbp), %rsi                          # file extension buffer pointer
     call create_type_header                 # returns length in %rax
 
     lea response_header_B(%rip), %rdi      # destination buffer
@@ -127,8 +120,9 @@ sock_respond:
    .exit_sock_respond:
     pop %r14
     pop %r12
-    leave                               # restore stack frame
-    ret                                 # return to the caller
+    add $16, %rsp          # restore stack (16 + 8 bytes)
+    leave
+    ret
 
 .handle_sock_respond_err:
     lea sock_respond_err_msg(%rip), %rdi

@@ -8,7 +8,6 @@ shutdown_msg_len = . - shutdown_msg
 server_shutdown:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp              # align stack to 16-byte boundary
 
     # Log shutdown message
     lea shutdown_msg(%rip), %rdi

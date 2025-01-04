@@ -20,7 +20,6 @@
 sock_create:
     push %rbp                    # save the caller's base pointer
     mov %rsp, %rbp              # set the new base pointer (stack frame)
-    sub $8, %rsp                # align stack to 16-byte boundary
 
     mov $SYS_sock_create, %rax
     mov $AF_INET, %rdi
@@ -36,6 +35,7 @@ sock_create:
     mov $.sock_create_msg_length, %rsi
     call log_sys
 
+    .exit_sock_create:
     leave                       # restore stack frame
     ret                        # return to the caller
 
@@ -44,6 +44,4 @@ sock_create:
     mov $.sock_create_err_msg_length, %rsi
     call log_err
     mov $-1, %rax
-    leave                      # restore stack frame
-    ret                       # return to the caller
-
+    jmp .exit_sock_create

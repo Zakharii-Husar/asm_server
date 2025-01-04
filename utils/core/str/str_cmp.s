@@ -14,7 +14,6 @@ null_ptr_msg_len = . - null_ptr_msg
 str_cmp:
     push %rbp                   # Save the caller's base pointer
     mov %rsp, %rbp             # Set the new base pointer (stack frame)
-    sub $8, %rsp               # align stack to 16-byte boundary
 
     # Add null pointer checks
     test %rdi, %rdi

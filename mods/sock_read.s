@@ -41,19 +41,23 @@ server_read_err_msg_len = . - server_read_err_msg
 #   - Opens and reads files into response buffer
 #   - Calls logging functions
 sock_read:
-    push %rbp                               # save the caller's base pointer
-    mov %rsp, %rbp                          # set the new base pointer (stack frame)
-    sub $8, %rsp                            # align stack to 16-byte boundary
-
+    push %rbp
+    mov %rsp, %rbp
+    # Allocate space for local variables (32 bytes instead of 24)
+    sub $32, %rsp
+    # Preserve non-volatile registers first
     push %r12
     push %r13
-    push %r14
-    push %rdx                               # extension buffer
-
+    
+    # Store extension buffer, response content buffer pointers, and status code
+    mov %rdx, -8(%rbp)    # Store extension buffer pointer
+    mov %rcx, -16(%rbp)   # Store response content buffer pointer
+    # -24(%rbp) will be used for status code later
+    # -32(%rbp) is padding for 16-byte alignment
+    
     mov %r13, %r8                           # Preserve Connection FD    
     mov %rdi, %r12                          # request buffer
     mov %rsi, %r13                          # route buffer
-    mov %rcx, %r14                          # response_content_B buffer
 
     # CLEAR THE BUFFERS
     # Method buffer is cleared in extract_method
@@ -104,7 +108,7 @@ sock_read:
 
     # Open the file 
     mov %r13, %rdi                          # file path buffer
-    mov %r14, %rsi                          # response buffer
+    mov -16(%rbp), %rsi                          # response buffer
     mov CONF_BUFFER_SIZE_OFFSET(%r15), %rdx      # buffer size
     xor %rcx, %rcx                          # null termination flag
     call file_open
@@ -121,12 +125,12 @@ sock_read:
 
 .file_not_found:
 
-    mov %r14, %rdi                             # response buffer pointer
+    mov -16(%rbp), %rdi                             # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear (not %rsi)
     call clear_buffer
 
     lea .not_found_path(%rip), %rdi           # Load 404.html path
-    mov %r14, %rsi                            # response buffer
+    mov -16(%rbp), %rsi                            # response buffer
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                          # null termination flag
     call file_open      
@@ -141,15 +145,15 @@ sock_read:
 .bad_request:
     # Clear the response_content_buffer before the next attempt
 
-    mov %r14, %rdi                            # response buffer pointer
+    mov -16(%rbp), %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .bad_request_path(%rip), %rdi          # Load .not_found_path as the file path
-    mov %r14, %rsi                            # Use the same buffer for the response
+    mov -16(%rbp), %rsi                        # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
-    xor %rcx, %rcx                            # null termination flag
-    call file_open                            # Attempt to open the not found file
+    xor %rcx, %rcx                             # null termination flag
+    call file_open                             # Attempt to open the not found file
 
     cmp $-1, %rax                             # Check if the second file_open returned -1 (error)
     jl .server_err                             # Jump to .bad_request if it fails
@@ -159,12 +163,12 @@ sock_read:
 
 .method_not_allowed:
     # Clear the response_content_buffer before the next attempt
-    mov %r14, %rdi                            # response buffer pointer
+    mov -16(%rbp), %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .method_not_allowed_path(%rip), %rdi   # Load .not_found_path as the file path
-    mov %r14, %rsi                             # Use the same buffer for the response
+    mov -16(%rbp), %rsi                             # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                              # null termination flag
     call file_open                            # Attempt to open the not found file
@@ -182,12 +186,12 @@ sock_read:
     call log_err  
 
     # Clear the response_content_buffer before the next attempt
-    mov %r14, %rdi                            # response buffer pointer
+    mov -16(%rbp), %rdi                            # response buffer pointer
     mov $response_content_B_size, %rdx         # Number of bytes to clear
     call clear_buffer
 
     lea .server_err_path(%rip), %rdi          # Load .not_found_path as the file path
-    mov %r14, %rsi                            # Use the same buffer for the response
+    mov -16(%rbp), %rsi                            # Use the same buffer for the response
     mov $response_content_B_size, %rdx         # buffer size
     xor %rcx, %rcx                            # null termination flag
     call file_open                            # Attempt to open the not found file
@@ -203,25 +207,23 @@ sock_read:
 .finish_sock_read:
 
     mov %rax, %r12                             # preserve file size
-    mov %rdx, %r14                             # preserve HTTP status code
+    mov %rdx, -24(%rbp)                        # preserve HTTP status code
     # Extract the extension
-    pop %rdx
+    mov -8(%rbp), %rdx
     mov %rdx, %rdi                             # Destination buffer for extension
     mov %r13, %rsi                             # The HTTP req buffer to extract ext from
     call extract_extension                     # Extract the extension  
 
     lea req_method_B(%rip), %rdi
     lea req_route_B(%rip), %rsi
-    mov %r14, %rdx # pass http status code to log_access
-    pop %r14 # restore client IP
-    push %rdx # preserve http status code
+    mov -24(%rbp), %rdx # pass http status code to log_access
     call log_access
 
-    mov %r12, %rax                             # restore file size
-    pop %rdx  # restore http status code
+    mov %r12, %rax                             # restore file sizeF
+    mov -24(%rbp), %rdx                        # restore http status code
     pop %r13
     pop %r12
-    
+    add $32, %rsp
     leave                                   # restore stack frame (mov %rbp, %rsp; pop %rbp)
     ret
 

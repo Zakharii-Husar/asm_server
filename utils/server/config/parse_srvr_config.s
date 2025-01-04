@@ -26,7 +26,6 @@ parse_srvr_config:
     mov %rsp, %rbp
     push %r12
     push %r13
-    sub $8, %rsp               # align stack to 16-byte boundary
     
 
     mov %rdi, %r12              # Buffer pointer

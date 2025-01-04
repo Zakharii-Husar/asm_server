@@ -36,7 +36,6 @@ write_config_struct:
     mov %rsp, %rbp
     push %r12
     push %r13
-    sub $8, %rsp               # align stack to 16-byte boundary
     # %rdi contains pointer to config_key
     # %rsi contains pointer to config_value
     # Check if key pointer (%rdi) is null

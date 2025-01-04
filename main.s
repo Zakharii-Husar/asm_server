@@ -86,10 +86,14 @@ test_traversal: .asciz "/etc/passwd%"
 
 .global _start
 _start:
+
     # 0. Call signal handler to listen for Ctrl+C
     call signal_handler
     # 0. Initialize server config
     call init_srvr_config
+
+    
+    
 
 
     # ----------------------------
