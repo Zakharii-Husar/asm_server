@@ -38,8 +38,6 @@ log_err:
     mov %rdi, %r12
     mov %rsi, %r13
     mov %rdx, %r14
-
-    call print_info 
     
     # Start with empty buffer
     lea err_log_B(%rip), %rdi

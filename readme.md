@@ -57,6 +57,9 @@ The syscall for creating a TCP socket requires 3 parameters:
 
 After successfully making the syscall the TCP Socket [fd (file descriptor)](https://en.wikipedia.org/wiki/File_descriptor#:~:text=In%20Unix%20and%20Unix%2Dlike,a%20pipe%20or%20network%20socket.) is daved to **%rbx** register.
 
+If socket creation was successful, we're making a syscall to set the SO_REUSEADDR option to 1. This option allows the socket to reuse the address even if it's already in use by another socket.
+The reason I added this, because I want to be able to restart the server without having to wait for the port to be released.
+
 
 ### 2.sock_bind
 
