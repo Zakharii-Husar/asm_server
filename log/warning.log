@@ -346,3 +346,23 @@
 [2025-01-04T17:36:08+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
 [2025-01-04T17:36:08+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
 [2025-01-04T17:36:08+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Access log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:28-1] WARN:Error log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:28-1] WARN:Warning log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:28-1] WARN:System log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:28-1] WARN:No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Invalid public directory path. Using default ./public in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Invalid default file. Using default index.html in validate_config.s
+[2025-01-04T19:32:28-1] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Access log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:48-1] WARN:Error log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:48-1] WARN:Warning log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:48-1] WARN:System log file path is not set, using default path in open_log_files.s
+[2025-01-04T19:32:48-1] WARN:No valid host was provided. Using default 0.0.0.0 in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Invalid public directory path. Using default ./public in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Invalid default file. Using default index.html in validate_config.s
+[2025-01-04T19:32:48-1] WARN:Invalid server name. Using default MyASMServer/1.0 in validate_config.s

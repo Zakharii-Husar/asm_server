@@ -40,7 +40,6 @@
 .include "./utils/core/str/str_to_lower.s"
 .include "./utils/core/str/str_to_int.s"
 .include "./utils/core/str/int_to_str.s"
-.include "./utils/core/str/char_cmp.s"
 .include "./utils/core/str/str_contains.s"
 
 # Server configuration

@@ -42,35 +42,25 @@ parse_srvr_config:
     
     # STEP 1: Skip spaces
     .skip_spaces:
-    mov (%r12), %rdi
-    mov $' ', %rsi
-    call char_cmp
-    cmp $0, %rax
-    je .skip_empty_line
+    movb (%r12), %al
+    cmpb $' ', %al
+    jne .skip_empty_line
     inc %r12
     jmp .skip_spaces
 
 
     # STEP 2: Skip empty lines
     .skip_empty_line:
-    mov (%r12), %rdi
-    mov $'\n', %rsi
-    call char_cmp
-    cmp $1, %rax
+    movb (%r12), %al
+    cmpb $'\n', %al
     je .skip_current_line
 
     # STEP 3: Skip tabs
-    mov (%r12), %rdi
-    mov $'\t', %rsi
-    call char_cmp
-    cmp $1, %rax
+    cmpb $'\t', %al
     je .skip_current_line
 
     # STEP 4: Skip comments
-    mov (%r12), %rdi
-    mov $'#', %rsi
-    call char_cmp
-    cmp $1, %rax
+    cmpb $'#', %al
     je .skip_current_line
 
 

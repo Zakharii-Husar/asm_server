@@ -433,3 +433,20 @@
 [2025-01-04T17:29:10+0] ERROR#13:CRITICAL: Failed to bind TCP Socket in sock_bind.s
 [2025-01-04T17:29:50+0] ERROR#13:CRITICAL: Failed to bind TCP Socket in sock_bind.s
 [2025-01-04T17:30:30+0] ERROR#13:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:24:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:15-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:16-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:16-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:16-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:17-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T13:24:28-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:24:49-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:24:52-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:24:56-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:24:59-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:35:23-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:35:35-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T13:36:05-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
