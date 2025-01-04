@@ -6,15 +6,8 @@
 #   - %r14: pointer to client ip (buffer holding string)
 #   - %r15: server config pointer
 
-.section .bss
-
-.lcomm test_buffer, 20
-
 
 .section .data
-
-test_traversal: .asciz "/etc/passwd%"
-
 .include "./constants.s"
 
 .section .text
@@ -91,10 +84,6 @@ _start:
     call signal_handler
     # 0. Initialize server config
     call init_srvr_config
-
-    
-    
-
 
     # ----------------------------
     # 1. Create Socket

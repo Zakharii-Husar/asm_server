@@ -71,11 +71,15 @@ validate_config:
     mov %eax, CONF_HOST_OFFSET(%r15)    # Store the network-formatted IP
 
 .check_port:
-    # 2. Validate PORT
+    # 2. Validate PORT (comparing network byte order values)
     movzwl CONF_PORT_OFFSET(%r15), %eax  # Zero-extend 16-bit port to 32-bit
-    cmp $1, %eax
+    
+    # Compare with 1 in network byte order (0x0100)
+    cmp $0x0100, %eax
     jl .invalid_port
-    cmp $65535, %eax
+    
+    # Compare with 65535 in network byte order (0xFFFF)
+    cmp $0xFFFF, %eax
     jg .invalid_port
     jmp .check_buffer_size
 
