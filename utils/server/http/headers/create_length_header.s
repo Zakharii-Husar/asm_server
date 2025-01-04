@@ -1,6 +1,7 @@
 .section .rodata
-content_length:  .ascii "Content-Length: "
+content_length:  .asciz "Content-Length: "
 content_length_length = . - content_length    
+
 
 .section .text
 .type create_length_header, @function
@@ -8,6 +9,7 @@ content_length_length = . - content_length
 # Parameters:
 #   - %rdi: content length value
 #   - %rsi: pointer to response buffer
+#   - %rdx: max buffer size
 # Return Values:
 #   - %rax: length of concatenated string
 # Error Handling:
@@ -17,18 +19,21 @@ content_length_length = . - content_length
 create_length_header:
     push %rbp
     mov %rsp, %rbp
+    sub $8, %rsp
     # Save parameters
     push %r12
     push %r13
+    push %r14
 
     mov %rdi, %r12   # response_header_buffer
     mov %rsi, %r13   # content length
+    mov %rdx, %r14   # max buffer size
     
     # 1. Add "Content-Length: " prefix
     mov %r12, %rdi
     lea content_length(%rip), %rsi
     mov $content_length_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r14, %rcx
     call str_cat
     
     # 2. Convert content length to string
@@ -40,18 +45,19 @@ create_length_header:
     # %rax already contains string pointer from int_to_str
     mov %rax, %rsi
     # %rdx already contains length from int_to_str
-    mov $response_header_B_size, %rcx
+    mov %r14, %rcx
     call str_cat
     
     # 4. Add CRLF
     mov %r12, %rdi
     lea CRLF(%rip), %rsi
     mov $CRLF_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r14, %rcx
     call str_cat
     
+    pop %r14
     pop %r13
     pop %r12
+    add $8, %rsp
     leave
     ret
-    

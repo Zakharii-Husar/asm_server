@@ -1,6 +1,6 @@
 .section .rodata
 
-// Extensions for comparison
+# Extensions for comparison
 ext_html:   .asciz ".html"
 ext_html_length = . - ext_html
 ext_css:    .asciz ".css"
@@ -63,6 +63,7 @@ mime_ico_length = . - mime_ico
 # Parameters:
 #   - %rdi: pointer to response buffer
 #   - %rsi: pointer to file extension string
+#   - %rdx: max buffer size
 # Global Registers:
 #   - %r15: server configuration pointer
 # Return Values:
@@ -77,13 +78,15 @@ mime_ico_length = . - mime_ico
 create_type_header:
 push %rbp                          # save the caller's base pointer
 mov %rsp, %rbp                     # set the new base pointer (stack frame)
+sub $8, %rsp
 # Preserve non-volatile registers
 push %r12
 push %r13
+push %r14
 # Save arguments
 mov %rdi, %r12           # Save buffer pointer
 mov %rsi, %r13           # Save extension pointer
-
+mov %rdx, %r14           # Save max buffer size
 # cmp HTML extension
 mov %r13, %rsi
 lea ext_html(%rip), %rdi
@@ -158,13 +161,15 @@ je .write_ico
 mov %r12, %rdi                      # destination buffer
 lea mime_html(%rip), %rsi           # source string
 mov $mime_html_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
 .write_css:
-mov %r12, %rdi                      # destination buffer
+mov %r12, %rdi                     # destination buffer
 lea mime_css(%rip), %rsi           # source string
 mov $mime_css_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -172,6 +177,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_js(%rip), %rsi           # source string
 mov $mime_js_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -179,6 +185,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_jpeg(%rip), %rsi           # source string
 mov $mime_jpeg_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -186,6 +193,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_png(%rip), %rsi           # source string
 mov $mime_png_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -193,6 +201,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_gif(%rip), %rsi           # source string
 mov $mime_gif_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -200,6 +209,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_webp(%rip), %rsi           # source string
 mov $mime_webp_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -207,6 +217,7 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_svg(%rip), %rsi           # source string
 mov $mime_svg_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
@@ -214,11 +225,14 @@ jmp .return
 mov %r12, %rdi                      # destination buffer
 lea mime_ico(%rip), %rsi           # source string
 mov $mime_ico_length, %rdx         # length
+mov %r14, %rcx
 call str_cat
 jmp .return
 
 .return:
+pop %r14
 pop %r13
 pop %r12
+add $8, %rsp
 leave
 ret

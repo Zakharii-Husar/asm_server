@@ -2,6 +2,7 @@
 # Parameters:
 #   - %rdi: pointer to response buffer
 #   - %rsi: max buffer size
+#   - %rdx: max buffer size
 # Global Registers:
 #   - %r15: server configuration pointer (for server name)
 # Return Values:

@@ -269,3 +269,155 @@
 [2024-12-31T19:53:35-600] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
 [2024-12-31T19:58:00-600] ERROR#2:CRITICAL: directory traversal in file_open.s
 [2024-12-31T20:06:40-600] ERROR#2:CRITICAL: directory traversal in file_open.s
+[2025-01-04T07:33:54+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:33:54+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:33:54+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:33:54+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:34:29+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:34:33+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:37:39+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:37:39+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:37:39+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:37:39+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:37:39+0] ERROR#0:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:37:58+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:42:31+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:42:31+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:42:31+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:42:31+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:42:31+0] ERROR#0:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:43:22+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:43:26+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:43:40+0] ERROR#2:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:43:40+0] ERROR#2:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:44:37+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:44:41+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:45:45+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:45:48+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:45:52+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:45:58+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:01+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:03+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:07+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:09+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:12+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:14+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:17+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:46:28+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:29+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:29+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:29+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:31+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:31+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:31+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:31+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:36+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:36+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:36+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:36+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:46:42+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:50:35+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:50:35+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:50:35+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:50:35+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:53:46+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:53:51+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:53:51+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:53:51+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:53:51+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:54:06+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:54:08+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:13+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:17+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:21+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:25+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:28+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:31+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:34+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:36+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:39+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:41+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:44+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:46+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:49+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:54:57+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:54:57+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:54:57+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:54:57+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:55:07+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:55:09+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:19+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:21+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:24+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:30+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:35+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:42+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:55:47+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T07:56:05+0] ERROR#6:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:56:05+0] ERROR#5:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:56:05+0] ERROR#1:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T07:56:05+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:01:54+0] ERROR#4:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:02:25+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:30+0] ERROR#7:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:36+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:36+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:36+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:36+0] ERROR#0:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:46+0] ERROR#7:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:08:51+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:09:55+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:11:42+0] ERROR#7:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:11:48+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:12:48+0] ERROR#8:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:12:54+0] ERROR#9:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:14:10+0] ERROR#7:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:40+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:41+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:41+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:41+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:46+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:46+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:34:46+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:35:16+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:35:16+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:35:16+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:35:49+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:36:06+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:36:13+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:37:31+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:37:38+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:10+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:10+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:10+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:11+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:11+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:11+0] ERROR#9:CRITICAL: Failed to respond to the client in sock_respond.s
+[2025-01-04T08:40:15+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:40:58+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:41:01+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:41:03+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:42:44+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:42:49+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:42:53+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:43:03+0] ERROR:MODERATE: buffer overflow detected in str_cat.s
+[2025-01-04T08:44:27+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:44:31+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:44:39+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:44:44+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:44:53+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:45:00+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:45:05+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:45:11+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:46:00+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:46:03+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:46:14+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s
+[2025-01-04T08:46:22+0] ERROR#98:CRITICAL: Failed to bind TCP Socket in sock_bind.s

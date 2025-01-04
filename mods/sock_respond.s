@@ -1,5 +1,5 @@
 .section .data
-    .equ response_header_B_size, 1024
+    .equ response_header_B_size, 4096
 
 .section .bss
     .lcomm response_header_B, response_header_B_size
@@ -11,7 +11,7 @@ sock_respond_err_msg:    .asciz "CRITICAL: Failed to respond to the client in so
 sock_respond_err_msg_length = . - sock_respond_err_msg
 
 # Double CRLF to separate headers from body
-headers_end:    .ascii "\r\n"
+headers_end:    .asciz "\r\n"
 headers_end_length = . - headers_end
 
 .section .text
@@ -60,20 +60,25 @@ sock_respond:
     # ADD HTTP STATUS LINE TO RESPONSE HEADER
     mov -8(%rbp), %rdi                    # Move status code to first parameter
     lea response_header_B(%rip), %rsi  # Add this line: pass buffer pointer as second parameter
+    mov $response_header_B_size, %rdx
     call create_status_header         # Returns ptr in %rax, len in %rdx
 
     # ADD CONTENT-LENGTH HEADER TO RESPONSE HEADER
     lea response_header_B(%rip), %rdi # destination
     mov %r14, %rsi # content size
+    mov $response_header_B_size, %rdx # max buffer size
     call create_length_header
 
     # ADD CONTENT-TYPE HEADER TO RESPONSE HEADER
     lea response_header_B(%rip), %rdi       # destination buffer
     mov -16(%rbp), %rsi                          # file extension buffer pointer
+    mov $response_header_B_size, %rdx # max buffer size
     call create_type_header                 # returns length in %rax
 
+    # ADD SERVER HEADER TO RESPONSE HEADER
     lea response_header_B(%rip), %rdi      # destination buffer
     mov $response_header_B_size, %rsi      # max buffer size
+    mov $response_header_B_size, %rdx      # max buffer size
     call create_server_header
     
 

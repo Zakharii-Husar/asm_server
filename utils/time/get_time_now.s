@@ -103,10 +103,6 @@ get_time_now:
     
     
     call format_time
-
-    mov %rax, %rdi
-    xor %rsi, %rsi
-    call print_info
     
     
     # format_time returns pointer to formatted string in rax

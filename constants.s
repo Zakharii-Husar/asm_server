@@ -16,7 +16,7 @@
     quote_char: .asciz "\""
 
     # GENERIC STRINGS
-    CRLF:        .ascii "\r\n"
+    CRLF:        .asciz "\r\n"
     CRLF_length = . - CRLF
     
     # sys_call args

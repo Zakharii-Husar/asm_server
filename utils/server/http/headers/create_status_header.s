@@ -21,6 +21,7 @@ server_error_status_length = . - server_error_status
 # Parameters:
 #   - %rdi: HTTP status code
 #   - %rsi: pointer to response buffer
+#   - %rdx: max buffer size
 # Return Values:
 #   - %rax: length of concatenated string
 # Error Handling:
@@ -30,11 +31,12 @@ server_error_status_length = . - server_error_status
 create_status_header:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp
+    
     push %r12
-    
+    push %r13
     mov %rsi, %r12     # Save buffer pointer
-    
+    mov %rdx, %r13     # Save max buffer size
+
     cmp $HTTP_OK_code, %rdi
     je .write_ok
     
@@ -57,7 +59,7 @@ create_status_header:
     mov %r12, %rdi                      # destination buffer
     lea status_ok(%rip), %rsi           # source string
     mov $status_ok_length, %rdx         # length
-    mov $response_header_B_size, %rcx
+    mov %r13, %rcx
     call str_cat
     jmp .return_status_header                           # Jump to single return point
 
@@ -65,7 +67,7 @@ create_status_header:
     mov %r12, %rdi
     lea file_not_found_status(%rip), %rsi
     mov $file_not_found_status_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r13, %rcx
     call str_cat
     jmp .return_status_header                           # Jump to single return point
 
@@ -73,7 +75,7 @@ create_status_header:
     mov %r12, %rdi
     lea bad_request_status(%rip), %rsi
     mov $bad_request_status_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r13, %rcx
     call str_cat
     jmp .return_status_header                           # Jump to single return point
 
@@ -81,7 +83,7 @@ create_status_header:
     mov %r12, %rdi
     lea method_not_allowed_status(%rip), %rsi
     mov $method_not_allowed_status_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r13, %rcx
     call str_cat
     jmp .return_status_header                           # Jump to single return point
 
@@ -89,13 +91,13 @@ create_status_header:
     mov %r12, %rdi
     lea server_error_status(%rip), %rsi 
     mov $server_error_status_length, %rdx
-    mov $response_header_B_size, %rcx
+    mov %r13, %rcx
     call str_cat
     # Falls through to .return_status_header since it's the last one
 
 .return_status_header:     
+    pop %r13
     pop %r12
-    add $8, %rsp
     leave
     ret
     

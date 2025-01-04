@@ -52,3 +52,264 @@
 [2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s
 [2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s
 [2024-12-28T14:55:57-600] WARN:CRITICAL: directory traversal in file_open.s
+[2025-01-04T07:33:42+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:33:42+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:33:42+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:34:33+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:34:33+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:34:33+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:37:29+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:37:29+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:37:29+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:42:27+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:42:27+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:42:27+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:43:26+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:43:26+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:43:26+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:43:37+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:43:37+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:43:37+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:44:41+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:44:41+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:44:41+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:44:43+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:44:43+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:44:43+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:45:45+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:45:45+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:45:45+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:45:48+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:45:48+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:45:48+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:45:52+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:45:52+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:45:52+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:45:58+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:45:58+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:45:58+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:01+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:01+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:01+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:03+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:03+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:03+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:07+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:07+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:07+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:09+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:09+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:09+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:12+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:12+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:12+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:14+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:14+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:14+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:17+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:17+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:17+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:46:25+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:46:25+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:46:25+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:50:32+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:50:32+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:50:32+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:53:48+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:53:48+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:53:48+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:08+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:08+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:08+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:13+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:13+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:13+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:17+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:17+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:17+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:21+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:21+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:21+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:25+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:25+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:25+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:28+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:28+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:28+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:31+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:31+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:31+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:34+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:34+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:34+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:36+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:36+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:36+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:39+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:39+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:39+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:41+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:41+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:41+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:44+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:44+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:44+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:46+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:46+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:46+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:49+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:49+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:49+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:54:54+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:54:54+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:54:54+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:09+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:09+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:09+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:19+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:19+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:19+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:21+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:21+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:21+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:24+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:24+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:24+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:30+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:30+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:30+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:35+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:35+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:35+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:42+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:42+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:42+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:55:47+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:55:47+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:55:47+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T07:56:01+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T07:56:01+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T07:56:01+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:01:58+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:01:58+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:01:58+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:08:33+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:08:33+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:08:33+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:08:51+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:08:51+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:08:51+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:09:52+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:09:52+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:09:52+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:11:44+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:11:44+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:11:44+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:12:51+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:12:51+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:12:51+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:14:13+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:14:13+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:14:13+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:15:18+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:15:18+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:15:18+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:31:38+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:31:38+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:31:38+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:34:36+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:34:36+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:34:36+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:35:49+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:35:49+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:35:49+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:36:06+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:36:06+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:36:06+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:36:13+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:36:13+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:36:13+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:36:26+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:36:26+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:36:26+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:37:31+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:37:31+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:37:31+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:37:34+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:37:34+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:37:34+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:40:07+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:40:07+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:40:07+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:40:15+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:40:15+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:40:15+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:40:58+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:40:58+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:40:58+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:41:01+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:41:01+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:41:01+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:41:03+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:41:03+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:41:03+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:41:49+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:41:49+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:41:49+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:42:44+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:42:44+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:42:44+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:42:49+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:42:49+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:42:49+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:42:53+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:42:53+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:42:53+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:42:59+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:42:59+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:42:59+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:07+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:07+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:07+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:27+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:27+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:27+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:31+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:31+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:31+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:39+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:39+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:39+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:44+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:44+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:44+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:44:53+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:44:53+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:44:53+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:45:00+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:45:00+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:45:00+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:45:05+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:45:05+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:45:05+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:45:11+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:45:11+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:45:11+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:45:16+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:45:16+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:45:16+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:46:00+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:46:00+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:46:00+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:46:03+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:46:03+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:46:03+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:46:14+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:46:14+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:46:14+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:46:22+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:46:22+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:46:22+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s
+[2025-01-04T08:46:31+0] WARN:Invalid port (must be between 1-65535). Using default 8080 in validate_config.s
+[2025-01-04T08:46:31+0] WARN:Invalid buffer size (must be between 1KB-64MB). Using default 16MB in validate_config.s
+[2025-01-04T08:46:31+0] WARN:Invalid max connections (must be between 1-1000). Using default 100 in validate_config.s

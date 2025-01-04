@@ -80,6 +80,10 @@ str_cat:
 
 .handle_str_cat_overflow:
 
+mov %r12, %rdi
+xor %rsi, %rsi
+call print_info
+
     lea overflow_msg(%rip), %rdi
     mov $overflow_msg_length, %rsi
     mov %rax, %rdx
