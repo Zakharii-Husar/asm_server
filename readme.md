@@ -21,6 +21,25 @@ This project implements a fully functional HTTP server in assembly language, cap
 - **Error Pages**: Custom error pages for 400, 404, 405, and 500 responses
 - **Signal Handling**: Graceful shutdown on SIGINT (Ctrl+C)
 
+## Supported File Formats
+
+The server supports serving the following file types with appropriate MIME types:
+
+### Web Documents
+- HTML (`.html`) - `text/html`
+- CSS (`.css`) - `text/css`
+- JavaScript (`.js`) - `text/javascript`
+
+### Images
+- JPEG (`.jpg`, `.jpeg`) - `image/jpeg`
+- PNG (`.png`) - `image/png`
+- GIF (`.gif`) - `image/gif`
+- WebP (`.webp`) - `image/webp`
+- SVG (`.svg`) - `image/svg+xml`
+- ICO (`.ico`) - `image/x-icon`
+
+All other file types will be served as `application/octet-stream` by default.
+
 ## Configure & Deploy
 
 ### Compilation Instructions
@@ -133,32 +152,19 @@ By following these steps, you can compile, configure, and deploy the server succ
 The server handles graceful shutdown on SIGINT (Ctrl+C)
 by preventing exiting immediately and instead waiting for all the connections and files to be closed.
 
-## Supported File Formats
-
-The server supports serving the following file types with appropriate MIME types:
-
-### Web Documents
-- HTML (`.html`) - `text/html`
-- CSS (`.css`) - `text/css`
-- JavaScript (`.js`) - `text/javascript`
-
-### Images
-- JPEG (`.jpg`, `.jpeg`) - `image/jpeg`
-- PNG (`.png`) - `image/png`
-- GIF (`.gif`) - `image/gif`
-- WebP (`.webp`) - `image/webp`
-- SVG (`.svg`) - `image/svg+xml`
-- ICO (`.ico`) - `image/x-icon`
-
-All other file types will be served as `application/octet-stream` by default.
-
-
 
 ## REGISTERS
 
 ### Callee-Saved Registers Used as Global Variables:
 
-In this project, the System V ABI calling convention is used for Linux 64-bit architecture. For those interested, you can find detailed information about the System V ABI [here](https://wiki.osdev.org/System_V_ABI).
+In this project I decided to use the [System V ABI](https://wiki.osdev.org/System_V_ABI) calling convention for Linux 64-bit architecture. 
+
+Key points:
+- The registers **%rax, %rdi, %rsi, %rdx, %rcx, %r8, %r9, %r10, %r11** are volatile or caller-saved. You should expect them to be modified by any function call.
+
+- The registers **%rbx, %rsp, %rbp, %r12, %r13, %r14, %r15** are non-volatile or callee-saved. You should expect them to be preserved across function calls.
+
+- By doing my own researches to find which registers are clobbered by syscalls, I it's a controversial topic, but to the best of my knowledge a syscall might clobber **%rax, %rcx, %r11** and obviously whichever registers are used as parameters. So sometimes I used registers like **%r8** or **%r9** to preserve values across syscalls (might be wrong but didn't have any problems so far).
 
 The following **callee-saved registers** are used as global variables:
 
@@ -345,7 +351,7 @@ Solution: I refactored the log_err function to avoid using str_cat. Instead of c
 ### 6. Buffer Overflows
 Problem: I faced multiple buffer overflows, especially in the str_cat function, where concatenated strings exceeded the allocated buffer size.
 
-Solution: I added boundary checks in str_cat to ensure that the total length of the concatenated string never exceeded the buffer size. This involved calculating the required space before performing the concatenation and returning an error if the operation would exceed the buffer's capacity.
+Solution: I added boundary checks in str_cat to ensure that the total length of the concatenated string never exceeded the buffer size. This involved calculating the required space before performing the concatenation and returning an error if the operation would exceed the buffer's capacity. Also making sure that the string is null terminated if no length is provided, so str_len can find it.
 
 ### 7. Debugging Assembly Code
 Problem: Debugging Assembly code proved to be far more challenging than higher-level languages due to the lack of abstractions and minimal debugging tools.
@@ -363,7 +369,7 @@ Logs warnings for each missing or invalid entry.
 ### 9. Aligning with System Call Behavior
 Problem: Some syscalls required data alignment or specific input formats that weren’t documented clearly. This led to initial misbehavior when passing arguments or buffer sizes.
 
-Solution: I thoroughly reviewed the Linux kernel documentation for each syscall I used and tested extensively with edge cases. For instance, I ensured all socket-related syscalls handled file descriptors, buffer sizes, and return codes correctly.
+Solution: I thoroughly reviewed the Linux kernel documentation for syscalls I used and tested extensively with edge cases. For instance, I ensured all socket-related syscalls handled file descriptors, buffer sizes, and return codes correctly.
 
 ### 10. Learning Assembly and Low-Level Programming
 Problem: This project required a deep understanding of Assembly, Linux syscalls, and system programming, much of which I had to learn from scratch.
@@ -373,12 +379,9 @@ Solution: I dedicated significant time to studying Assembly resources, the Linux
 ### 11. Error Handling and Logging
 Problem: Implementing robust error handling and logging was challenging due to the minimal abstractions in Assembly. Additionally, logging functions needed to handle errors without introducing new errors themselves.
 
-Solution: I separated critical logging functions from utility functions, ensuring they operated independently.
+Solution: I separated log_err (since it's critical) from utility functions, ensuring they operated as independently as possible.
 
-### 12. Testing and Validation
-Problem: Writing meaningful test cases for Assembly code was difficult because of its low-level nature and reliance on hardware and OS-specific behavior.
 
-Solution: I wrote small isolated test cases for individual modules (e.g., string manipulation, memory management). Additionally, I ran extensive integration tests by simulating various server behaviors and edge cases.
 
 This project has been an invaluable learning experience, teaching me both the technical details of low-level programming and the problem-solving skills required to tackle complex challenges. Each issue encountered was an opportunity to deepen my understanding and improve the robustness of the server. On top of that it taught me a lot about the importance of testing, validation and error handling.
 
