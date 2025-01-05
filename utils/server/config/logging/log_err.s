@@ -138,7 +138,6 @@ log_err:
     # Write error message
     mov %r12, %rsi
     mov %r13, %rdx
-    dec %rdx # remove null terminator
     mov CONF_ERROR_LOG_FD_OFFSET(%r15), %rdi
     mov $SYS_write, %rax
     syscall

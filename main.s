@@ -106,6 +106,7 @@ _start:
     # 4. Accept connection (blocking call)
     # ----------------------------
     call sock_accept
+
     # --------------------------------
     # 5. Fork the process(child reads and responds to a user and parent
     # is going back to accepting new connections)
