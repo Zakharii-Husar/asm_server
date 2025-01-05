@@ -153,9 +153,9 @@ The server handles graceful shutdown on SIGINT (Ctrl+C)
 by preventing exiting immediately and instead waiting for all the connections and files to be closed.
 
 
-## REGISTERS
+## System V ABI registers management
 
-### Callee-Saved Registers Used as Global Variables:
+### Registers volatility
 
 In this project I decided to use the [System V ABI](https://wiki.osdev.org/System_V_ABI) calling convention for Linux 64-bit architecture. 
 
@@ -165,6 +165,15 @@ Key points:
 - The registers **%rbx, %rsp, %rbp, %r12, %r13, %r14, %r15** are non-volatile or callee-saved. You should expect them to be preserved across function calls.
 
 - By doing my own researches to find which registers are clobbered by syscalls, I it's a controversial topic, but to the best of my knowledge a syscall might clobber **%rax, %rcx, %r11** and obviously whichever registers are used as parameters. So sometimes I used registers like **%r8** or **%r9** to preserve values across syscalls (might be wrong but didn't have any problems so far).
+
+### Calling Conventions
+
+- **%rdi, %rsi, %rdx, %rcx, %r8, %r9** are used as parameters (order is important).
+- **%rax,%rdx** are used as return values (order is important).
+- If number of parameters is more than 6, you should put them in stack, and pass the pointer to the stack in **%rdi**.
+- If number of return values is more than 2, you should put them in stack, and pass the pointer to the stack in **%rax**.
+
+### Callee-Saved Registers Used as Global Variables:
 
 The following **callee-saved registers** are used as global variables:
 
