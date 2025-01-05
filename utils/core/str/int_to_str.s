@@ -8,6 +8,12 @@
 .section .rodata
     .equ string_buffer_size, 21
 
+    min_int_str: .asciz "-9223372036854775808"
+    min_int_str_length = . - min_int_str
+
+    min_int_error_str: .asciz "Error: Integer is too small (min value is -9223372036854775808)"
+    min_int_error_str_length = . - min_int_error_str
+
 .section .bss
     .lcomm string_buffer, string_buffer_size
 
@@ -17,8 +23,14 @@ int_to_str:
     push %rbp
     mov %rsp, %rbp
     
-    push %r12              # will be used later
-    push %r13              # preserve original number
+    push %r12              
+    push %r13              
+    
+    # Check for minimum value (-9223372036854775808)
+    movq %rdi, %rax
+    movq $-9223372036854775808, %rcx
+    cmpq %rcx, %rax
+    je .handle_min_int
     
     mov %rdi, %r13        # preserve original number
 
@@ -90,3 +102,16 @@ int_to_str:
     pop %r12
     leave
     ret
+
+.handle_min_int:
+
+    lea min_int_error_str(%rip), %rdi
+    movq $min_int_error_str_length, %rsi
+    xor %rdx, %rdx
+    call log_err
+
+    # Special case for minimum integer value
+    lea min_int_str(%rip), %rax
+    movq $20, %rdx        # Length of "-9223372036854775808"
+    jmp .exit_int_to_str
+
