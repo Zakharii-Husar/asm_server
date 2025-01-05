@@ -1,5 +1,10 @@
-.section .data
-.include "./utils/time/time_constants.s"
+.section .rodata
+days_per_month:
+    .byte 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+days_per_month_leap:
+    .byte 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+epoch_year:
+    .quad 1970
 
 .section .text
 

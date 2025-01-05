@@ -8,7 +8,7 @@ else
 fi
 
 # Compile with debugging symbols
-if as -g -o "server.o" "main.s" &&
+if as -g -o "server.o" "src/main.s" &&
    ld -g -o "server" "server.o"; then
     if [ "$debug_mode" == "true" ]; then
         echo "✓ Compilation successful (with debug symbols)"
