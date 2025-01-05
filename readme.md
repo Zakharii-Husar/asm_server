@@ -220,3 +220,96 @@ If the path contains "..\" or "../" or ".." or "%", the server will not serve th
 The server validates the HTTP request.
 Only GET requests are supported.
 If the request is not valid, the server will serve 405 error page.
+
+## Project Structure
+
+asm_server
+├── compile_script.sh
+├── conf
+│   └── server.conf
+├── log
+│   ├── access.log
+│   ├── error.log
+│   ├── system.log
+│   └── warning.log
+├── public
+│   ├── 400.html
+│   ├── 404.html
+│   ├── 405.html
+│   ├── 500.html
+│   ├── favicon.ico
+│   ├── ford.jpg
+│   ├── index.css
+│   ├── index.html
+│   └── index.js
+├── readme.md
+├── server
+└── src
+    ├── constants.s
+    ├── main.s
+    ├── mods
+    │   ├── exit_program.s
+    │   ├── fork_handle_child.s
+    │   ├── fork_handle_parent.s
+    │   ├── process_fork.s
+    │   ├── server_shutdown.s
+    │   ├── signal_handler.s
+    │   ├── sock_accept.s
+    │   ├── sock_bind.s
+    │   ├── sock_close_conn.s
+    │   ├── sock_create.s
+    │   ├── sock_listen.s
+    │   ├── sock_read.s
+    │   └── sock_respond.s
+    └── utils
+        ├── build_file_path.s
+        ├── core
+        │   ├── io
+        │   │   ├── file_open.s
+        │   │   └── print_info.s
+        │   ├── memory
+        │   │   └── clear_buffer.s
+        │   ├── str
+        │   │   ├── int_to_str.s
+        │   │   ├── str_cat.s
+        │   │   ├── str_cmp.s
+        │   │   ├── str_contains.s
+        │   │   ├── str_find_char.s
+        │   │   ├── str_len.s
+        │   │   ├── str_to_int.s
+        │   │   └── str_to_lower.s
+        │   └── validation
+        │       └── validate_file_path.s
+        ├── server
+        │   ├── config
+        │   │   ├── init_srvr_config.s
+        │   │   ├── logging
+        │   │   │   ├── log_access.s
+        │   │   │   ├── log_err.s
+        │   │   │   ├── log_sys.s
+        │   │   │   ├── log_warn.s
+        │   │   │   └── open_log_files.s
+        │   │   ├── network
+        │   │   │   ├── htons.s
+        │   │   │   └── ip_to_network.s
+        │   │   ├── parse_srvr_config.s
+        │   │   ├── validate_config.s
+        │   │   └── write_config_struct.s
+        │   └── http
+        │       ├── headers
+        │       │   ├── create_length_header.s
+        │       │   ├── create_server_header.s
+        │       │   ├── create_status_header.s
+        │       │   └── create_type_header.s
+        │       └── request
+        │           ├── extract_client_ip.s
+        │           ├── extract_extension.s
+        │           ├── extract_method.s
+        │           └── extract_route.s
+        └── time
+            ├── adjust_timezone.s
+            ├── format_time.s
+            ├── get_days_in_month.s
+            ├── get_time_now.s
+            ├── get_timestamp.s
+            └── is_leap_year.s
