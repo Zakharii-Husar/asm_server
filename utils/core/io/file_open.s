@@ -15,13 +15,17 @@ read_err_msg_length = . - read_err_msg
 buffer_overflow_err_msg: .asciz "CRITICAL: buffer overflow in file_open.s"
 buffer_overflow_err_msg_length = . - buffer_overflow_err_msg
 
-directory_traversal_err_msg: .asciz "CRITICAL: directory traversal in file_open.s"
+directory_traversal_err_msg: .asciz "CRITICAL: directory traversal in file_open.s "
 directory_traversal_err_msg_length = . - directory_traversal_err_msg
 
 .equ stat_buffer_size, 144
 
+.equ traversal_error_B_size, 1024
+
 .section .bss
 .lcomm stat_buffer, stat_buffer_size
+.lcomm traversal_error_B, traversal_error_B_size
+
 
 .section .text
 
@@ -222,7 +226,43 @@ file_open:
         jmp .exit_file_open 
 
         .handle_directory_traversal:
+        # Check if IP is set
+        mov %r14, %rdi
+        call str_len
+        mov %r14, %rdi
+        xor %rsi, %rsi
+        call print_info
 
+        test %r14, %r14
+        jz .skip_logging_ip
+        
+        # add error message to buffer
+        lea traversal_error_B(%rip), %rdi
+        lea directory_traversal_err_msg(%rip), %rsi
+        mov $directory_traversal_err_msg_length, %rdx
+        mov $traversal_error_B_size, %rcx
+        call str_cat
+        # find length of IP
+        mov %r14, %rdi
+        call str_len
+        # add IP to error message
+        lea traversal_error_B(%rip), %rdi
+        mov %r14, %rsi
+        mov %rax, %rdx
+        mov $traversal_error_B_size, %rcx
+        call str_cat
+
+        # Find length of error message
+        lea traversal_error_B(%rip), %rdi
+        call str_len
+        # log error
+        lea traversal_error_B(%rip), %rdi
+        mov %rax, %rsi
+        xor %rdx, %rdx
+        call log_err
+
+
+        .skip_logging_ip:
         lea directory_traversal_err_msg(%rip), %rdi
         mov $directory_traversal_err_msg_length, %rsi
         mov $-2, %rdx

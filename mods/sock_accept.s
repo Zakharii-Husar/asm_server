@@ -4,6 +4,7 @@
 .sock_accept_err_msg_len = . - .sock_accept_err_msg
 
 .section .data
+ .align 4 
 connection_info:
     .zero 16              # sockaddr_in structure
     .quad 0               # additional space for fd if needed

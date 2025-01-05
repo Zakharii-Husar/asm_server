@@ -2,12 +2,12 @@
 .equ client_ip_B_size, 16
 
 .section .bss
-.lcomm client_ip, client_ip_B_size          # Buffer for IPv4 address string
+.lcomm client_ip_B, client_ip_B_size          # Buffer for IPv4 address string
 
 .section .text
 # Function: extract_client_ip
 # Parameters:
-#   - None
+#   - %rdi: client IP address in network byte order
 # Global Registers:
 #   - %r13: connection file descriptor
 #   - %r14: client IP string buffer pointer
@@ -21,17 +21,20 @@
 extract_client_ip:
     push %rbp
     mov %rsp, %rbp
-    sub $8, %rsp
     push %r12                       # Save %r12 since we'll use it
+    push %r13
 
-    # Clear the client_ip buffer before use
-    lea client_ip(%rip), %rdi
+    mov %rdi, %r13
+
+    # Clear the client_ip_B buffer before use
+    lea client_ip_B(%rip), %rdi
     mov $client_ip_B_size, %rsi
     call clear_buffer
 
-    lea client_ip(%rip), %r14      # Get fresh buffer pointer
+
+    lea client_ip_B(%rip), %r14      # Get fresh buffer pointer
     
-    mov 4(%rdi), %ecx              # Load sin_addr (4 bytes) into ECX
+    mov 4(%r13), %ecx              # Load sin_addr (4 bytes) into ECX
     bswap %ecx                     # Convert from network byte order
     mov %ecx, %r12d                # Preserve the full IP in %r12d
 
@@ -103,7 +106,8 @@ extract_client_ip:
     mov $client_ip_B_size, %rcx
     call str_cat
 
+
+    pop %r13
     pop %r12                      # Restore %r12
-    add $8, %rsp
     leave
     ret

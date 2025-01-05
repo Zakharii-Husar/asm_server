@@ -74,7 +74,6 @@
 
 # Server utilities
 .include "./utils/build_file_path.s"
-.include "./utils/check_stack.s"
 
 .global _start
 _start:
