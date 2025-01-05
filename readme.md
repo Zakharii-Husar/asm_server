@@ -222,7 +222,7 @@ Only GET requests are supported.
 If the request is not valid, the server will serve 405 error page.
 
 ## Project Structure
-
+```
 asm_server
 ├── compile_script.sh
 ├── conf
@@ -313,3 +313,4 @@ asm_server
             ├── get_time_now.s
             ├── get_timestamp.s
             └── is_leap_year.s
+```
