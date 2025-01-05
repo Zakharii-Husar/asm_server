@@ -164,7 +164,7 @@ Key points:
 
 - The registers **%rbx, %rsp, %rbp, %r12, %r13, %r14, %r15** are non-volatile or callee-saved. You should expect them to be preserved across function calls.
 
-- By doing my own researches to find which registers are clobbered by syscalls, I it's a controversial topic, but to the best of my knowledge a syscall might clobber **%rax, %rcx, %r11** and obviously whichever registers are used as parameters. So sometimes I used registers like **%r8** or **%r9** to preserve values across syscalls (might be wrong but didn't have any problems so far).
+- By doing my own researches to find which registers are clobbered by syscalls, I found out that it's a controversial topic, but to the best of my knowledge a syscall might clobber **%rax, %rcx, %r11** and obviously whichever registers are used as parameters. So sometimes I used registers like **%r8** or **%r9** to preserve values across syscalls (might be wrong but didn't have any problems so far).
 
 ### Calling Conventions
 
