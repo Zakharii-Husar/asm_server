@@ -15,9 +15,9 @@ create_system_log_len = . - create_system_log_msg
 
 .access_log_path_warn_msg: .asciz "Access log file path is not set, using default path in open_log_files.s"
 .access_log_path_warn_msg_len = . - .access_log_path_warn_msg
-.error_log_path_warn_msg: .asciz "Error log file path is not set, using default path in open_log_files.s"
+.error_log_path_warn_msg: .asciz "Log file path is not set, using default path in open_log_files.s"
 .error_log_path_warn_msg_len = . - .error_log_path_warn_msg
-.warning_log_path_warn_msg: .asciz "Warning log file path is not set, using default path in open_log_files.s"
+.warning_log_path_warn_msg: .asciz "Log file path is not set, using default path in open_log_files.s"
 .warning_log_path_warn_msg_len = . - .warning_log_path_warn_msg
 .system_log_path_warn_msg: .asciz "System log file path is not set, using default path in open_log_files.s"
 .system_log_path_warn_msg_len = . - .system_log_path_warn_msg
