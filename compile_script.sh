@@ -8,8 +8,8 @@ else
 fi
 
 # Compile with debugging symbols
-if as -g -o "server.o" "src/main.s" &&
-   ld -g -o "server" "server.o"; then
+if as -g -o "asm_server.o" "src/main.s" &&
+   ld -g -o "asm_server" "asm_server.o"; then
     if [ "$debug_mode" == "true" ]; then
         echo "✓ Compilation successful (with debug symbols)"
     else
@@ -21,8 +21,8 @@ else
 fi
 
 # Clean up the object file (only print message if removal fails)
-if [ -f "server.o" ]; then
-    rm server.o || echo "Warning: Failed to remove server.o"
+if [ -f "asm_server.o" ]; then
+    rm asm_server.o || echo "Warning: Failed to remove asm_server.o"
 fi
 
 exit 0

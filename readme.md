@@ -21,9 +21,103 @@ This project implements a fully functional HTTP server in assembly language, cap
 - **Error Pages**: Custom error pages for 400, 404, 405, and 500 responses
 - **Signal Handling**: Graceful shutdown on SIGINT (Ctrl+C)
 
-## Configuration
+## Configure & Deploy
 
-The server can be configured through `server.conf`:
+### Compilation Instructions
+1. **Navigate to the Project Directory**
+   ```bash
+   cd asm_server
+   ```
+
+2. **Compile the Server**
+   Run the `compile_script.sh` script:
+   ```bash
+   ./compile_script.sh
+   ```
+
+   To compile with debug symbols, use the following command:
+   ```bash
+   ./compile_script.sh debug_mode
+   ```
+
+3. **Run the Server**
+   After compilation, execute the server binary:
+   ```bash
+   ./asm_server
+   ```
+
+### Configuration Details
+
+The server requires a configuration file named `server.conf` to be in the same directory as the server binary. If this file is missing or contains invalid/missing values, the server will fall back to default values. Warnings about missing or invalid values will be logged in the `warning.log` file.
+
+#### Example `server.conf` File
+```plaintext
+# For changing the server config, edit this file and restart the server
+#----------------------
+# Essential Settings
+#----------------------
+HOST=localhost           # Host to listen on
+PORT=8080                # Port to listen on
+PUBLIC_DIR=./public      # Public directory
+DEFAULT_FILE=index.html  # Default file to serve
+
+#----------------------
+# Server Behavior
+#----------------------
+MAX_CONN=100             # Maximum number of connections
+BUFFER_SIZE=16777216     # Response MAX buffer size
+TIMEZONE=-0600           # UTC offset
+
+#----------------------
+# Server Identity
+#----------------------
+SERVER_NAME=MyASMServer/1.0    # Server name
+ACCESS_LOG_PATH=./log/access.log  # Access log path
+WARNING_LOG_PATH=./log/warning.log # Warning log path
+ERROR_LOG_PATH=./log/error.log    # Error log path
+SYSTEM_LOG_PATH=./log/system.log  # System log path
+```
+
+### Default Hardcoded Fallback Values
+In case the `server.conf` file is missing or some values are invalid, the server will use the following default settings:
+- **Host**: `localhost`
+- **Port**: `8080`
+- **Public Directory**: `./public`
+- **Default File**: `index.html`
+- **Maximum Connections**: `100`
+- **Buffer Size**: `16777216`
+- **Timezone**: `-0600`
+- **Server Name**: `MyASMServer/1.0`
+- **Access Log Path**: `./log/access.log`
+- **Warning Log Path**: `./log/warning.log`
+- **Error Log Path**: `./log/error.log`
+- **System Log Path**: `./log/system.log`
+
+### Logs
+If log files at the configured/default paths do not exist, they will be created automatically. A warning will be logged in the `warning.log` file. The following log files are used:
+- **Access Log**: Tracks all HTTP requests.
+- **Warning Log**: Logs warnings, such as missing or invalid configuration values.
+- **Error Log**: Logs server errors.
+- **System Log**: Logs system events.
+
+### HTTP Error Pages
+For proper error handling, you must create the following HTTP error pages in the `public` directory:
+- `400.html` — Bad Request
+- `404.html` — Not Found
+- `405.html` — Method Not Allowed
+- `500.html` — Internal Server Error
+
+
+### Deployment Notes
+1. **Restart Required**: After modifying the `server.conf` file, restart the server to apply changes.
+2. **Directory Structure**: Ensure that the following directories and files are correctly set up:
+   - `public` directory with HTML files (e.g., `index.html`, error pages).
+   - `log` directory for log files (these will be created if missing).
+   - `server.conf` file in the same directory as the server binary.
+
+By following these steps, you can compile, configure, and deploy the server successfully.
+
+
 
 ## REGISTERS
 
