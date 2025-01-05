@@ -318,7 +318,9 @@ If the request is not valid, the server will serve 405 error page.
 ## Project Structure
 ```
 asm_server
+├── asm_server
 ├── compile_script.sh
+├── readme.md
 ├── conf
 │   └── server.conf
 ├── log
@@ -331,13 +333,12 @@ asm_server
 │   ├── 404.html
 │   ├── 405.html
 │   ├── 500.html
-│   ├── favicon.ico
-│   ├── ford.jpg
-│   ├── index.css
-│   ├── index.html
-│   └── index.js
-├── readme.md
-├── server
+│   └── www
+│       ├── favicon.ico
+│       ├── ford.jpg
+│       ├── index.css
+│       ├── index.html
+│       └── index.js
 └── src
     ├── constants.s
     ├── main.s

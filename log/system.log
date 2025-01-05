@@ -925,3 +925,14 @@
 [2025-01-05T14:56:40-600] SYSTEM: TCP socket bound
 [2025-01-05T14:56:40-600] SYSTEM: TCP socket listening
 [2025-01-05T14:56:43-600] SYSTEM: Shutting down server...
+[2025-01-05T15:01:49-600] SYSTEM: Server started
+[2025-01-05T15:01:49-600] SYSTEM: Configuration loaded
+[2025-01-05T15:01:49-600] SYSTEM: TCP socket created
+[2025-01-05T15:01:49-600] SYSTEM: TCP socket bound
+[2025-01-05T15:01:49-600] SYSTEM: TCP socket listening
+[2025-01-05T15:05:39-600] SYSTEM: Shutting down server...
+[2025-01-05T15:05:40-600] SYSTEM: Server started
+[2025-01-05T15:05:40-600] SYSTEM: Configuration loaded
+[2025-01-05T15:05:40-600] SYSTEM: TCP socket created
+[2025-01-05T15:05:40-600] SYSTEM: TCP socket bound
+[2025-01-05T15:05:40-600] SYSTEM: TCP socket listening
