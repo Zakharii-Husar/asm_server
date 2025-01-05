@@ -18,6 +18,7 @@
 #   - %r9:  seconds
 # Return Values:
 #   - %rax: pointer to formatted date string "[YYYY-MM-DD HH:MM:SS]"
+#   - %rdx: length of formatted date string
 # Error Handling:
 #   - None (assumes valid input)
 # Side Effects:
@@ -229,7 +230,9 @@ format_time:
 
     # Return pointer to formatted string
     
-    
+    lea date_buffer(%rip), %rdi
+    call str_len
+    mov %rax, %rdx
     lea date_buffer(%rip), %rax
     
 

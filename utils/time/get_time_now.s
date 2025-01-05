@@ -12,6 +12,7 @@
 #   - -16(%rbp): server configuration pointer (for timezone)
 # Return Values:
 #   - %rax: pointer to formatted timestamp string
+#   - %rdx: length of formatted timestamp string
 # Error Handling:
 #   - None (assumes system time is valid)
 # Side Effects:
