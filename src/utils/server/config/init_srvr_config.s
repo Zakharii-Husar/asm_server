@@ -6,9 +6,7 @@ server_start_msg_len = . - server_start_msg
 configuration_msg: .asciz "Configuration loaded"
 configuration_msg_len = . - configuration_msg
 
-server_conf_path: .asciz "./conf/server.conf"
-config_load_err_msg: .asciz "\033[31mFailed to load server config! ❌\033[0m\n"
-config_load_success_msg: .asciz "\033[32mServer config loaded successfully! ✅\033[0m\n"
+server_conf_path: .asciz "./server.conf"
 
 server_conf_file_B_size = 4096
 

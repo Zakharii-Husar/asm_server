@@ -936,3 +936,10 @@
 [2025-01-05T15:05:40-600] SYSTEM: TCP socket created
 [2025-01-05T15:05:40-600] SYSTEM: TCP socket bound
 [2025-01-05T15:05:40-600] SYSTEM: TCP socket listening
+[2025-01-05T15:38:28-600] SYSTEM: Shutting down server...
+[2025-01-05T15:38:30-600] SYSTEM: Server started
+[2025-01-05T15:38:30-600] SYSTEM: Configuration loaded
+[2025-01-05T15:38:30-600] SYSTEM: TCP socket created
+[2025-01-05T15:38:30-600] SYSTEM: TCP socket bound
+[2025-01-05T15:38:30-600] SYSTEM: TCP socket listening
+[2025-01-05T15:38:42-600] SYSTEM: Shutting down server...

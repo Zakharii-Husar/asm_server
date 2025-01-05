@@ -321,8 +321,7 @@ asm_server
 ├── asm_server
 ├── compile_script.sh
 ├── readme.md
-├── conf
-│   └── server.conf
+├── server.conf
 ├── log
 │   ├── access.log
 │   ├── error.log
