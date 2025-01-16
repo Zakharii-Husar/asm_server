@@ -49,22 +49,34 @@ All other file types will be served as `application/octet-stream` by default.
    cd asm_server
    ```
 
-2. **Compile the Server**
-   Run the `compile_script.sh` script:
+2. **Use the Script**
+   The `script.sh` provides several commands:
    ```bash
-   ./compile_script.sh
+   # Basic compilation
+   ./script.sh compile
+
+   # Compile and run
+   ./script.sh compile run
+
+   # Compile with debug symbols
+   ./script.sh compile debug
+
+   # Compile with debug symbols and run
+   ./script.sh compile debug run
+
+   # Docker operations
+   ./script.sh compile docker build        # Compile and build Docker image
+   ./script.sh compile docker run          # Compile, build Docker image and run container
+   ./script.sh compile docker build run    # Compile, build Docker image and run container
    ```
 
-   To compile with debug symbols, use the following command:
-   ```bash
-   ./compile_script.sh debug_mode
-   ```
-
-3. **Run the Server**
-   After compilation, execute the server binary:
-   ```bash
-   ./asm_server
-   ```
+   Each command performs the following:
+   - `compile`: Compiles the server
+   - `run`: Runs the compiled server
+   - `debug`: Adds debug symbols to the compilation
+   - `docker build`: Builds a Docker image
+   - `docker run`: Runs the Docker container
+   - Commands can be combined as shown above
 
 ### Configuration Details
 
