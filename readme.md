@@ -1,6 +1,7 @@
 # ASM Server
 
 A lightweight HTTP server written entirely in x86_64 assembly language for Linux systems.
+![Project Icon](public/www/ford.jpg)
 
 ## Overview
 
