@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - ASM Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="documentation.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Features</h1>
+        <h2>Core Features</h2>
+        <ul>
+            <li>Pure Assembly: Written entirely in x86_64 assembly language</li>
+            <li>Configuration: Customizable through server.conf file</li>
+            <li>Logging System: Separate logs for access, errors, warnings, and system events</li>
+            <li>Static File Serving: Serves files from configured public directory</li>
+            <li>Process Management: Uses forking for handling concurrent connections</li>
+            <li>Error Pages: Custom error pages for 400, 404, 405, and 500 responses</li>
+            <li>Signal Handling: Graceful shutdown on SIGINT (Ctrl+C)</li>
+        </ul>
+
+        <h2>Supported File Formats</h2>
+        <h3>Web Documents</h3>
+        <ul>
+            <li>HTML (.html) - text/html</li>
+            <li>CSS (.css) - text/css</li>
+            <li>JavaScript (.js) - text/javascript</li>
+        </ul>
+
+        <h3>Images</h3>
+        <ul>
+            <li>JPEG (.jpg, .jpeg) - image/jpeg</li>
+            <li>PNG (.png) - image/png</li>
+            <li>GIF (.gif) - image/gif</li>
+            <li>WebP (.webp) - image/webp</li>
+            <li>SVG (.svg) - image/svg+xml</li>
+            <li>ICO (.ico) - image/x-icon</li>
+        </ul>
+        
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+    </div>
+</body>
+</html>

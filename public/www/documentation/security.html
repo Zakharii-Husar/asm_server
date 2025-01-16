@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security - ASM Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="documentation.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Security</h1>
+        
+        <h2>Buffer Overflow Prevention</h2>
+        <p>The server uses size checks everywhere (functions like str_cat). If the size of the string is greater than the buffer, the function will truncate the string and writes entry to the error log.</p>
+
+        <h2>Directory Traversal Prevention</h2>
+        <p>The server checks for directory traversal in the file path. If the path contains "..\" or "../" or ".." or "%", the server will not serve the file and writes entry to the error log.</p>
+
+        <h2>HTTP Request Validation</h2>
+        <p>The server validates all HTTP requests:</p>
+        <ul>
+            <li>Only GET requests are supported</li>
+            <li>If the request is not valid, the server will serve 405 error page</li>
+            <li>Proper error handling with dedicated error pages</li>
+        </ul>
+        
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+    </div>
+</body>
+</html>
