@@ -11,6 +11,7 @@ DEBUG_MODE=false
 SHOULD_RUN=false
 DOCKER_BUILD=false
 DOCKER_RUN=false
+DOCKER_BACKGROUND=false
 SHOULD_COMPILE=false
 
 # Function to display usage
@@ -19,18 +20,23 @@ show_help() {
     echo "  ./script.sh [commands]"
     echo
     echo -e "${YELLOW}Commands:${NC}"
-    echo "  compile              - Compile the server"
-    echo "  compile run          - Compile and run the server"
-    echo "  compile debug        - Compile with debug symbols"
-    echo "  compile debug run    - Compile with debug symbols and run"
-    echo "  compile docker build - Compile and build Docker image"
-    echo "  compile docker run   - Compile, build Docker image and run container"
-    echo "  compile docker build run - Compile, build Docker image and run container"
+    echo "  compile                    - Compile the server"
+    echo "  compile run                - Compile and run the server"
+    echo "  compile debug              - Compile with debug symbols"
+    echo "  compile debug run          - Compile with debug symbols and run"
+    echo "  compile docker build       - Compile and build Docker image"
+    echo "  compile docker run         - Compile, build Docker image and run container"
+    echo "  compile docker run -d      - Compile and run Docker container in background"
+    echo "  compile docker build run   - Compile, build Docker image and run container"
+    echo "  compile docker build run -d - Compile, build Docker image and run container in background"
+    echo "  docker stop                - Stop and remove the running container"
     echo
     echo -e "${YELLOW}Examples:${NC}"
     echo "  ./script.sh compile"
     echo "  ./script.sh compile debug run"
     echo "  ./script.sh compile docker build run"
+    echo "  ./script.sh compile docker run -d"
+    echo "  ./script.sh docker stop"
     exit 1
 }
 
@@ -94,7 +100,30 @@ handle_docker() {
                 exit 1
             fi
         fi
-        docker run -p 8080:8080 asm-server
+        
+        if [ "$DOCKER_BACKGROUND" = true ]; then
+            docker run -d -p 8080:8080 --name asm-server-instance asm-server
+            echo -e "${GREEN}✓ Docker container started in background${NC}"
+        else
+            docker run -p 8080:8080 --name asm-server-instance asm-server
+        fi
+    fi
+}
+
+# Function to stop Docker container
+stop_docker() {
+    echo -e "${YELLOW}Stopping Docker container...${NC}"
+    if docker stop asm-server-instance >/dev/null 2>&1; then
+        echo -e "${GREEN}✓ Docker container stopped${NC}"
+    else
+        echo -e "${YELLOW}No container was running${NC}"
+    fi
+    
+    echo -e "${YELLOW}Removing Docker container...${NC}"
+    if docker rm asm-server-instance >/dev/null 2>&1; then
+        echo -e "${GREEN}✓ Docker container removed${NC}"
+    else
+        echo -e "${YELLOW}No container to remove${NC}"
     fi
 }
 
@@ -112,15 +141,28 @@ while [ "$1" != "" ]; do
                     ;;
         run )        SHOULD_RUN=true
                     ;;
+        -d )        DOCKER_BACKGROUND=true
+                    ;;
         docker )     shift
                     case $1 in
                         build )     DOCKER_BUILD=true
                                    shift
                                    if [ "$1" = "run" ]; then
                                        DOCKER_RUN=true
+                                       shift
+                                       if [ "$1" = "-d" ]; then
+                                           DOCKER_BACKGROUND=true
+                                       fi
                                    fi
                                    ;;
                         run )       DOCKER_RUN=true
+                                   shift
+                                   if [ "$1" = "-d" ]; then
+                                       DOCKER_BACKGROUND=true
+                                   fi
+                                   ;;
+                        stop )      stop_docker
+                                   exit 0
                                    ;;
                         * )         show_help
                                    ;;

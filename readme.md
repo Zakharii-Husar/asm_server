@@ -66,8 +66,11 @@ All other file types will be served as `application/octet-stream` by default.
 
    # Docker operations
    ./script.sh compile docker build        # Compile and build Docker image
-   ./script.sh compile docker run          # Compile, build Docker image and run container
+   ./script.sh compile docker run          # Compile and run Docker container
+   ./script.sh compile docker run -d       # Compile and run Docker container in background
    ./script.sh compile docker build run    # Compile, build Docker image and run container
+   ./script.sh compile docker build run -d # Compile, build Docker image and run container in background
+   ./script.sh docker stop                 # Stop and remove the running container
    ```
 
    Each command performs the following:
