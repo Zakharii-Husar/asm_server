@@ -102,10 +102,10 @@ handle_docker() {
         fi
         
         if [ "$DOCKER_BACKGROUND" = true ]; then
-            docker run -d -p 8080:8080 --name asm-server-instance asm-server
+            docker run -d -p 8081:8081 --name asm-server-instance asm-server
             echo -e "${GREEN}✓ Docker container started in background${NC}"
         else
-            docker run -p 8080:8080 --name asm-server-instance asm-server
+            docker run -p 8081:8081 --name asm-server-instance asm-server
         fi
     fi
 }
