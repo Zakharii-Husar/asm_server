@@ -27,11 +27,11 @@ RUN chmod +x script.sh
 RUN ./script.sh compile
 
 # Expose the configured port (from server.conf)
-EXPOSE 8080
+EXPOSE 8081
 
 # Set healthcheck
 HEALTHCHECK --interval=30s --timeout=3s \
-    CMD curl -f http://localhost:8080/ || exit 1
+    CMD curl -f http://localhost:8081/ || exit 1
 
 # Run the server
 CMD ["./asm_server"]
